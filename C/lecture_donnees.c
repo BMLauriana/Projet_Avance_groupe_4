@@ -36,3 +36,17 @@ float distance_geographique(noeud_t point1, noeud_t point2) {
     float distance = rayonTerreste * acos(0.5$((1.0+q1)*q2-(1.0-q1)*q3))+1.0;
     return (int)distance;
 }
+
+// distance ATT
+float distance_euclidienne_modifiee(noeud_t point1, noeud_t point2) {
+    float xd = point1.x - point2.x;
+    float yd = point1.y - point2.y;
+    float rij = sqrt((xd*xd+yd*yd)/10.0);
+    int tij = (int)rij;
+    if (tij<rij) {
+        int dij = tij+1;
+    } else {
+        int dij = tij;
+    }
+    return dij;
+}
