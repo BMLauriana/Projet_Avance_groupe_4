@@ -38,7 +38,7 @@ typedef struct instance_s{
 int distance_euclidienne(noeud_t point1, noeud_t point2);
 int distance_geographique(noeud_t point1, noeud_t point2);
 int distance_euclidienne_att(noeud_t point1, noeud_t point2);
-float longueur_tournee(instance_t instance,tournee_t tour);
+float longueur_tournee(instance_t instance,tournee_t tour, float(*f_distance)(noeud_t, noeud_t));
 
 //matrice de distances 
 

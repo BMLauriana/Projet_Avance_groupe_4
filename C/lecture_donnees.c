@@ -136,7 +136,7 @@ int distance_euclidienne_att(noeud_t point1, noeud_t point2) {
     return dij;
 }
 
-float longueur_tournee(instance_t instance, tournee_t tour) {
+float longueur_tournee(instance_t instance, tournee_t tour, float(*f_distance)(noeud_t, noeud_t)) {
     float longueur_totale = 0;
     for (int i=0; i<instance.dimension; i++) {
         int debut = tour.parcours[i];
@@ -144,7 +144,10 @@ float longueur_tournee(instance_t instance, tournee_t tour) {
         // donc on revient au début du parcours 
         // ex : 0 → 1 → 2 → 3 → 0
         int fin = tour.parcours[(i+1)%instance.dimension];
-        longueur_totale = /* +=distance entre début et fin dans l'instance */
+        // recuperer les coordonnees des villes
+        noeud_t ville_debut = instance.noeuds[debut-1];
+        noeud_t ville_fin = instance.noeuds[fin-1];
+        longueur_totale += f_distance(ville_debut,ville_fin);
     }
     tour.longueur = longueur_totale;
     return longueur_totale; 
