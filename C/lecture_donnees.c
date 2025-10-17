@@ -50,3 +50,22 @@ int distance_euclidienne_att(noeud_t point1, noeud_t point2) {
     }
     return dij;
 }
+
+//matrice inférieure de distance 
+float **creer_matrice(instance_t inst, float(*f_distance)(noeud_t, noeud_t)){
+    int n = inst.dimension; //nbr de noeuds
+    float **matrice = malloc(n* sizeof(float)) ;
+    if(!matrice){
+        perror("Erreur d'allocation de la matrice");
+        exit(EXIT_FAILURE);
+    }
+    //on complete la matrice
+    for(int i = 0; i < n ; i++){
+        matrice[i] = malloc(i*sizeof(float));
+        for(int j = 0; j<i ; i++){
+            matrice[i][j] = f_distance(inst.noeud[i],inst.noeuds[j]);
+        }
+    }
+    return matrice;
+
+}
