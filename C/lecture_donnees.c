@@ -4,12 +4,14 @@
 #include <string.h>
 #include "lecture_donnees.c"
 
-
+//chemin is the file path 
 int lire_tsplib(const char *chemin, instance_t *inst)
 {
+    //Error handling
     if (!chemin || !inst) return -1;
-
+    
     FILE *f = fopen(chemin, "r");
+    //Error handling
     if (!f) {
         perror("Erreur d'ouverture du fichier");
         return -1;
@@ -20,23 +22,29 @@ int lire_tsplib(const char *chemin, instance_t *inst)
     inst->type_distance[0] = '\0';
     inst->dimension = 0;
     inst->noeuds = NULL;
-
+//Temp Buffer
     char line[512];
     int have_node_section = 0;
+    //Reading the file
    while (fgets(line, sizeof line, f)) {
+    //The name of the instance
         if (strncmp(line, "NAME", 4) == 0)
             sscanf(line, "NAME : %63s", inst->nom);
+        //Reading the number of cities
         else if (strncmp(line, "DIMENSION", 9) == 0)
             sscanf(line, "DIMENSION : %d", &inst->dimension);
+        //What kind of distence is used AKA seperating the files 
+        //QUESTION:Shoild i write a function to seperate the type too?
         else if (strncmp(line, "EDGE_WEIGHT_TYPE", 16) == 0)
             sscanf(line, "EDGE_WEIGHT_TYPE : %15s", inst->type_distance);
-        else if (strncmp(line, "NODE_COORD_SECTION", 18) == 0) {
+        //This line is for when we start reading the coordinations
+            else if (strncmp(line, "NODE_COORD_SECTION", 18) == 0) {
             have_node_section = 1;
             break;
         }
     }
 
-
+//Error handling to see if we really found the coordinates
     if (!have_node_section || inst->dimension <= 0) {
         fprintf(stderr, "Erreur d'en-tête \n", chemin);
         fclose(f);
