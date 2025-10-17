@@ -4,14 +4,14 @@
 
 // fonction de distance euclidienne p.6 du doc tsp95
 // pour type EUC_2D ou EUC_3D mais on utilise que EUC_2D
-float distance_euclidienne(noeud_t point1, noeud_t point2) {
+int distance_euclidienne(noeud_t point1, noeud_t point2) {
     float xd = point1.x - point2.x;
     float yd = point1.y - point2.y;
     float distance = sqrt(xd*xd + yd*yd);
     return (int)distance;
 }
 
-float distance_geographique(noeud_t point1, noeud_t point2) {
+int distance_geographique(noeud_t point1, noeud_t point2) {
     // premier noeud
     int deg = (int)point1.x;
     int min = point1.x - deg;
@@ -38,7 +38,7 @@ float distance_geographique(noeud_t point1, noeud_t point2) {
 }
 
 // distance ATT
-float distance_euclidienne_modifiee(noeud_t point1, noeud_t point2) {
+int distance_euclidienne_att(noeud_t point1, noeud_t point2) {
     float xd = point1.x - point2.x;
     float yd = point1.y - point2.y;
     float rij = sqrt((xd*xd+yd*yd)/10.0);
