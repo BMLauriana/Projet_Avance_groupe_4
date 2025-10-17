@@ -42,4 +42,5 @@ int distance_euclidienne_att(noeud_t point1, noeud_t point2);
 float **creer_matrice(instance_t inst, float(*f_distance)(noeud_t, noeud_t));
 float obtenir_distance(float **matrice , int i , int j);
 void liberer_matrice(float **matrice, int n);
+int lire_tsplib(const char *chemin, instance_t *inst);
 #endif

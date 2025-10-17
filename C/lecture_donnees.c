@@ -1,6 +1,82 @@
 #include <stdio.h>
 #include <math.h>
+#include <stdlib.h>
+#include <string.h>
 #include "lecture_donnees.c"
+
+
+int lire_tsplib(const char *chemin, instance_t *inst)
+{
+    if (!chemin || !inst) return -1;
+
+    FILE *f = fopen(chemin, "r");
+    if (!f) {
+        perror("Erreur d'ouverture du fichier");
+        return -1;
+    }
+
+
+    inst->nom[0] = '\0';
+    inst->type_distance[0] = '\0';
+    inst->dimension = 0;
+    inst->noeuds = NULL;
+
+    char line[512];
+    int have_node_section = 0;
+   while (fgets(line, sizeof line, f)) {
+        if (strncmp(line, "NAME", 4) == 0)
+            sscanf(line, "NAME : %63s", inst->nom);
+        else if (strncmp(line, "DIMENSION", 9) == 0)
+            sscanf(line, "DIMENSION : %d", &inst->dimension);
+        else if (strncmp(line, "EDGE_WEIGHT_TYPE", 16) == 0)
+            sscanf(line, "EDGE_WEIGHT_TYPE : %15s", inst->type_distance);
+        else if (strncmp(line, "NODE_COORD_SECTION", 18) == 0) {
+            have_node_section = 1;
+            break;
+        }
+    }
+
+
+    if (!have_node_section || inst->dimension <= 0) {
+        fprintf(stderr, "Erreur d'en-tête \n", chemin);
+        fclose(f);
+        return -1;
+    }
+
+    inst->noeuds = malloc((size_t)inst->dimension * sizeof(noeud_t));
+    if (!inst->noeuds) {
+        fprintf(stderr, "Erreur d'allocation mémoire pour %d noeuds\n", inst->dimension);
+        fclose(f);
+        return -1;
+    }
+    int count = 0, id;
+    float x, y;
+    while (count < inst->dimension && fgets(line, sizeof line, f)) {
+        if (strncmp(line, "EOF", 3) == 0) break;
+        if (sscanf(line, "%d %f %f", &id, &x, &y) == 3) {
+            inst->noeuds[count].num = id;
+            inst->noeuds[count].x   = x;
+            inst->noeuds[count].y   = y;
+            count++;
+        }
+    }
+
+    fclose(f);
+
+    if (count != inst->dimension) {
+        fprintf(stderr, "Erreur : %d coordonnées lues au lieu de %d dans %s\n",
+                count, inst->dimension, chemin);
+        free(inst->noeuds);
+        inst->noeuds = NULL;
+        return -1;
+    }
+
+
+    printf("Lecture réussie : %s (%s, %d villes)\n",
+           inst->nom, inst->type_distance, inst->dimension);
+
+    return 0;
+}
 
 // fonction de distance euclidienne p.6 du doc tsp95
 // pour type EUC_2D ou EUC_3D mais on utilise que EUC_2D
