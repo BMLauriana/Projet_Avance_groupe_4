@@ -81,3 +81,10 @@ float obtenir_distance(float **matrice , int i , int j){
     }
     return matrice[j][i];
 }
+
+void liberer_matrice(float **matrice, int n){
+    for(int i= 0; i < n; i++){
+        free(matrice[i]);
+    }
+    free(matrice);
+}
