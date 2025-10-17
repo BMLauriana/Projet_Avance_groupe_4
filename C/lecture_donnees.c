@@ -86,8 +86,9 @@ int lire_tsplib(const char *chemin, instance_t *inst)
     return 0;
 }
 
-// fonction de distance euclidienne p.6 du doc tsp95
-// pour type EUC_2D ou EUC_3D mais on utilise que EUC_2D
+/**********************************
+    Distances EUC_2D, GEO et ATT
+***********************************/
 int distance_euclidienne(noeud_t point1, noeud_t point2) {
     float xd = point1.x - point2.x;
     float yd = point1.y - point2.y;
@@ -133,6 +134,20 @@ int distance_euclidienne_att(noeud_t point1, noeud_t point2) {
         int dij = tij;
     }
     return dij;
+}
+
+float longueur_tournee(instance_t instance, tournee_t tour) {
+    float longueur_totale = 0;
+    for (int i=0; i<instance.dimension; i++) {
+        int debut = tour.parcours[i];
+        // quand on atteint le dernier i, l'indice va donner 0
+        // donc on revient au début du parcours 
+        // ex : 0 → 1 → 2 → 3 → 0
+        int fin = tour.parcours[(i+1)%instance.dimension];
+        longueur_totale = /* +=distance entre début et fin dans l'instance */
+    }
+    tour.longueur = longueur_totale;
+    return longueur_totale; 
 }
 
 /*******************************

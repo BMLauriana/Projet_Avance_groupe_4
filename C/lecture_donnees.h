@@ -32,10 +32,13 @@ typedef struct instance_s{
     noeud_t *noeuds; // tableau contenant les coordonnées de chaque villes
 }instance_t;
 
-//distances
+/********************************************
+    Fonctions des distances et de longueur
+*********************************************/
 int distance_euclidienne(noeud_t point1, noeud_t point2);
 int distance_geographique(noeud_t point1, noeud_t point2);
 int distance_euclidienne_att(noeud_t point1, noeud_t point2);
+float longueur_tournee(instance_t instance,tournee_t tour);
 
 //matrice de distances 
 
