@@ -2,6 +2,8 @@
 #define __LECTURE_DONNEES_H__
 
 #define PI 3.141592
+#define MAX_TAB_NOM 64
+#define MAX_TAB_DISTANCE 16
 
 /*************************
  * Structure d'un noeud
@@ -26,8 +28,8 @@ typedef struct tournee_s{
  * Structure d'une instance (jeux de donnée)
  ***************************/
 typedef struct instance_s{
-    char nom[64];  // nom de l'instance
-    char type_distance[16]; //EUc_2D, GEO, ATT
+    char nom[MAX_TAB_NOM];  // nom de l'instance
+    char type_distance[MAX_TAB_DISTANCE]; //EUc_2D, GEO, ATT
     int dimension; //nombre de ville (points)
     noeud_t *noeuds; // tableau contenant les coordonnées de chaque villes
 }instance_t;
