@@ -34,6 +34,10 @@ typedef struct instance_s{
     noeud_t *noeuds; // tableau contenant les coordonnées de chaque villes
 }instance_t;
 
+//lecture de fichier
+int lire_tsplib(const char *chemin, instance_t *inst);
+
+
 /********************************************
     Fonctions des distances et de longueur
 *********************************************/
@@ -42,10 +46,12 @@ int distance_geographique(noeud_t point1, noeud_t point2);
 int distance_euclidienne_att(noeud_t point1, noeud_t point2);
 float longueur_tournee(instance_t instance,tournee_t tour, float(*f_distance)(noeud_t, noeud_t));
 
-//matrice de distances 
+/*******************************
+matrice inférieure de distance 
+*******************************/ 
 
 float **creer_matrice(instance_t inst, float(*f_distance)(noeud_t, noeud_t));
-float obtenir_distance(float **matrice , int i , int j);
+float récuperer_distance(float **matrice , int i , int j);
 void liberer_matrice(float **matrice, int n);
-int lire_tsplib(const char *chemin, instance_t *inst);
+
 #endif

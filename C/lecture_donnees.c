@@ -174,7 +174,7 @@ float **creer_matrice(instance_t inst, float(*f_distance)(noeud_t, noeud_t)){
     return matrice;
 }
 
-float obtenir_distance(float **matrice , int i , int j){
+float récuperer_distance(float **matrice , int i , int j){
     if(i==j){
         return 0.0;
     }
@@ -190,3 +190,9 @@ void liberer_matrice(float **matrice, int n){
     }
     free(matrice);
 }
+
+/****************
+Tournée canonique  
+*****************/
+
+
