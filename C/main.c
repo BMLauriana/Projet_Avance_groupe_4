@@ -11,62 +11,55 @@ int main(int argc, char* argv[]){
         /*il manque un argument (-f ou la désignation du fichier)*/
         exit(1);
     }
-    /*****************************BEAUCOUP DE CHANGEMENTS A PARTIR D'ICI*******************************/
-    /*creation d'une instance pour stocker les donnees du fichier*/
-    instance_t *instance = malloc(sizeof(struct instance_s)); /*??????*/
-    /*je crois que la fonction lire_tsplib doit retourner l'instance
-    et non la prendre en parametre sinon on se retrouve a gerer la memoire
-    dans le main ... malloc bizare (on n'est pas sense avoir acces a
-    struct instance_s)*/
 
-    /*appel de la fonction pour la lecture du fichier changements possibles ??*/
-    int resultat_appel;
-    resultat_appel = lire_tsplib(nom_fichier, instance);
 
-    /*affichage des donnees lues*/
-    printf("J'ouvre le fichier : %s", instance->nom);
-
-    /*******MODIFICATIONS A FAIRE POUR LE COMMENTAIRE ET LE NOMBRE DE LIGNES LUES*********/
-    /*ce sera peut etre pour l'affichage de la partie 1 mais
-    il faudra faire des changements sur lire_tsplib du coup
-    je ne sais pas si il faut aficher tout ce qui a ete lu 
-    et non ce qui est demande d'afficher dans lesdiapos*/
-    printf("Commentaire : \n");
-    printf(" lignes lues\n");
-    printf("Distance %s",instance->type_distance);
-
-    printf("Instance ; Methode ; Temps CPU ; longueur ; Tour\n");
-    /*la methode sera ecrite a paertir de la partie 1*/
-    printf("%s ; none ; temps CPU ? ; %f ; "); 
-
-    /*fonction de selection de la fonction de distance en fonction de l'instance*/
-    float(*f_distance)(noeud_t,noeud_t) choix_distance(instance_t inst){
-        /*A FAIRE DANS LE .C ?*/
+    /*appel de la fonction pour la lecture du fichier*/
+    instance_t instance = lire_tsplib(nom_fichier);
+    if( instance ==NULL){
+        fprintf(stderr,"Il y a eu une erreur pendant la lecture du fichier.
+        Ce type de fichier peut ne pas etre gere\n");
+        exit(2);
     }
 
-    float(*f_distance)(noeud_t,noeud_t) type_distance = choix_distance(inst);
+    /*choix de la fonction de distance*/
+    float(*f_distance)(noeud_t,noeud_t) fonction_distance = choix_distance(&inst);
     
 
     /*creation de la demi matrice des distances*/
-    float** demi_matrice = creer_matrice(instance, &type_distance);
+    float** demi_matrice = creer_matrice(*instance, fonction_distance);
 
 
     /*calcul longueur tournee canonique*/
-    /*MODIFICAITON POSSIBLE DU STRUCT DE LA TOURNEE*/
-    /*j'utilise la matrice ou bien longeur tournee ?*/
+    /*1. avec la matrice*/
+    float longueur1 = longueur_tour_cano_matrice(demi_matrice);
+    /*2. avec la fonction longueur_tournee*/
+    /*creation de la tournee*/
+    tournee_t tour_cano;
+    tournee_canonique.parcours = instance->noeuds;
+    /*calcul de la longueur*/
+    float longueur2 = longueur_tournee(*instance,tour_cano, fonction_distance);
 
+    /*affichage des donnees lues et le calcul de la longeur tournée canonique*/
+    printf("J'ouvre le fichier : %s", instance->nom);
+    printf("Commentaire : \n");
+    printf(" lignes lues\n");
+    printf("Distance %s",instance->type_distance);
+    printf("Instance ; Methode ; Temps CPU ; longueur ; Tour\n");
+    /*la methode sera ecrite a partir de la partie 1*/
+    printf("%s ; none ; temps CPU ? ; %f %f; ",instance->nom,longueur1,longueur2); 
+    /*affichage Tour*/
+    printf("[");
+    for(int i=0;i< instance->dimension;i++){
+        printf("%d, ",instance->noeuds[i]->num);
+    }
+    printf("]\n");
 
-    /*affichage resultat calcul de la tournee canonique*/
-
-
+    
     /*liberation de la memoire allouee a la matrice*/
-    void liberer_matrice(demi_matrice, int n);
+    liberer_matrice(&demi_matrice, int n);
 
     /*liberation de la memoire allouee a l'instance*/
-    /*LIBERER LES NOEUDS AVANT ? 
-    ce serait mieux d'avoir une fonction qui libere la memoire
-    dans lecture_donnee*/
-
+    liberer_instance(&instance);
 
     /*faire un main C, admettant en paramètre de la ligne de commande, la balise -f suivie d’un nom de
 fichier et -c, affichant les données lues et calculant la longueur de la tournée canonique 2.*/

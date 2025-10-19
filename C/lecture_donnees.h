@@ -46,13 +46,17 @@ int distance_geographique(noeud_t point1, noeud_t point2);
 int distance_euclidienne_att(noeud_t point1, noeud_t point2);
 float longueur_tournee(instance_t instance,tournee_t tour, int(*f_distance)(noeud_t, noeud_t));
 
+/*fonction de selection de la fonction de distance en fonction de l'instance*/
+int(*f_distance)(noeud_t,noeud_t) choix_distance(instance_t inst);
+
 /*******************************
 matrice inférieure de distance 
 *******************************/ 
 
 int **creer_matrice(instance_t inst, int(*f_distance)(noeud_t, noeud_t));
 int recuperer_distance(int **matrice , int i , int j);
-
+/*calcule la longueur de la tournee canonique a l'aide de la matrice*/
+float longueur_tour_cano_matrice(int ** matrice);
 void liberer_matrice(int **matrice, int n);
 
 

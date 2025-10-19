@@ -146,7 +146,7 @@ int distance_euclidienne_att(noeud_t point1, noeud_t point2) {
 Longueur d'une tournée 
 **********************/
 
-float longueur_tournee(instance_t instance, tournee_t tour, int(*f_distance)(noeud_t, noeud_t)) {
+int longueur_tournee(instance_t instance, tournee_t tour, int(*f_distance)(noeud_t, noeud_t)) {
     float longueur_totale = 0;
     for (int i=0; i<instance.dimension; i++) {
         noeud_t ville_debut = tour.parcours[i];
@@ -161,7 +161,26 @@ float longueur_tournee(instance_t instance, tournee_t tour, int(*f_distance)(noe
     return longueur_totale; 
 }
 
+/***********************************
+* choix de la fonction de distance *
+************************************/
 
+    float(*f_distance)(noeud_t,noeud_t) choix_distance(instance_t *inst){
+        /*creation des chaines a comparer*/
+        char eucl_2D[] = "EUCL_2D";
+        char geo[] = "GEO";
+        char att[] = "ATT";
+        /*verification*/
+        if (strcmp(inst->type_distance,eucl_2D)==0){
+            return &distance_euclidienne;
+        }else if(strcmp(inst->type_distance,geo)){
+            return &distance_geographique;
+        }else if(strcmp(inst->type_distance, att)){
+            return &distance_euclidienne_att;
+        }else{
+            return NULL; /*ce n'est pas un type de distance que l'on va traiter*/
+        }
+    }
 
 /*******************************
 matrice inférieure de distance 
@@ -194,13 +213,13 @@ int recuperer_distance(int **matrice , int i , int j){
     return matrice[j][i];
 }
 
+float llongueur_tour_cano_matrice(int **matrice){
+    /*A FAIRE*/
+}
+
 void liberer_matrice(int **matrice, int n){
     for(int i= 0; i < n; i++){
         free(matrice[i]);
     }
     free(matrice);
 }
-
-
-
-
