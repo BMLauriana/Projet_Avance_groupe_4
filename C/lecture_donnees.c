@@ -153,6 +153,7 @@ float longueur_tournee(instance_t instance, tournee_t tour, float(*f_distance)(n
     return longueur_totale; 
 }
 
+
 /*******************************
 matrice inférieure de distance 
 *******************************/
@@ -179,7 +180,7 @@ float récuperer_distance(float **matrice , int i , int j){
         return 0.0;
     }
     if(i > j){
-        matrice[i][j]
+        return matrice[i][j];
     }
     return matrice[j][i];
 }
@@ -194,5 +195,10 @@ void liberer_matrice(float **matrice, int n){
 /****************
 Tournée canonique  
 *****************/
-
+void generer_tournee_canonique(tournee_t *t, int n){
+    t->parcours = malloc(n*sizeof(int));
+    for(int i ; i < n ; i++){
+        t->parcours[i] = i+1;
+    }
+}
 
