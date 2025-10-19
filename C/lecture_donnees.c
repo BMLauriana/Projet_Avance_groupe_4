@@ -203,15 +203,6 @@ void liberer_matrice(int **matrice, int n){
     free(matrice);
 }
 
-/****************
-Tournée canonique  
-*****************/
-void generer_tournee_canonique(tournee_t *t, int n){
-    t->parcours = malloc(n*sizeof(int));
-    for(int i = 0; i < n ; i++){
-        t->parcours[i] = i+1;
-    }
-}
 
 
 

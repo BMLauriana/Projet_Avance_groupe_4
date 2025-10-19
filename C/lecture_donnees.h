@@ -55,9 +55,5 @@ int recuperer_distance(int **matrice , int i , int j);
 
 void liberer_matrice(int **matrice, int n);
 
-/****************
-Tournée canonique  
-*****************/
-void generer_tournee_canonique(tournee_t *t, int n);
 
 #endif
