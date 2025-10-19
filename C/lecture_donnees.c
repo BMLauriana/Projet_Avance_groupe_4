@@ -165,7 +165,7 @@ int longueur_tournee(instance_t instance, tournee_t tour, int(*f_distance)(noeud
 * choix de la fonction de distance *
 ************************************/
 
-    float(*f_distance)(noeud_t,noeud_t) choix_distance(instance_t *inst){
+    int(*f_distance)(noeud_t,noeud_t) choix_distance(instance_t *inst){
         /*creation des chaines a comparer*/
         char eucl_2D[] = "EUCL_2D";
         char geo[] = "GEO";
@@ -223,3 +223,5 @@ void liberer_matrice(int **matrice, int n){
     }
     free(matrice);
 }
+
+

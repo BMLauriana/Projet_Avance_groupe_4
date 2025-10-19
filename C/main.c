@@ -22,11 +22,11 @@ int main(int argc, char* argv[]){
     }
 
     /*choix de la fonction de distance*/
-    float(*f_distance)(noeud_t,noeud_t) fonction_distance = choix_distance(&inst);
+    int(*f_distance)(noeud_t,noeud_t) fonction_distance = choix_distance(&inst);
     
 
     /*creation de la demi matrice des distances*/
-    float** demi_matrice = creer_matrice(*instance, fonction_distance);
+    int** demi_matrice = creer_matrice(*instance, fonction_distance);
 
 
     /*calcul longueur tournee canonique*/
@@ -54,7 +54,7 @@ int main(int argc, char* argv[]){
     }
     printf("]\n");
 
-    
+
     /*liberation de la memoire allouee a la matrice*/
     liberer_matrice(&demi_matrice, int n);
 
