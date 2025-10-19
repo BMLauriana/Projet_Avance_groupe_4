@@ -186,7 +186,7 @@ int **creer_matrice(instance_t inst, int(*f_distance)(noeud_t, noeud_t)){
     return matrice;
 }
 
-int récuperer_distance(int **matrice , int i , int j){
+int recuperer_distance(int **matrice , int i , int j){
     if(i==j){
         return 0.0;
     }

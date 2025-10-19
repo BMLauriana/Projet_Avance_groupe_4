@@ -20,7 +20,7 @@ typedef struct noeud_s{
 
 typedef struct tournee_s{
     float longueur; /*longueur de la tournee*/
-    int *parcours; /*tableau de noeuds dans l'ordre de la tournee*/
+    noeud_t *parcours; /*tableau de noeuds dans l'ordre de la tournee*/
 } tournee_t;
 
 //elles sont écrites au format texte dans les fichiers 
@@ -35,8 +35,8 @@ typedef struct instance_s{
 }instance_t;
 
 //lecture de fichier
-int lire_tsplib(const char *chemin, instance_t *inst);
-
+instance_t lire_tsplib(const char *chemin);
+void liberer_instance(instance_t ** inst);
 
 /********************************************
     Fonctions des distances et de longueur
@@ -51,7 +51,8 @@ matrice inférieure de distance
 *******************************/ 
 
 int **creer_matrice(instance_t inst, int(*f_distance)(noeud_t, noeud_t));
-int récuperer_distance(int **matrice , int i , int j);
+int recuperer_distance(int **matrice , int i , int j);
+
 void liberer_matrice(int **matrice, int n);
 
 /****************
