@@ -2,7 +2,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
-#include "lecture_donnees.c"
+#include "lecture_donnees.h"
 
 //chemin is the file path 
 int lire_tsplib(const char *chemin, instance_t *inst)
@@ -92,8 +92,9 @@ int lire_tsplib(const char *chemin, instance_t *inst)
     return 0;
 }
 
-// fonction de distance euclidienne p.6 du doc tsp95
-// pour type EUC_2D ou EUC_3D mais on utilise que EUC_2D
+/**********************************
+    Distances EUC_2D, GEO et ATT
+***********************************/
 int distance_euclidienne(noeud_t point1, noeud_t point2) {
     float xd = point1.x - point2.x;
     float yd = point1.y - point2.y;
@@ -141,40 +142,76 @@ int distance_euclidienne_att(noeud_t point1, noeud_t point2) {
     return dij;
 }
 
+/*********************
+Longueur d'une tournée 
+**********************/
+
+float longueur_tournee(instance_t instance, tournee_t tour, int(*f_distance)(noeud_t, noeud_t)) {
+    float longueur_totale = 0;
+    for (int i=0; i<instance.dimension; i++) {
+        int debut = tour.parcours[i];
+        // quand on atteint le dernier i, l'indice va donner 0
+        // donc on revient au début du parcours 
+        // ex : 0 → 1 → 2 → 3 → 0
+        int fin = tour.parcours[(i+1)%instance.dimension];
+        // recuperer les coordonnees des villes
+        noeud_t ville_debut = instance.noeuds[debut-1];
+        noeud_t ville_fin = instance.noeuds[fin-1];
+        longueur_totale += f_distance(ville_debut,ville_fin);
+    }
+    tour.longueur = longueur_totale;
+    return longueur_totale; 
+}
+
+
+
 /*******************************
 matrice inférieure de distance 
 *******************************/
 
-float **creer_matrice(instance_t inst, float(*f_distance)(noeud_t, noeud_t)){
+int **creer_matrice(instance_t inst, int(*f_distance)(noeud_t, noeud_t)){
     int n = inst.dimension; //nbr de noeuds
-    float **matrice = malloc(n* sizeof(float)) ;
+    int **matrice = malloc(n* sizeof(int*)) ;
     if(!matrice){
         perror("Erreur d'allocation de la matrice");
         exit(EXIT_FAILURE);
     }
     //on complete la matrice
     for(int i = 0; i < n ; i++){
-        matrice[i] = malloc(i*sizeof(float));
-        for(int j = 0; j<i ; i++){
-            matrice[i][j] = f_distance(inst.noeud[i],inst.noeuds[j]);
+        matrice[i] = malloc(i*sizeof(int));
+        for(int j = 0; j<i ; j++){
+            matrice[i][j] = f_distance(inst.noeuds[i],inst.noeuds[j]);
         }
     }
     return matrice;
 }
 
-float obtenir_distance(float **matrice , int i , int j){
+int récuperer_distance(int **matrice , int i , int j){
     if(i==j){
         return 0.0;
     }
     if(i > j){
-        matrice[i][j]
+        return matrice[i][j];
     }
     return matrice[j][i];
 }
 
-void liberer_matrice(float **matrice, int n){
+void liberer_matrice(int **matrice, int n){
     for(int i= 0; i < n; i++){
         free(matrice[i]);
     }
     free(matrice);
 }
+
+/****************
+Tournée canonique  
+*****************/
+void generer_tournee_canonique(tournee_t *t, int n){
+    t->parcours = malloc(n*sizeof(int));
+    for(int i = 0; i < n ; i++){
+        t->parcours[i] = i+1;
+    }
+}
+
+
+

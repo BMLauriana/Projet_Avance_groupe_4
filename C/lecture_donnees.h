@@ -2,6 +2,8 @@
 #define __LECTURE_DONNEES_H__
 
 #define PI 3.141592
+#define MAX_TAB_NOM 64
+#define MAX_TAB_DISTANCE 16
 
 /*************************
  * Structure d'un noeud
@@ -26,21 +28,35 @@ typedef struct tournee_s{
  * Structure d'une instance (jeux de donnée)
  ***************************/
 typedef struct instance_s{
-    char nom[64];  // nom de l'instance
-    char type_distance[16]; //EUc_2D, GEO, ATT
+    char nom[MAX_TAB_NOM];  // nom de l'instance
+    char type_distance[MAX_TAB_DISTANCE]; //EUc_2D, GEO, ATT
     int dimension; //nombre de ville (points)
     noeud_t *noeuds; // tableau contenant les coordonnées de chaque villes
 }instance_t;
 
-//distances
+//lecture de fichier
+int lire_tsplib(const char *chemin, instance_t *inst);
+
+
+/********************************************
+    Fonctions des distances et de longueur
+*********************************************/
 int distance_euclidienne(noeud_t point1, noeud_t point2);
 int distance_geographique(noeud_t point1, noeud_t point2);
 int distance_euclidienne_att(noeud_t point1, noeud_t point2);
+float longueur_tournee(instance_t instance,tournee_t tour, int(*f_distance)(noeud_t, noeud_t));
 
-//matrice de distances 
+/*******************************
+matrice inférieure de distance 
+*******************************/ 
 
-float **creer_matrice(instance_t inst, float(*f_distance)(noeud_t, noeud_t));
-float obtenir_distance(float **matrice , int i , int j);
-void liberer_matrice(float **matrice, int n);
-int lire_tsplib(const char *chemin, instance_t *inst);
+int **creer_matrice(instance_t inst, int(*f_distance)(noeud_t, noeud_t));
+int récuperer_distance(int **matrice , int i , int j);
+void liberer_matrice(int **matrice, int n);
+
+/****************
+Tournée canonique  
+*****************/
+void generer_tournee_canonique(tournee_t *t, int n);
+
 #endif
