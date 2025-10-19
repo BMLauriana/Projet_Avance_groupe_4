@@ -149,14 +149,12 @@ Longueur d'une tournée
 float longueur_tournee(instance_t instance, tournee_t tour, int(*f_distance)(noeud_t, noeud_t)) {
     float longueur_totale = 0;
     for (int i=0; i<instance.dimension; i++) {
-        int debut = tour.parcours[i];
+        noeud_t ville_debut = tour.parcours[i];
         // quand on atteint le dernier i, l'indice va donner 0
         // donc on revient au début du parcours 
-        // ex : 0 → 1 → 2 → 3 → 0
-        int fin = tour.parcours[(i+1)%instance.dimension];
+        // ex : 0 -> 1 -> 2 -> 3 -> 0
+        noeud_t ville_fin = tour.parcours[(i+1)%instance.dimension];
         // recuperer les coordonnees des villes
-        noeud_t ville_debut = instance.noeuds[debut-1];
-        noeud_t ville_fin = instance.noeuds[fin-1];
         longueur_totale += f_distance(ville_debut,ville_fin);
     }
     tour.longueur = longueur_totale;
