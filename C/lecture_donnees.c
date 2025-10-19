@@ -10,13 +10,19 @@ int lire_tsplib(const char *chemin, instance_t *inst)
     //Error handling
     if (!chemin || !inst) return -1;
     
+    const char *ext = strrchr(chemin, '.'); 
+    if (!ext || strcmp(ext, ".tsp") != 0) {
+        fprintf(stderr, "Erreur : le fichier '%s' n'est pas un fichier .tsp\n", chemin);
+        return -1;
+    }
+
+    
     FILE *f = fopen(chemin, "r");
     //Error handling
     if (!f) {
         perror("Erreur d'ouverture du fichier");
         return -1;
     }
-
 
     inst->nom[0] = '\0';
     inst->type_distance[0] = '\0';
