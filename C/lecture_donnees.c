@@ -2,7 +2,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
-#include "lecture_donnees.c"
+#include "lecture_donnees.h"
 
 //chemin is the file path 
 int lire_tsplib(const char *chemin, instance_t *inst)
@@ -136,7 +136,11 @@ int distance_euclidienne_att(noeud_t point1, noeud_t point2) {
     return dij;
 }
 
-float longueur_tournee(instance_t instance, tournee_t tour, float(*f_distance)(noeud_t, noeud_t)) {
+/*********************
+Longueur d'une tournée 
+**********************/
+
+float longueur_tournee(instance_t instance, tournee_t tour, int(*f_distance)(noeud_t, noeud_t)) {
     float longueur_totale = 0;
     for (int i=0; i<instance.dimension; i++) {
         int debut = tour.parcours[i];
@@ -154,28 +158,29 @@ float longueur_tournee(instance_t instance, tournee_t tour, float(*f_distance)(n
 }
 
 
+
 /*******************************
 matrice inférieure de distance 
 *******************************/
 
-float **creer_matrice(instance_t inst, float(*f_distance)(noeud_t, noeud_t)){
+int **creer_matrice(instance_t inst, int(*f_distance)(noeud_t, noeud_t)){
     int n = inst.dimension; //nbr de noeuds
-    float **matrice = malloc(n* sizeof(float)) ;
+    int **matrice = malloc(n* sizeof(int*)) ;
     if(!matrice){
         perror("Erreur d'allocation de la matrice");
         exit(EXIT_FAILURE);
     }
     //on complete la matrice
     for(int i = 0; i < n ; i++){
-        matrice[i] = malloc(i*sizeof(float));
-        for(int j = 0; j<i ; i++){
-            matrice[i][j] = f_distance(inst.noeud[i],inst.noeuds[j]);
+        matrice[i] = malloc(i*sizeof(int));
+        for(int j = 0; j<i ; j++){
+            matrice[i][j] = f_distance(inst.noeuds[i],inst.noeuds[j]);
         }
     }
     return matrice;
 }
 
-float récuperer_distance(float **matrice , int i , int j){
+int récuperer_distance(int **matrice , int i , int j){
     if(i==j){
         return 0.0;
     }
@@ -185,7 +190,7 @@ float récuperer_distance(float **matrice , int i , int j){
     return matrice[j][i];
 }
 
-void liberer_matrice(float **matrice, int n){
+void liberer_matrice(int **matrice, int n){
     for(int i= 0; i < n; i++){
         free(matrice[i]);
     }
@@ -197,8 +202,10 @@ Tournée canonique
 *****************/
 void generer_tournee_canonique(tournee_t *t, int n){
     t->parcours = malloc(n*sizeof(int));
-    for(int i ; i < n ; i++){
+    for(int i = 0; i < n ; i++){
         t->parcours[i] = i+1;
     }
 }
+
+
 

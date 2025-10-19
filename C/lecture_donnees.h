@@ -44,14 +44,19 @@ int lire_tsplib(const char *chemin, instance_t *inst);
 int distance_euclidienne(noeud_t point1, noeud_t point2);
 int distance_geographique(noeud_t point1, noeud_t point2);
 int distance_euclidienne_att(noeud_t point1, noeud_t point2);
-float longueur_tournee(instance_t instance,tournee_t tour, float(*f_distance)(noeud_t, noeud_t));
+float longueur_tournee(instance_t instance,tournee_t tour, int(*f_distance)(noeud_t, noeud_t));
 
 /*******************************
 matrice inférieure de distance 
 *******************************/ 
 
-float **creer_matrice(instance_t inst, float(*f_distance)(noeud_t, noeud_t));
-float récuperer_distance(float **matrice , int i , int j);
-void liberer_matrice(float **matrice, int n);
+int **creer_matrice(instance_t inst, int(*f_distance)(noeud_t, noeud_t));
+int récuperer_distance(int **matrice , int i , int j);
+void liberer_matrice(int **matrice, int n);
+
+/****************
+Tournée canonique  
+*****************/
+void generer_tournee_canonique(tournee_t *t, int n);
 
 #endif
