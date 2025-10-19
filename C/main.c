@@ -31,7 +31,7 @@ int main(int argc, char* argv[]){
 
     /*calcul longueur tournee canonique*/
     /*1. avec la matrice*/
-    float longueur1 = longueur_tour_cano_matrice(demi_matrice);
+    int longueur1 = longueur_tour_cano_matrice(demi_matrice);
     /*2. avec la fonction longueur_tournee*/
     /*creation de la tournee*/
     tournee_t tour_cano;

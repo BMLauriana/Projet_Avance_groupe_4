@@ -248,8 +248,16 @@ int recuperer_distance(int **matrice , int i , int j){
     return matrice[j][i];
 }
 
-float llongueur_tour_cano_matrice(int **matrice){
-    /*A FAIRE*/
+int longueur_tour_cano_matrice(instance_t inst, int **matrice){
+    int n = inst.dimension;
+    int longueur = 0;
+    for(int i = 0; i < n-1; i++){
+        longueur += recuperer_distance(matrice, i, i+1);
+    }
+    //retour à la première ville pour fermer la boucle de la tournée
+    longueur += recuperer_distance(matrice, n-1,0); 
+    return longueur;
+
 }
 
 void liberer_matrice(int **matrice, int n){
