@@ -18,7 +18,10 @@ int distance_euclidienne_att(noeud_t point1, noeud_t point2);
 float longueur_tournee(instance_t instance,tournee_t tour, int(*f_distance)(noeud_t, noeud_t));
 
 /*fonction de selection de la fonction de distance en fonction de l'instance*/
-int(*f_distance)(noeud_t,noeud_t) choix_distance(instance_t inst);
+
+typedef int (*distance_f)(noeud_t, noeud_t);
+distance_f choix_distance(const instance_t *inst);
+
 
 
 /*******************************

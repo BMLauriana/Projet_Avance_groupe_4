@@ -39,19 +39,27 @@ struct instance_s{
 };
 
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <errno.h>
+// #include "lecture_donnees.h"  // if you have constants/prototypes there
+
 instance_t lire_tsplib(const char *chemin)
 {
     instance_t inst;
+    /* Safe empty init so main can test inst.noeuds == NULL or inst.dimension == 0 */
     inst.nom[0] = '\0';
     inst.type_distance[0] = '\0';
     inst.dimension = 0;
     inst.noeuds = NULL;
 
     if (!chemin) {
-        fprintf(stderr, "Erreur : chemin NULL\n");
+        fprintf(stderr, "Erreur: chemin NULL\n");
         return inst;
     }
-//Verifying the fact that it is a TSP file
+
+    /* Optional: basic extension check */
     const char *ext = strrchr(chemin, '.');
     if (!ext || strcmp(ext, ".tsp") != 0) {
         fprintf(stderr, "Erreur : le fichier '%s' n'est pas un .tsp\n", chemin);
@@ -60,34 +68,34 @@ instance_t lire_tsplib(const char *chemin)
 
     FILE *f = fopen(chemin, "r");
     if (!f) {
-        perror("Erreur d'ouverture du fichier");
+        fprintf(stderr, "Erreur d'ouverture de '%s': %s\n", chemin, strerror(errno));
         return inst;
     }
 
     char line[512];
     int have_node_section = 0;
 
-
     while (fgets(line, sizeof line, f)) {
-        if (!strncmp(line, "NAME", 4)) {
+        if      (strncmp(line, "NAME", 4) == 0)
             sscanf(line, "NAME : %63s", inst.nom);
-        } else if (!strncmp(line, "DIMENSION", 9)) {
+        else if (strncmp(line, "DIMENSION", 9) == 0)
             sscanf(line, "DIMENSION : %d", &inst.dimension);
-        } else if (!strncmp(line, "EDGE_WEIGHT_TYPE", 16)) {
+        else if (strncmp(line, "EDGE_WEIGHT_TYPE", 16) == 0)
             sscanf(line, "EDGE_WEIGHT_TYPE : %15s", inst.type_distance);
-        } else if (!strncmp(line, "NODE_COORD_SECTION", 18)) {
+        else if (strncmp(line, "NODE_COORD_SECTION", 18) == 0) {
             have_node_section = 1;
             break;
         }
+
     }
 
+ 
     if (!have_node_section || inst.dimension <= 0) {
         fprintf(stderr, "Erreur d'en-tête dans %s (DIMENSION/NODE_COORD_SECTION)\n", chemin);
         fclose(f);
-        inst.dimension = 0;
+        inst.dimension = 0;  
         return inst;
     }
-
     if (strcmp(inst.type_distance, "EUC_2D") != 0 &&
         strcmp(inst.type_distance, "GEO")    != 0 &&
         strcmp(inst.type_distance, "ATT")    != 0) {
@@ -98,24 +106,27 @@ instance_t lire_tsplib(const char *chemin)
         return inst;
     }
 
-    inst.noeuds = malloc((size_t)inst.dimension * sizeof(noeud_t));
+
+    inst.noeuds = (noeud_t*)malloc((size_t)inst.dimension * sizeof(noeud_t));
     if (!inst.noeuds) {
-        fprintf(stderr, "Erreur d'allocation mémoire pour %d noeuds\n", inst.dimension);
+        fprintf(stderr, "Erreur d'allocation pour %d noeuds\n", inst.dimension);
         fclose(f);
         inst.dimension = 0;
         return inst;
     }
 
+
     int count = 0, id;
     float x, y;
     while (count < inst.dimension && fgets(line, sizeof line, f)) {
-        if (!strncmp(line, "EOF", 3)) break;
+        if (strncmp(line, "EOF", 3) == 0) break;
         if (sscanf(line, "%d %f %f", &id, &x, &y) == 3) {
-            inst.noeuds[count].num = id;
+            inst.noeuds[count].num = id; 
             inst.noeuds[count].x   = x;
             inst.noeuds[count].y   = y;
             count++;
         }
+  
     }
 
     fclose(f);
@@ -134,6 +145,7 @@ instance_t lire_tsplib(const char *chemin)
 
     return inst;
 }
+
 
 /**********************************
     Distances EUC_2D, GEO et ATT
@@ -209,18 +221,18 @@ int longueur_tournee(instance_t instance, tournee_t tour, int(*f_distance)(noeud
 * choix de la fonction de distance *
 ************************************/
 
-    int(*f_distance)(noeud_t,noeud_t) choix_distance(instance_t *inst){
+     distance_f choix_distance(instance_t *inst){
         /*creation des chaines a comparer*/
         char eucl_2D[] = "EUCL_2D";
         char geo[] = "GEO";
         char att[] = "ATT";
         /*verification*/
         if (strcmp(inst->type_distance,eucl_2D)==0){
-            return &distance_euclidienne;
-        }else if(strcmp(inst->type_distance,geo)){
-            return &distance_geographique;
-        }else if(strcmp(inst->type_distance, att)){
-            return &distance_euclidienne_att;
+            return distance_euclidienne;
+        }else if(strcmp(inst->type_distance,geo)==0){
+            return distance_geographique;
+        }else if(strcmp(inst->type_distance, att)==0){
+            return distance_euclidienne_att;
         }else{
             return NULL; /*ce n'est pas un type de distance que l'on va traiter*/
         }
