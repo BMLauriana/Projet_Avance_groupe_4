@@ -48,7 +48,6 @@ struct instance_s{
 instance_t lire_tsplib(const char *chemin)
 {
     instance_t inst;
-    /* Safe empty init so main can test inst.noeuds == NULL or inst.dimension == 0 */
     inst.nom[0] = '\0';
     inst.type_distance[0] = '\0';
     inst.dimension = 0;

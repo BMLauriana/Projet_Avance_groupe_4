@@ -14,10 +14,9 @@ int main(int argc, char* argv[]){
 
 
     /*appel de la fonction pour la lecture du fichier*/
-    instance_t instance = lire_tsplib(nom_fichier);
+    instance_t *instance = lire_tsplib( nom_fichier);
     if( instance ==NULL){
-        fprintf(stderr,"Il y a eu une erreur pendant la lecture du fichier.
-        Ce type de fichier peut ne pas etre gere\n");
+        fprintf(stderr,"Il y a eu une erreur pendant la lecture du fichier. Ce type de fichier peut ne pas etre gere\n");
         exit(2);
     }
 
