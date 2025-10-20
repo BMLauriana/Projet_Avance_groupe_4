@@ -39,92 +39,100 @@ typedef struct instance_s{
 }instance_t;
 
 
-//chemin is the file path 
-int lire_tsplib(const char *chemin, instance_t *inst)
+instance_t lire_tsplib(const char *chemin)
 {
-    //Error handling
-    if (!chemin || !inst) return -1;
-    
-    const char *ext = strrchr(chemin, '.'); 
+    instance_t inst;
+    inst.nom[0] = '\0';
+    inst.type_distance[0] = '\0';
+    inst.dimension = 0;
+    inst.noeuds = NULL;
+
+    if (!chemin) {
+        fprintf(stderr, "Erreur : chemin NULL\n");
+        return inst;
+    }
+//Verifying the fact that it is a TSP file
+    const char *ext = strrchr(chemin, '.');
     if (!ext || strcmp(ext, ".tsp") != 0) {
-        fprintf(stderr, "Erreur : le fichier '%s' n'est pas un fichier .tsp\n", chemin);
-        return -1;
+        fprintf(stderr, "Erreur : le fichier '%s' n'est pas un .tsp\n", chemin);
+        return inst;
     }
 
-    
     FILE *f = fopen(chemin, "r");
-    //Error handling
     if (!f) {
         perror("Erreur d'ouverture du fichier");
-        return -1;
+        return inst;
     }
 
-    inst->nom[0] = '\0';
-    inst->type_distance[0] = '\0';
-    inst->dimension = 0;
-    inst->noeuds = NULL;
-//Temp Buffer
     char line[512];
     int have_node_section = 0;
-    //Reading the file
-   while (fgets(line, sizeof line, f)) {
-    //The name of the instance
-        if (strncmp(line, "NAME", 4) == 0)
-            sscanf(line, "NAME : %63s", inst->nom);
-        //Reading the number of cities
-        else if (strncmp(line, "DIMENSION", 9) == 0)
-            sscanf(line, "DIMENSION : %d", &inst->dimension);
-        //What kind of distence is used AKA seperating the files 
-        //QUESTION:Shoild i write a function to seperate the type too?
-        else if (strncmp(line, "EDGE_WEIGHT_TYPE", 16) == 0)
-            sscanf(line, "EDGE_WEIGHT_TYPE : %15s", inst->type_distance);
-        //This line is for when we start reading the coordinations
-            else if (strncmp(line, "NODE_COORD_SECTION", 18) == 0) {
+
+
+    while (fgets(line, sizeof line, f)) {
+        if (!strncmp(line, "NAME", 4)) {
+            sscanf(line, "NAME : %63s", inst.nom);
+        } else if (!strncmp(line, "DIMENSION", 9)) {
+            sscanf(line, "DIMENSION : %d", &inst.dimension);
+        } else if (!strncmp(line, "EDGE_WEIGHT_TYPE", 16)) {
+            sscanf(line, "EDGE_WEIGHT_TYPE : %15s", inst.type_distance);
+        } else if (!strncmp(line, "NODE_COORD_SECTION", 18)) {
             have_node_section = 1;
             break;
         }
     }
 
-//Error handling to see if we really found the coordinates
-    if (!have_node_section || inst->dimension <= 0) {
-        fprintf(stderr, "Erreur d'en-tête \n", chemin);
+    if (!have_node_section || inst.dimension <= 0) {
+        fprintf(stderr, "Erreur d'en-tête dans %s (DIMENSION/NODE_COORD_SECTION)\n", chemin);
         fclose(f);
-        return -1;
+        inst.dimension = 0;
+        return inst;
     }
 
-    inst->noeuds = malloc((size_t)inst->dimension * sizeof(noeud_t));
-    if (!inst->noeuds) {
-        fprintf(stderr, "Erreur d'allocation mémoire pour %d noeuds\n", inst->dimension);
+    if (strcmp(inst.type_distance, "EUC_2D") != 0 &&
+        strcmp(inst.type_distance, "GEO")    != 0 &&
+        strcmp(inst.type_distance, "ATT")    != 0) {
+        fprintf(stderr, "EDGE_WEIGHT_TYPE non supporté: %s (EUC_2D/GEO/ATT)\n",
+                inst.type_distance);
         fclose(f);
-        return -1;
+        inst.dimension = 0;
+        return inst;
     }
+
+    inst.noeuds = malloc((size_t)inst.dimension * sizeof(noeud_t));
+    if (!inst.noeuds) {
+        fprintf(stderr, "Erreur d'allocation mémoire pour %d noeuds\n", inst.dimension);
+        fclose(f);
+        inst.dimension = 0;
+        return inst;
+    }
+
     int count = 0, id;
     float x, y;
-    while (count < inst->dimension && fgets(line, sizeof line, f)) {
-        if (strncmp(line, "EOF", 3) == 0) break;
+    while (count < inst.dimension && fgets(line, sizeof line, f)) {
+        if (!strncmp(line, "EOF", 3)) break;
         if (sscanf(line, "%d %f %f", &id, &x, &y) == 3) {
-            inst->noeuds[count].num = id;
-            inst->noeuds[count].x   = x;
-            inst->noeuds[count].y   = y;
+            inst.noeuds[count].num = id;
+            inst.noeuds[count].x   = x;
+            inst.noeuds[count].y   = y;
             count++;
         }
     }
 
     fclose(f);
 
-    if (count != inst->dimension) {
+    if (count != inst.dimension) {
         fprintf(stderr, "Erreur : %d coordonnées lues au lieu de %d dans %s\n",
-                count, inst->dimension, chemin);
-        free(inst->noeuds);
-        inst->noeuds = NULL;
-        return -1;
+                count, inst.dimension, chemin);
+        free(inst.noeuds);
+        inst.noeuds = NULL;
+        inst.dimension = 0;
+        return inst;
     }
 
-
     printf("Lecture réussie : %s (%s, %d villes)\n",
-           inst->nom, inst->type_distance, inst->dimension);
+           inst.nom, inst.type_distance, inst.dimension);
 
-    return 0;
+    return inst;
 }
 
 /**********************************
@@ -267,4 +275,12 @@ void liberer_matrice(int **matrice, int n){
     free(matrice);
 }
 
-
+void liberer_instance(instance_t **inst)
+{
+    if (!inst || !*inst) return;
+    free((*inst)->noeuds);
+    (*inst)->noeuds = NULL;
+    (*inst)->dimension = 0;
+    if ((*inst)->nom[0]) (*inst)->nom[0] = '\0';
+    if ((*inst)->type_distance[0]) (*inst)->type_distance[0] = '\0';
+}
