@@ -49,10 +49,10 @@ int main(int argc, char* argv[]){
     printf("%s ; none ; temps CPU ? ; %f %f; ",instance->nom,longueur1,longueur2); 
     /*affichage Tour*/
     printf("[");
-    for(int i=0;i< instance->dimension;i++){
+    for(int i=0;i< instance->dimension -1;i++){ //on s'arrete a l'avant dernier noeud
         printf("%d, ",instance->noeuds[i]->num);
     }
-    printf("]\n");
+    printf("%d ]\n", instsance->noeuds[instance->dimension]); //affichage du dernier noeud sans la virgule
 
 
     /*liberation de la memoire allouee a la matrice*/
