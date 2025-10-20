@@ -3,9 +3,9 @@
 
 
 int main(int argc, char* argv[]){
-
+    char* nom_fichier;
     if(argc == 3){
-        char* nom_fichier = argv[2]; //récuperation du nom de fichier apres le -f
+        nom_fichier = argv[2]; //récuperation du nom de fichier apres le -f
     }else{
         fprintf(stderr,"Usage: %s desigation_fichier[...]\n",argv[0]); 
         /*il manque un argument (-f ou la désignation du fichier)*/
@@ -21,11 +21,11 @@ int main(int argc, char* argv[]){
     }
 
     /*choix de la fonction de distance*/
-    int(*f_distance)(noeud_t,noeud_t) fonction_distance = choix_distance(&inst);
+    distance_f fonction_distance = choix_distance(instance);
     
 
     /*creation de la demi matrice des distances*/
-    int** demi_matrice = creer_matrice(*instance, fonction_distance);
+    int** demi_matrice = creer_matrice((*instance), fonction_distance);
 
 
     /*calcul longueur tournee canonique*/
