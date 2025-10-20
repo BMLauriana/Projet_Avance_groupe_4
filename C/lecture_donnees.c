@@ -159,20 +159,21 @@ int distance_geographique(noeud_t point1, noeud_t point2) {
     float q1 = cos(longitude1 - longitude2);
     float q2 = cos(latitude1 - latitude2);
     float q3 = cos(latitude1 + latitude2);
-    float distance = rayonTerreste * acos(0.5$((1.0+q1)*q2-(1.0-q1)*q3))+1.0;
+    float distance = rayonTerreste * acos(0.5*((1.0+q1)*q2-(1.0-q1)*q3))+1.0;
     return (int)distance;
 }
 
 // distance ATT
 int distance_euclidienne_att(noeud_t point1, noeud_t point2) {
+    int dij =0;
     float xd = point1.x - point2.x;
     float yd = point1.y - point2.y;
     float rij = sqrt((xd*xd+yd*yd)/10.0);
     int tij = (int)rij;
     if (tij<rij) {
-        int dij = tij+1;
+        dij = tij+1;
     } else {
-        int dij = tij;
+        dij = tij;
     }
     return dij;
 }
