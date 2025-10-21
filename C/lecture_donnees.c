@@ -39,7 +39,6 @@ struct instance_s{
     noeud_t *noeuds; // tableau contenant les coordonnées de chaque villes
 };
 
-// #include "lecture_donnees.h"  // if you have constants/prototypes there
 
 /**********************************
     Distances EUC_2D, GEO et ATT
