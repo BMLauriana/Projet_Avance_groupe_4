@@ -5,7 +5,7 @@
 
 int main(int argc, char* argv[]){
     char* nom_fichier;
-    if(argc == 3){
+    if(argc == 4){
         nom_fichier = argv[2]; //récuperation du nom de fichier apres le -f
     }else{
         fprintf(stderr,"Usage: %s desigation_fichier[...]\n",argv[0]); 
@@ -17,7 +17,7 @@ int main(int argc, char* argv[]){
     /*appel de la fonction pour la lecture du fichier*/
     instance_t *instance =lire_tsplib(nom_fichier);
     if( instance ==NULL){
-        fprintf(stderr,"Il y a eu une erreur pendant la lecture du fichier. Ce type de fichier peut ne pas etre gere\n");
+        fprintf(stderr,"Il y a eu une erreur pendant la lecture du fichier. Ce type de fichier peut ne pas etre gere.\n");
         exit(2);
     }
 
