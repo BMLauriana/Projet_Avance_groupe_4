@@ -5,40 +5,6 @@
 #include <errno.h>
 #include "lecture_donnees.h"
 
-#define PI 3.141592
-#define MAX_TAB_NOM 64
-#define MAX_TAB_DISTANCE 16
-
-/*************************
- * Structure d'un noeud
- *************************/
-
-struct noeud_s{
-    int num; /*numero du noeud*/
-    float x; /*permiere coordonnee du noeud*/
-    float y; /*deuxiemene coordonnee du neoud*/
-};
-
-/***************************
- * Structure d'une tournee
- ***************************/
-
-struct tournee_s{
-    float longueur; /*longueur de la tournee*/
-    noeud_t *parcours; /*tableau de noeuds dans l'ordre de la tournee*/
-};
-
-//elles sont écrites au format texte dans les fichiers 
-/***************************
- * Structure d'une instance (jeux de donnée)
- ***************************/
-struct instance_s{
-    char nom[MAX_TAB_NOM];  // nom de l'instance
-    char type_distance[MAX_TAB_DISTANCE]; //EUc_2D, GEO, ATT
-    int dimension; //nombre de ville (points)
-    noeud_t *noeuds; // tableau contenant les coordonnées de chaque villes
-};
-
 
 /**********************************
     Distances EUC_2D, GEO et ATT
@@ -95,7 +61,7 @@ int distance_euclidienne_att(noeud_t point1, noeud_t point2) {
 Longueur d'une tournée 
 **********************/
 
-int longueur_tournee(instance_t instance, tournee_t tour, int(*f_distance)(noeud_t, noeud_t)) {
+float longueur_tournee(instance_t instance, tournee_t tour, int(*f_distance)(noeud_t, noeud_t)) {
     float longueur_totale = 0;
     for (int i=0; i<instance.dimension; i++) {
         noeud_t ville_debut = tour.parcours[i];
@@ -114,7 +80,7 @@ int longueur_tournee(instance_t instance, tournee_t tour, int(*f_distance)(noeud
 * choix de la fonction de distance *
 ************************************/
 
-     distance_f choix_distance(instance_t *inst){
+     distance_f choix_distance(const instance_t *inst){
         /*creation des chaines a comparer*/
         char eucl_2D[] = "EUCL_2D";
         char geo[] = "GEO";
@@ -184,9 +150,10 @@ void liberer_matrice(int **matrice, int n){
 void liberer_instance(instance_t **inst)
 {
     if (!inst || !*inst) return;
+
     free((*inst)->noeuds);
     (*inst)->noeuds = NULL;
-    (*inst)->dimension = 0;
-    if ((*inst)->nom[0]) (*inst)->nom[0] = '\0';
-    if ((*inst)->type_distance[0]) (*inst)->type_distance[0] = '\0';
+
+    free(*inst);
+    *inst = NULL;
 }

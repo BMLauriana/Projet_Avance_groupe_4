@@ -39,7 +39,7 @@ struct instance_s{
 };
 
 //lecture de fichier
-instance_t lire_tsplib(const char *chemin);
+instance_t *lire_tsplib(const char *chemin);
 void liberer_instance(instance_t ** inst);
 
 /********************************************

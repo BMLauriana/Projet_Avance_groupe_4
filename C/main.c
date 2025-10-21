@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "lecture_donnees.h"
 
 
@@ -14,7 +15,7 @@ int main(int argc, char* argv[]){
 
 
     /*appel de la fonction pour la lecture du fichier*/
-    instance_t *instance = lire_tsplib( nom_fichier);
+    instance_t *instance =lire_tsplib(nom_fichier);
     if( instance ==NULL){
         fprintf(stderr,"Il y a eu une erreur pendant la lecture du fichier. Ce type de fichier peut ne pas etre gere\n");
         exit(2);
@@ -30,11 +31,11 @@ int main(int argc, char* argv[]){
 
     /*calcul longueur tournee canonique*/
     /*1. avec la matrice*/
-    int longueur1 = longueur_tour_cano_matrice(demi_matrice);
+    int longueur1 = longueur_tour_cano_matrice(*instance,demi_matrice);
     /*2. avec la fonction longueur_tournee*/
     /*creation de la tournee*/
     tournee_t tour_cano;
-    tournee_canonique.parcours = instance->noeuds;
+    tour_cano.parcours = instance->noeuds;
     /*calcul de la longueur*/
     float longueur2 = longueur_tournee(*instance,tour_cano, fonction_distance);
 
@@ -45,17 +46,17 @@ int main(int argc, char* argv[]){
     printf("Distance %s",instance->type_distance);
     printf("Instance ; Methode ; Temps CPU ; longueur ; Tour\n");
     /*la methode sera ecrite a partir de la partie 1*/
-    printf("%s ; none ; temps CPU ? ; %f %f; ",instance->nom,longueur1,longueur2); 
+    printf("%s ; none ; temps CPU ? ; %d %f; ",instance->nom,longueur1,longueur2); 
     /*affichage Tour*/
     printf("[");
     for(int i=0;i< instance->dimension -1;i++){ //on s'arrete a l'avant dernier noeud
-        printf("%d, ",instance->noeuds[i]->num);
+        printf("%d, ",instance->noeuds[i].num);
     }
-    printf("%d ]\n", instsance->noeuds[instance->dimension]); //affichage du dernier noeud sans la virgule
+    printf("%d ]\n", instance->noeuds[instance->dimension-1].num); //affichage du dernier noeud sans la virgule
 
 
     /*liberation de la memoire allouee a la matrice*/
-    liberer_matrice(&demi_matrice, int n);
+    liberer_matrice(demi_matrice, instance->dimension);
 
     /*liberation de la memoire allouee a l'instance*/
     liberer_instance(&instance);
