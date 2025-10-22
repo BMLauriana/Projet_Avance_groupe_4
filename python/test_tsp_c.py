@@ -25,6 +25,8 @@ def extract_data(path,code,filename,method,distance_fct,coord,graphique):
     lst = [i for i in lst if i != ";"]
     #print("lst = ",lst) # vérif debug
     try: # analyse de la chaîne renvoyé par subprocess. A adapter à votre cas
+    # Notre code C affiche: "Instance ; Methode ; Temps CPU ; longueur ; Tour"
+    # Exemple: ['att15', 'none', 'temps', 'CPU', '?', '13095', '13095.000000;', '[1,', '2,', ...]
         ind = lst.index('Tour')
         nom = lst[ind+1]
         algo = lst[ind+2]
@@ -36,7 +38,7 @@ def extract_data(path,code,filename,method,distance_fct,coord,graphique):
         print(f"{nom} ; {algo} ; {length} ; {l} ; {tps} ; {tour} ; {v==0} ; {l==length}")
         graphique(tour,algo,coord)
     except Exception as e:
-        print(f"Erreur (Python) e = {e} lst = {lst}")
+        print(f"Erreur (Python) e = {e} lst = {lst}")#
 
 def load_instance(filename):
     # utilise fcts tsplib95
@@ -71,10 +73,10 @@ def tests_instances_list(instances_file,methods):
 # Liste de paramètres.
 # opt = tsplib95.load_solution(filename+'.opt.tour') pour charger un fichier solution dans python
 #filename = "burma14.tsp"
-filename = "att48.tsp" #
-path = "../Code_C/" # adaptez à votre cas
-code = "tsp" # nom du programme C
+filename = "../jeu_de_données/att15.tsp" #
+path = "../C/" # adaptez à votre cas
+code = "main" # nom du programme C
 methods = ["-c","nn","rw","2optnn","2optrw","ga 10000 0.10 100"]#"bf","gadpx"
 
-#test_instance(filename,methods) # pour un seul appel
-tests_instances_list("instances.txt",methods) # marche si le C marche
+test_instance(filename,methods) # pour un seul appel
+#tests_instances_list("instances.txt",methods) # marche si le C marche
