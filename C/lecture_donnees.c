@@ -156,4 +156,3 @@ void liberer_instance(instance_t **inst)
     free(*inst);
     *inst = NULL;
 }
-
