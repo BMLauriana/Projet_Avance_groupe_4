@@ -8,11 +8,9 @@
  * Structure d'un noeud
  *************************/
 typedef struct noeud_s {
-    struct noeud_s{
     int num; /*numero du noeud*/
     float x; /*permiere coordonnee du noeud*/
     float y; /*deuxiemene coordonnee du neoud*/
-};
 }noeud_t;
 
 /***************************

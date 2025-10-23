@@ -5,7 +5,6 @@
 #include <errno.h>
 #include "lecture_donnees.h"
 
-
 /**********************************
     Distances EUC_2D, GEO et ATT
 ***********************************/
@@ -157,3 +156,4 @@ void liberer_instance(instance_t **inst)
     free(*inst);
     *inst = NULL;
 }
+
