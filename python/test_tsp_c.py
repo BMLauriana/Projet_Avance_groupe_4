@@ -30,9 +30,31 @@ def extract_data(path,code,filename,method,distance_fct,coord,graphique):
         ind = lst.index('Tour')
         nom = lst[ind+1]
         algo = lst[ind+2]
-        tps = eval(lst[ind+3]) # float
-        length = int(eval(lst[ind+4])) # int
-        tour = eval(lst[ind+5]) # liste
+        #tps = eval(lst[ind+3]) # float
+        #length = int(eval(lst[ind+4])) # int
+        # debut lova
+        tps = float(lst[ind+3]) 
+        length = int(float(lst[ind+4])) 
+        # extraire manuellement le tour
+        # chercher l'élément qui commence par '[' et reconstruire la liste
+        tour_start_index = None
+        for i in range(ind+5, len(lst)):
+            if lst[i].startswith('['):
+                tour_start_index = i
+                break
+        if tour_start_index is None:
+            print("ERREURRRRRR")
+            return
+        tour_str = ""
+        for i in range(tour_start_index, len(lst)):
+            tour_str+= lst[i]
+            if lst[i].endswith(']'):
+                break
+        # nettoyer et convertir en liste
+        tour_str_clean = tour_str.strip('[]').replace(' ',' ')
+        tour = [int(x) for x in tour_str_clean.split(',')]
+        # fin lova
+        #tour = eval(lst[ind+5]) # liste
         l = fitness(tour,distance_fct,coord)
         v = valid(tour)
         print(f"{nom} ; {algo} ; {length} ; {l} ; {tps} ; {tour} ; {v==0} ; {l==length}")
@@ -67,16 +89,36 @@ def tests_instances_list(instances_file,methods):
     # lance le programme C avec toutes les options de methods
     # et tous les fichiers d'instance de instance_file 
     with open(instances_file, 'r') as file:
-        for instance in file:
-            test_instance(instance.strip(),methods)
+        #for instance in file:
+        #   test_instance(instance.strip(),methods)
+        # debut lova
+        for line in file:
+            liine = line.strip();
+            # ignore les lignes vides
+            if not line:
+                continue
+            #extraire le nom du fichier avant :
+            if ':' in line:
+                instance_name = line.split(':')[0].strip()
+            else:
+                instance_name = line.strip()
+            
+            #ajouter extension .tsp
+            if not instance_name.endswith('.tsp'):
+                instance_name += '.tsp'
+            
+            #chemin complet
+            instance_path = f"../jeu_de_données/{instance_name}"
+            #erreur au début c'était psk j'avais laissé avec instance_name dcp il trouvait pas
+            test_instance(instance_path,methods)
 
 # Liste de paramètres.
 # opt = tsplib95.load_solution(filename+'.opt.tour') pour charger un fichier solution dans python
 #filename = "burma14.tsp"
-filename = "../jeu_de_données/att15.tsp" #
+filename = "../jeu_de_données/a280.tsp" #
 path = "../C/" # adaptez à votre cas
-code = "main" # nom du programme C
-methods = ["-c","nn","rw","2optnn","2optrw","ga 10000 0.10 100"]#"bf","gadpx"
+code = "main.exe" # nom du programme C
+methods = ["-c"]#,"nn","rw","2optnn","2optrw","ga 10000 0.10 100"]#"bf","gadpx"
 
 test_instance(filename,methods) # pour un seul appel
-#tests_instances_list("instances.txt",methods) # marche si le C marche
+#tests_instances_list("../jeu_de_données/Symmetric TSPs.txt",methods) # marche si le C marche

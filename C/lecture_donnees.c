@@ -12,13 +12,13 @@ int distance_euclidienne(noeud_t point1, noeud_t point2) {
     float xd = point1.x - point2.x;
     float yd = point1.y - point2.y;
     float distance = sqrt(xd*xd + yd*yd);
-    return (int)distance;
+    return (int)(distance+0.5);
 }
 
 int distance_geographique(noeud_t point1, noeud_t point2) {
     // premier noeud
     int deg = (int)point1.x;
-    int min = point1.x - deg;
+    float min = point1.x - deg;
     float latitude1 = PI * (deg+5.0*min/3.0)/180.0;
     deg = (int)point1.y;
     min = point1.y - deg;
