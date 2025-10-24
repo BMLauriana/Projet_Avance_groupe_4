@@ -1,0 +1,17 @@
+# Environnements virtuels Python
+venv/
+python/venv/
+*/venv/
+
+# Fichiers compilés
+__pycache__/
+*.pyc
+*.pyo
+
+# Fichiers de configuration IDE
+.vscode/
+.idea/
+
+# Autres fichiers inutiles
+.env
+*.log

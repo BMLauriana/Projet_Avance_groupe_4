@@ -34,19 +34,20 @@ int main(int argc, char* argv[]){
     int longueur1 = longueur_tour_cano_matrice(*instance,demi_matrice);
     /*2. avec la fonction longueur_tournee*/
     /*creation de la tournee*/
-    tournee_t tour_cano;
-    tour_cano.parcours = instance->noeuds;
+    // tournee_t tour_cano;
+    // tour_cano.parcours = instance->noeuds;
     /*calcul de la longueur*/
-    float longueur2 = longueur_tournee(*instance,tour_cano, fonction_distance);
+    // float longueur2 = longueur_tournee(*instance,tour_cano, fonction_distance);
 
     /*affichage des donnees lues et le calcul de la longeur tournée canonique*/
-    printf("J'ouvre le fichier : %s", instance->nom);
+    printf("J'ouvre le fichier : %s\n", instance->nom);
     printf("Commentaire : \n");
     printf(" lignes lues\n");
-    printf("Distance %s",instance->type_distance);
-    printf("Instance ; Methode ; Temps CPU ; longueur ; Tour\n");
+    printf("EOF\n");
+    printf("Distance %s\n",instance->type_distance);
+    printf("Instance ; Méthode ; Temps CPU (sec); longueur ; Tour\n");
     /*la methode sera ecrite a partir de la partie 1*/
-    printf("%s ; none ; temps CPU ? ; %d %f; ",instance->nom,longueur1,longueur2); 
+    printf("%s ; rw ; 0.00 ; %d ; ",instance->nom,longueur1); 
     /*affichage Tour*/
     printf("[");
     for(int i=0;i< instance->dimension -1;i++){ //on s'arrete a l'avant dernier noeud
