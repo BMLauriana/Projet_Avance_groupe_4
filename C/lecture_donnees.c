@@ -81,7 +81,7 @@ float longueur_tournee(instance_t instance, tournee_t tour, int(*f_distance)(noe
 
      distance_f choix_distance(const instance_t *inst){
         /*creation des chaines a comparer*/
-        char eucl_2D[] = "EUCL_2D";
+        char eucl_2D[] = "EUC_2D";
         char geo[] = "GEO";
         char att[] = "ATT";
         /*verification*/
