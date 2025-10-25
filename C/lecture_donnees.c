@@ -139,6 +139,15 @@ int longueur_tour_cano_matrice(instance_t inst, int **matrice){
 
 }
 
+int longueur_tour_matrice(int *tour, int n, int **matrice) {
+    int longueur = 0;
+    for (int i = 0; i < n - 1; i++)
+        longueur += recuperer_distance(matrice, tour[i], tour[i + 1]);
+    longueur += recuperer_distance(matrice, tour[n - 1], tour[0]);
+    return longueur;
+}
+
+
 void liberer_matrice(int **matrice, int n){
     for(int i= 0; i < n; i++){
         free(matrice[i]);
