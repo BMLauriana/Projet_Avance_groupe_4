@@ -4,6 +4,7 @@
 #include "force_brute.h"
 
 int main(int argc, char* argv[]){
+    /**********************************DEBUT PARTIE 0**********************************/
     char* nom_fichier;
     if(argc == 4){
         nom_fichier = argv[2]; //récuperation du nom de fichier apres le -f
@@ -40,11 +41,6 @@ int main(int argc, char* argv[]){
     // float longueur2 = longueur_tournee(*instance,tour_cano, fonction_distance);
 
     /*affichage des donnees lues et le calcul de la longeur tournée canonique*/
-    printf("J'ouvre le fichier : %s\n", instance->nom);
-    printf("Commentaire : \n");
-    printf(" lignes lues\n");
-    printf("EOF\n");
-    printf("Distance %s\n",instance->type_distance);
     printf("Instance ; Méthode ; Temps CPU (sec); longueur ; Tour\n");
     /*la methode sera ecrite a partir de la partie 1*/
     printf("%s ; rw ; 0.00 ; %d ; ",instance->nom,longueur1); 
@@ -62,7 +58,15 @@ int main(int argc, char* argv[]){
     /*liberation de la memoire allouee a l'instance*/
     liberer_instance(&instance);
 
-    /*faire un main C, admettant en paramètre de la ligne de commande, la balise -f suivie d’un nom de
+    /*(partie0) faire un main C, admettant en paramètre de la ligne de commande, la balise -f suivie d’un nom de
 fichier et -c, affichant les données lues et calculant la longueur de la tournée canonique 2.*/
+
+
+/**********************************DEBUT PARTIE 1**********************************/
+
+
+    /*(partie1) Implémenter un main C pour lire un fichier TSPLIB, sélectionner la fonction de distance adéquate
+(GEO, ATT, EUCL_2D, coordonnées ou matrice), lancer la fonction précédente, et afficher le résultat
+normalisé (voir annexe)*/
     return 0;
 }

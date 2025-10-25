@@ -5,6 +5,9 @@
 #include <errno.h>
 #include "lecture_donnees.h"
 
+/*definition d'un tableau de char pour le commentaire*/
+char commentaire[200];
+
 instance_t *lire_tsplib(const char *chemin)
 {
     if (!chemin) return NULL;
@@ -33,13 +36,17 @@ instance_t *lire_tsplib(const char *chemin)
     int have_node_section = 0;
 
     while (fgets(line, sizeof line, f)) {
-        if      (strncmp(line, "NAME", 4) == 0)
+        if (strncmp(line, "NAME", 4) == 0){
             sscanf(line, "NAME : %63s", inst->nom);
-        else if (strncmp(line, "DIMENSION", 9) == 0)
+            printf("J'ouvre le fichier : %s\n", inst->nom);
+        }else if (strncmp(line, "COMMENT", 7) == 0) {
+            sscanf(line, "COMMENT : %199[^\n]", commentaire); /*lire jusqu'a un saut de ligne ou 199 char*/
+            printf("Commentaire : %s\n", commentaire);
+        }else if (strncmp(line, "DIMENSION", 9) == 0){
             sscanf(line, "DIMENSION : %d", &inst->dimension);
-        else if (strncmp(line, "EDGE_WEIGHT_TYPE", 16) == 0)
+        }else if (strncmp(line, "EDGE_WEIGHT_TYPE", 16) == 0){
             sscanf(line, "EDGE_WEIGHT_TYPE : %15s", inst->type_distance);
-        else if (strncmp(line, "NODE_COORD_SECTION", 18) == 0) {
+        }else if (strncmp(line, "NODE_COORD_SECTION", 18) == 0) {
             have_node_section = 1;
             break;
         }
@@ -70,8 +77,12 @@ instance_t *lire_tsplib(const char *chemin)
     }
 
     int count = 0, id; float x, y;
-    while (count < inst->dimension && fgets(line, sizeof line, f)) {
-        if (strncmp(line, "EOF", 3) == 0) break;
+    while (count < inst->dimension+1 && fgets(line, sizeof line, f)) {
+        if (strncmp(line, "EOF", 3) == 0){
+            printf("%d lignes lues\nEOF\n",count);
+            break;
+        } 
+
         if (sscanf(line, "%d %f %f", &id, &x, &y) == 3) {
             inst->noeuds[count].num = id;
             inst->noeuds[count].x   = x;
@@ -79,6 +90,9 @@ instance_t *lire_tsplib(const char *chemin)
             count++;
         }
     }
+
+    /*afficher le reste des affichages demandes*/
+    printf("Distance %s\n",inst->type_distance);
 
     fclose(f);
 
@@ -89,9 +103,9 @@ instance_t *lire_tsplib(const char *chemin)
         free(inst);
         return NULL;
     }
-
+    /*
     printf("Lecture réussie : %s (%s, %d villes)\n",
            inst->nom, inst->type_distance, inst->dimension);
-
+    */
     return inst;
 }
