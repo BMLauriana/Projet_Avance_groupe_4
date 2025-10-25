@@ -1,5 +1,5 @@
 #ifndef __LECTURE_DONNEES_H__
-#define __LECTURE_DONNEES_H_
+#define __LECTURE_DONNEES_H__
 #define PI 3.141592
 #define MAX_TAB_NOM 64
 #define MAX_TAB_DISTANCE 16
@@ -31,7 +31,7 @@ typedef struct instance_s{
     char type_distance[MAX_TAB_DISTANCE]; //EUc_2D, GEO, ATT
     int dimension; //nombre de ville (points)
     noeud_t *noeuds; // tableau contenant les coordonnées de chaque villes
-}instance_t;;
+}instance_t;
 /***********************
     lecture de fichier
 ************************/
