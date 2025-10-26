@@ -42,7 +42,7 @@ int main(int argc, char* argv[]){
     float longueur2 = longueur_tournee(*instance,tour_cano, fonction_distance);
 
     /*affichage du calcul de la longeur tournée canonique*/
-    printf("Longueur pour la tournee canonique (version matrice) : %f\n", longueur2);
+    // printf("Longueur pour la tournee canonique (version matrice) : %f\n", longueur2);
 
     /*(partie0) faire un main C, admettant en paramètre de la ligne de commande, la balise -f suivie d’un nom de
 fichier et -c, affichant les données lues et calculant la longueur de la tournée canonique 2.*/
@@ -50,7 +50,7 @@ fichier et -c, affichant les données lues et calculant la longueur de la tourn�
 
 /**********************************DEBUT PARTIE 1**********************************/
 
-    printf("\n\n*********************Debut de l'affichage de la partie 1*********************\n");
+    // printf("\n\n*********************Debut de l'affichage de la partie 1*********************\n");
 
     printf("Instance ; Méthode ; Temps CPU (sec); longueur ; Tour\n");
     

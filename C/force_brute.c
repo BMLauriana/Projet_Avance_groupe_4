@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include <signal.h>
 #include "lecture_donnees.h"
 #include "force_brute.h"
@@ -71,6 +72,7 @@ static void print_perm_nodes(instance_t *inst, int *perm, int n) {
 
 tournee_t force_brute(instance_t *inst, int **matrice) {
     install_ctrl_c_handler();
+    clock_t debut_time = clock();   // démarrage du chronométrage
     int n = inst->dimension;
     int *ordre = malloc(n * sizeof(int));          
     int *meilleur_ordre = malloc(n * sizeof(int)); 
@@ -91,7 +93,8 @@ tournee_t force_brute(instance_t *inst, int **matrice) {
        
        if (interrompre) {
             interrompre = 0;
-
+            clock_t fin_time = clock();
+            double temps_ecoule = ((double)(fin_time - debut_time))/CLOCKS_PER_SEC;
             printf("\n== Interruption (Ctrl-C) ==\n");
             printf("Permutation courante : ");
             print_perm_nodes(inst, ordre, n);
@@ -100,6 +103,7 @@ tournee_t force_brute(instance_t *inst, int **matrice) {
             print_perm_nodes(inst, meilleur_ordre, n);
             printf("\n");
             printf("Longueur meilleure courante : %d\n", meilleure_longueur);
+            printf("Temps CPU écoulé : %.2f secondes\n", temps_ecoule);
             printf("Souhaitez-vous quitter (q) ou continuer (c) ? ");
             fflush(stdout);
 
@@ -109,7 +113,13 @@ tournee_t force_brute(instance_t *inst, int **matrice) {
             }
 
             if (ch == 'q' || ch == 'Q') {
-
+                printf("Instance ; Méthode ; Temps CPU (sec); longueur ; Tour\n");
+                printf("%s ; force_brute ; %.2f ; %d ; [",inst->nom,temps_ecoule,meilleure_longueur); 
+                for (int i=0; i<n; i++) {
+                    printf("%d",inst->noeuds[meilleur_ordre[i]].num);
+                    if (i<n-1) printf(", ");
+                }
+                printf("]\n");
                 printf("\n== Fin du programme ==\n\n");
                 fflush(stdout);
                 exit(0);  
