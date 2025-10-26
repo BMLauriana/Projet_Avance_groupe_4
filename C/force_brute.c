@@ -114,11 +114,6 @@ tournee_t force_brute(instance_t *inst, int **matrice) {
             } else {
                 printf("Reprise des calculs...\n");
             }
-            if (!next_permutation(ordre, n)) break;
-
-  
-
-
     }
 }
 
