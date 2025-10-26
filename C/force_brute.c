@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <signal.h>
 #include "lecture_donnees.h"
 #include "force_brute.h"
-#include "ctrl_c.h" 
+#include "ctrl_c.h"
+
 
 /***************************************************
  * Génération de la permutation suivante (itératif)
@@ -68,6 +70,7 @@ static void print_perm_nodes(instance_t *inst, int *perm, int n) {
 }
 
 tournee_t force_brute(instance_t *inst, int **matrice) {
+    install_ctrl_c_handler();
     int n = inst->dimension;
     int *ordre = malloc(n * sizeof(int));          
     int *meilleur_ordre = malloc(n * sizeof(int)); 
@@ -86,17 +89,18 @@ tournee_t force_brute(instance_t *inst, int **matrice) {
             meilleure_longueur = longueur;
             memcpy(meilleur_ordre, ordre, n * sizeof(int));
         }
-        if (g_ctrl_c) {
-            g_ctrl_c = 0; 
-            printf("\n=== Interruption détectée (Ctrl-C) ===\n");
+       
+       if (interrompre) {
+            interrompre = 0;
+
+            printf("\n== Interruption (Ctrl-C) ==\n");
             printf("Permutation courante : ");
             print_perm_nodes(inst, ordre, n);
             printf("\n");
-            printf("Meilleure tournée    : ");
+            printf("Meilleure tournée courante : ");
             print_perm_nodes(inst, meilleur_ordre, n);
             printf("\n");
-            printf("Longueur meilleure   : %d\n", meilleure_longueur);
-
+            printf("Longueur meilleure courante : %d\n", meilleure_longueur);
             printf("Souhaitez-vous quitter (q) ou continuer (c) ? ");
             fflush(stdout);
 
@@ -112,7 +116,10 @@ tournee_t force_brute(instance_t *inst, int **matrice) {
             } else {
                 printf("Reprise des calculs...\n");
             }
-        }
+            if (!next_permutation(ordre, n)) break;
+
+  
+
 
     }
 
