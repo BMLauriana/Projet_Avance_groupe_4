@@ -6,7 +6,6 @@
 #include "ctrl_c.h"
 
 int main(int argc, char* argv[]){
-    /**********************************DEBUT PARTIE 0**********************************/
     char* nom_fichier;
     if(argc == 5){
         nom_fichier = argv[2]; //récuperation du nom de fichier apres le -f
@@ -16,7 +15,6 @@ int main(int argc, char* argv[]){
         exit(1);
     }
 
-    // printf("*********************Debut de l'affichage de la partie 0*********************\n");
 
     /*appel de la fonction pour la lecture du fichier*/
     instance_t *instance =lire_tsplib(nom_fichier);
@@ -48,9 +46,6 @@ int main(int argc, char* argv[]){
 fichier et -c, affichant les données lues et calculant la longueur de la tournée canonique 2.*/
 
 
-/**********************************DEBUT PARTIE 1**********************************/
-
-    // printf("\n\n*********************Debut de l'affichage de la partie 1*********************\n");
 
     printf("Instance ; Méthode ; Temps CPU (sec); longueur ; Tour\n");
     
