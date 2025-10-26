@@ -36,6 +36,10 @@ main: $(MAIN_OBJS)
 lire_fichier.o: lire_fichier.c lecture_donnees.h
 	$(CC) $(LDFLAGS) -c $< -o $@
 
+#REGLE SPECIFIQUE POUR force_brute
+force_brute.o: force_brute.c force_brute.h lecture_donnees.h ctrl_c.h
+	$(CC) $(LDFLAGS) -c $< -o $@
+
 #REGLE POUR TOUS LES .o
 #($< la premiere dependance par exemple
 #lorsque l'on construit lecture_donnees.o $<
