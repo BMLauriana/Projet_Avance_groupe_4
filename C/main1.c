@@ -8,7 +8,7 @@
 int main(int argc, char* argv[]){
     /**********************************DEBUT PARTIE 0**********************************/
     char* nom_fichier;
-    if(argc == 4){
+    if(argc == 5){
         nom_fichier = argv[2]; //récuperation du nom de fichier apres le -f
     }else{
         fprintf(stderr,"Usage: %s desigation_fichier[...]\n",argv[0]); 
@@ -16,7 +16,7 @@ int main(int argc, char* argv[]){
         exit(1);
     }
 
-    printf("*********************Debut de l'affichage de la partie 0*********************\n");
+    // printf("*********************Debut de l'affichage de la partie 0*********************\n");
 
     /*appel de la fonction pour la lecture du fichier*/
     instance_t *instance =lire_tsplib(nom_fichier);
@@ -55,6 +55,7 @@ fichier et -c, affichant les données lues et calculant la longueur de la tourn�
     printf("Instance ; Méthode ; Temps CPU (sec); longueur ; Tour\n");
     
     printf("%s ; rw ; 0.00 ; %f ; \n",instance->nom,longueur2); 
+
     tournee_t meilleure_tournee = force_brute(instance,demi_matrice);
     tournee_t meilleure_tournee2 = force_brute2(instance, fonction_distance);
 

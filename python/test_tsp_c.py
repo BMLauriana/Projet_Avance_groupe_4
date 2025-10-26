@@ -93,7 +93,7 @@ def tests_instances_list(instances_file,methods):
         #   test_instance(instance.strip(),methods)
         # debut lova
         for line in file:
-            liine = line.strip();
+            line = line.strip()
             # ignore les lignes vides
             if not line:
                 continue
@@ -108,17 +108,18 @@ def tests_instances_list(instances_file,methods):
                 instance_name += '.tsp'
             
             #chemin complet
-            instance_path = f"../jeu_de_données/{instance_name}"
+            instance_path = f"../jeu_de_donnees/{instance_name}"
             #erreur au début c'était psk j'avais laissé avec instance_name dcp il trouvait pas
             test_instance(instance_path,methods)
 
 # Liste de paramètres.
 # opt = tsplib95.load_solution(filename+'.opt.tour') pour charger un fichier solution dans python
 #filename = "burma14.tsp"
-filename = "../jeu_de_données/att15.tsp" #
+filename = "../jeu_de_donnees/att10.tsp" #
 path = "../C/" # adaptez à votre cas
-code = "main" # nom du programme C
-methods = ["-c"]#,"nn","rw","2optnn","2optrw","ga 10000 0.10 100"]#"bf","gadpx"
+#code = "main0" # nom du programme C partie 0
+code = "main1" # nom du programe C partie 1
+methods = ["-c", "bf"]#["-c"],"nn","rw","2optnn","2optrw","ga 10000 0.10 100"]#"bf","gadpx"
 
 test_instance(filename,methods) # pour un seul appel
-#tests_instances_list("../jeu_de_données/Symmetric TSPs.txt",methods) # marche si le C marche
+#tests_instances_list("../jeu_de_donnees/instances.txt",methods) # marche si le C marche

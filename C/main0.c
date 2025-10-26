@@ -43,16 +43,18 @@ int main(int argc, char* argv[]){
     /*calcul de la longueur*/
     float longueur2 = longueur_tournee(*instance,tour_cano, fonction_distance);
 
-    /*affichage du calcul de la longeur tournée canonique*/
-    printf("Longueur pour la tournee canonique (version matrice) : %d\n", longueur1);
-    printf("Longueur pour la tournee canonique (version fonction) : %f\n",longueur2);
-
-    /*affichage Tour*/
-    printf("Tournee canonique : [");
+    printf("Instance ; Méthode ; Temps CPU (sec); longueur ; Tour\n");
+    printf("%s ; rw ; 0.00 ; %d ; ",instance->nom,longueur1); 
+    /*affichage Tour canonique*/
+    printf("[ ");
     for(int i=0;i< instance->dimension -1;i++){ //on s'arrete a l'avant dernier noeud
         printf("%d, ",instance->noeuds[i].num);
     }
     printf("%d ]\n", instance->noeuds[instance->dimension-1].num); //affichage du dernier noeud sans la virgule
+
+    /*affichage du calcul de la longeur tournée canonique*/
+    printf("Longueur pour la tournee canonique (version matrice) : %d\n", longueur1);
+    printf("Longueur pour la tournee canonique (version fonction) : %f\n",longueur2);
 
     /*liberation de la memoire allouee a la matrice*/
     liberer_matrice(demi_matrice, instance->dimension);
