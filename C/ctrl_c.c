@@ -7,6 +7,7 @@ volatile sig_atomic_t interrompre = 0;
 static void handler_signal(int sig) {
     (void)sig;
     interrompre = 1;
+    signal(SIGINT, handler_signal);  // réinstaller le handler
 }
 
 void install_ctrl_c_handler(void) {
