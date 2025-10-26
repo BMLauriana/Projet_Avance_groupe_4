@@ -82,7 +82,6 @@ tournee_t force_brute(instance_t *inst, int **matrice) {
     //initialiser avec la tournée canonique, on essaie toutes les permutations possibles
     int meilleure_longueur = calculer_longueur_tournee(ordre, n, matrice);
     memcpy(meilleur_ordre, ordre, n * sizeof(int));
-    int interrompu = 0;
     while (next_permutation(ordre, n)) {
         int longueur = calculer_longueur_tournee(ordre, n, matrice);
         if (longueur < meilleure_longueur) {
@@ -111,7 +110,6 @@ tournee_t force_brute(instance_t *inst, int **matrice) {
 
             if (ch == 'q' || ch == 'Q') {
                 
-                interrompu = 1;
                 break;
             } else {
                 printf("Reprise des calculs...\n");
@@ -122,6 +120,7 @@ tournee_t force_brute(instance_t *inst, int **matrice) {
 
 
     }
+}
 
     //construction de la structure finale tournee_t
     tournee_t meilleure_tournee;
