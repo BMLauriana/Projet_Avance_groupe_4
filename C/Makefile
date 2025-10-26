@@ -7,7 +7,7 @@ LDLIBS=-lm
 EXEC=main
 
 #MODULES COMMUNS
-OBJS=lecture_donnees.o lire_fichier.o force_brute.o
+OBJS=lecture_donnees.o lire_fichier.o force_brute.o ctrl_c.o
 
 ECHO = @
 ifeq ($(VERBOSE),1)
