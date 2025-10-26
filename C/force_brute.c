@@ -109,8 +109,12 @@ tournee_t force_brute(instance_t *inst, int **matrice) {
             }
 
             if (ch == 'q' || ch == 'Q') {
+
+                printf("\n== Fin du programme ==\n\n");
+                fflush(stdout);
+                exit(0);  
                 
-                break;
+
             } else {
                 printf("Reprise des calculs...\n");
             }
@@ -131,6 +135,7 @@ tournee_t force_brute(instance_t *inst, int **matrice) {
     printf("Nombre de villes : %d\n", n);
     printf("Longueur optimale : %.0f\n", meilleure_tournee.longueur);
     printf("Tournée optimale : ");
+
     for (int i = 0; i < n; i++){
         printf("%d ", meilleure_tournee.parcours[i].num);
     }
@@ -194,8 +199,9 @@ tournee_t force_brute2(instance_t *inst, distance_f f_distance) {
             }
 
             if (ch == 'q' || ch == 'Q') {
-                
-                break;
+                printf("\n== Fin du programme ==\n\n");
+                fflush(stdout);
+                exit(0);   
             } else {
                 printf("Reprise des calculs...\n");
             }
