@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <signal.h>
 #include "lecture_donnees.h"
 #include "force_brute.h"
+#include "ctrl_c.h"
 
 int main(int argc, char* argv[]){
     /**********************************DEBUT PARTIE 0**********************************/
@@ -22,6 +24,7 @@ int main(int argc, char* argv[]){
         fprintf(stderr,"Il y a eu une erreur pendant la lecture du fichier. Ce type de fichier peut ne pas etre gere.\n");
         exit(2);
     }
+    install_ctrl_c_handler();
 
     /*choix de la fonction de distance*/
     distance_f fonction_distance = choix_distance(instance);

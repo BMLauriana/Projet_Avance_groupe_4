@@ -3,6 +3,7 @@
 #include <string.h>
 #include "lecture_donnees.h"
 #include "force_brute.h"
+#include "ctrl_c.h" 
 
 /***************************************************
  * Génération de la permutation suivante (itératif)
@@ -59,6 +60,13 @@ int calculer_longueur_tournee(int *ordre, int n, int **matrice) {
     return longueur;
 }
 
+static void print_perm_nodes(instance_t *inst, int *perm, int n) {
+    for (int i = 0; i < n; ++i) {
+        int idx = perm[i];
+        printf("%d%s", inst->noeuds[idx].num, (i + 1 < n) ? " " : "");
+    }
+}
+
 tournee_t force_brute(instance_t *inst, int **matrice) {
     int n = inst->dimension;
     int *ordre = malloc(n * sizeof(int));          
@@ -71,12 +79,41 @@ tournee_t force_brute(instance_t *inst, int **matrice) {
     //initialiser avec la tournée canonique, on essaie toutes les permutations possibles
     int meilleure_longueur = calculer_longueur_tournee(ordre, n, matrice);
     memcpy(meilleur_ordre, ordre, n * sizeof(int));
+    int interrompu = 0;
     while (next_permutation(ordre, n)) {
         int longueur = calculer_longueur_tournee(ordre, n, matrice);
         if (longueur < meilleure_longueur) {
             meilleure_longueur = longueur;
             memcpy(meilleur_ordre, ordre, n * sizeof(int));
         }
+        if (g_ctrl_c) {
+            g_ctrl_c = 0; 
+            printf("\n=== Interruption détectée (Ctrl-C) ===\n");
+            printf("Permutation courante : ");
+            print_perm_nodes(inst, ordre, n);
+            printf("\n");
+            printf("Meilleure tournée    : ");
+            print_perm_nodes(inst, meilleur_ordre, n);
+            printf("\n");
+            printf("Longueur meilleure   : %d\n", meilleure_longueur);
+
+            printf("Souhaitez-vous quitter (q) ou continuer (c) ? ");
+            fflush(stdout);
+
+            int ch = getchar();
+            if (ch != '\n') {
+                int nl = getchar(); (void)nl;
+            }
+
+            if (ch == 'q' || ch == 'Q') {
+                
+                interrompu = 1;
+                break;
+            } else {
+                printf("Reprise des calculs...\n");
+            }
+        }
+
     }
 
     //construction de la structure finale tournee_t
