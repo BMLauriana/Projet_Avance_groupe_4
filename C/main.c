@@ -66,9 +66,10 @@ fichier et -c, affichant les données lues et calculant la longueur de la tourn�
     printf("\n\n*********************Debut de l'affichage de la partie 1*********************\n");
 
     printf("Instance ; Méthode ; Temps CPU (sec); longueur ; Tour\n");
-    /*la methode sera ecrite a partir de la partie 1*/
+    
     printf("%s ; rw ; 0.00 ; %d ; \n",instance->nom,longueur1); 
     tournee_t meilleure_tournee = force_brute(instance,demi_matrice);
+    tournee_t meilleure_tournee2 = force_brute2(instance, fonction_distance);
 
     /*liberation de la memoire allouee a la matrice*/
     liberer_matrice(demi_matrice, instance->dimension);
