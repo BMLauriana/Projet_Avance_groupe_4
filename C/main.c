@@ -24,7 +24,7 @@ int main(int argc, char* argv[]){
         fprintf(stderr,"Il y a eu une erreur pendant la lecture du fichier. Ce type de fichier peut ne pas etre gere.\n");
         exit(2);
     }
-    install_ctrl_c_handler();
+
 
     /*choix de la fonction de distance*/
     distance_f fonction_distance = choix_distance(instance);
