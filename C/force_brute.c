@@ -143,6 +143,7 @@ tournee_t force_brute(instance_t *inst, int **matrice) {
 
 //calcule la longueur d’une tournée (via indices) en utilisant la fonction de distance
 tournee_t force_brute2(instance_t *inst, distance_f f_distance) {
+    install_ctrl_c_handler();
     int n = inst->dimension;
     int *ordre = malloc(n * sizeof(int));          
     int *meilleur_ordre = malloc(n * sizeof(int)); 
@@ -173,6 +174,32 @@ tournee_t force_brute2(instance_t *inst, distance_f f_distance) {
             meilleure_longueur = longueur;
             memcpy(meilleur_ordre, ordre, n * sizeof(int));
         }
+        if (interrompre) {
+            interrompre = 0;
+
+            printf("\n== Interruption (Ctrl-C) ==\n");
+            printf("Permutation courante : ");
+            print_perm_nodes(inst, ordre, n);
+            printf("\n");
+            printf("Meilleure tournée courante : ");
+            print_perm_nodes(inst, meilleur_ordre, n);
+            printf("\n");
+            printf("Longueur meilleure courante : %f\n", meilleure_longueur);
+            printf("Souhaitez-vous quitter (q) ou continuer (c) ? ");
+            fflush(stdout);
+
+            int ch = getchar();
+            if (ch != '\n') {
+                int nl = getchar(); (void)nl;
+            }
+
+            if (ch == 'q' || ch == 'Q') {
+                
+                break;
+            } else {
+                printf("Reprise des calculs...\n");
+            }
+    }
         //on libère la mémoire temporaire
         free(tour_temp.parcours);  
     }
