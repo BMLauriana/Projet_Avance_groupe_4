@@ -53,7 +53,7 @@ int next_permutation(int *tab, int n) {
  * Retourne la meilleure tournée trouvée
  ***************************************************/
 
- //calcule la longueur d’une tournée (via indices)
+//calcule la longueur d’une tournée (via indices)
 int calculer_longueur_tournee(int *ordre, int n, int **matrice) {
     int longueur = 0;
     for (int i = 0; i < n - 1; i++)
@@ -146,7 +146,7 @@ tournee_t force_brute(instance_t *inst, int **matrice) {
 }
 
 
-//Calcule la longueur d’une tournée (via indices) en utilisant la fonction de distance
+//calcule la longueur d’une tournée (via indices) en utilisant la fonction de distance
 tournee_t force_brute2(instance_t *inst, distance_f f_distance) {
     int n = inst->dimension;
     int *ordre = malloc(n * sizeof(int));          
@@ -191,7 +191,7 @@ tournee_t force_brute2(instance_t *inst, distance_f f_distance) {
         meilleure_tournee.parcours[i] = inst->noeuds[meilleur_ordre[i]];
     }
 
-    // Affichage du résultat final
+    //affichage du résultat final
     printf("\n=== Force brute ===\n");
     printf("Instance : %s\n", inst->nom);
     printf("Nombre de villes : %d\n", n);
