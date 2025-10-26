@@ -146,6 +146,69 @@ tournee_t force_brute(instance_t *inst, int **matrice) {
 }
 
 
+//Calcule la longueur d’une tournée (via indices) en utilisant la fonction de distance
+tournee_t force_brute2(instance_t *inst, distance_f f_distance) {
+    int n = inst->dimension;
+    int *ordre = malloc(n * sizeof(int));          
+    int *meilleur_ordre = malloc(n * sizeof(int)); 
+
+    //tournée canonique : 0 → 1 → 2 → … → n-1
+    for (int i = 0; i < n; i++)
+        ordre[i] = i;
+
+    //initialiser avec la tournée canonique
+    // Créer une tournee_t temporaire pour la tournée canonique
+    tournee_t tour_temp;
+    tour_temp.parcours = malloc(n * sizeof(noeud_t));
+    for (int i = 0; i < n; i++) {
+        tour_temp.parcours[i] = inst->noeuds[ordre[i]];
+    }
+    float meilleure_longueur = longueur_tournee(*inst, tour_temp, f_distance);
+    memcpy(meilleur_ordre, ordre, n * sizeof(int));
+    free(tour_temp.parcours);  // Libérer la mémoire temporaire
+
+    while (next_permutation(ordre, n)) {
+        //créer une tournee_t temporaire pour la permutation courante
+        tour_temp.parcours = malloc(n * sizeof(noeud_t));
+        for (int i = 0; i < n; i++) {
+            tour_temp.parcours[i] = inst->noeuds[ordre[i]];
+        }
+        float longueur = longueur_tournee(*inst, tour_temp, f_distance);
+        if (longueur < meilleure_longueur) {
+            meilleure_longueur = longueur;
+            memcpy(meilleur_ordre, ordre, n * sizeof(int));
+        }
+        //on libère la mémoire temporaire
+        free(tour_temp.parcours);  
+    }
+
+    //construction de la structure finale tournee_t (celle qu'on retourne)
+    tournee_t meilleure_tournee;
+    meilleure_tournee.longueur = meilleure_longueur;
+    meilleure_tournee.parcours = malloc(n * sizeof(noeud_t));
+
+    for (int i = 0; i < n; i++){
+        meilleure_tournee.parcours[i] = inst->noeuds[meilleur_ordre[i]];
+    }
+
+    // Affichage du résultat final
+    printf("\n=== Force brute ===\n");
+    printf("Instance : %s\n", inst->nom);
+    printf("Nombre de villes : %d\n", n);
+    printf("Longueur optimale : %.0f\n", meilleure_tournee.longueur);
+    printf("Tournée optimale : ");
+    for (int i = 0; i < n; i++){
+        printf("%d ", meilleure_tournee.parcours[i].num);
+    }
+    printf("\n");
+
+    free(ordre);
+    free(meilleur_ordre);
+
+    return meilleure_tournee;
+}
+
+
 
 
 
