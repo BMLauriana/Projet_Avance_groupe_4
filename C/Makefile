@@ -4,10 +4,10 @@ LDFLAGS=-std=c11 -Wpedantic -Wall -Wextra
 LDLIBS=-lm
 
 #EXECUTABLES
-EXEC=main
+EXEC=main0 main1
 
 #MODULES COMMUNS
-OBJS=lecture_donnees.o lire_fichier.o force_brute.o ctrl_c.o
+COMMON_OBJS=lecture_donnees.o lire_fichier.o 
 
 ECHO = @
 ifeq ($(VERBOSE),1)
@@ -29,7 +29,10 @@ all: $(EXEC)
 #EXECUTABLES
 #($@ donne le nom de la cible et 
 #$^ la liste de toutes les dependances)
-main: $(MAIN_OBJS)
+main0: main0.c $(COMMON_OBJS)
+	$(CC) $(CFLAGS)	$^ -o $@ $(LDLIBS)
+
+main1: main1.c $(COMMON_OBJS) force_brute.o ctrl_c.o
 	$(CC) $(CFLAGS)	$^ -o $@ $(LDLIBS)
 
 #REGLE SPECIFIQUE POUR lire_fichier.c

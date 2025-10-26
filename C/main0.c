@@ -2,11 +2,10 @@
 #include <stdlib.h>
 #include <signal.h>
 #include "lecture_donnees.h"
-#include "force_brute.h"
-#include "ctrl_c.h"
+
 
 int main(int argc, char* argv[]){
-    /**********************************DEBUT PARTIE 0**********************************/
+
     char* nom_fichier;
     if(argc == 4){
         nom_fichier = argv[2]; //récuperation du nom de fichier apres le -f
@@ -16,7 +15,6 @@ int main(int argc, char* argv[]){
         exit(1);
     }
 
-    printf("*********************Debut de l'affichage de la partie 0*********************\n");
 
     /*appel de la fonction pour la lecture du fichier*/
     instance_t *instance =lire_tsplib(nom_fichier);
@@ -56,29 +54,13 @@ int main(int argc, char* argv[]){
     }
     printf("%d ]\n", instance->noeuds[instance->dimension-1].num); //affichage du dernier noeud sans la virgule
 
-
-    /*(partie0) faire un main C, admettant en paramètre de la ligne de commande, la balise -f suivie d’un nom de
-fichier et -c, affichant les données lues et calculant la longueur de la tournée canonique 2.*/
-
-
-/**********************************DEBUT PARTIE 1**********************************/
-
-    printf("\n\n*********************Debut de l'affichage de la partie 1*********************\n");
-
-    printf("Instance ; Méthode ; Temps CPU (sec); longueur ; Tour\n");
-    
-    printf("%s ; rw ; 0.00 ; %d ; \n",instance->nom,longueur1); 
-    tournee_t meilleure_tournee = force_brute(instance,demi_matrice);
-    tournee_t meilleure_tournee2 = force_brute2(instance, fonction_distance);
-
     /*liberation de la memoire allouee a la matrice*/
     liberer_matrice(demi_matrice, instance->dimension);
 
     /*liberation de la memoire allouee a l'instance*/
     liberer_instance(&instance);
-
-    /*(partie1) Implémenter un main C pour lire un fichier TSPLIB, sélectionner la fonction de distance adéquate
-(GEO, ATT, EUCL_2D, coordonnées ou matrice), lancer la fonction précédente, et afficher le résultat
-normalisé (voir annexe)*/
     return 0;
+
+    /*(partie0) faire un main C, admettant en paramètre de la ligne de commande, la balise -f suivie d’un nom de
+fichier et -c, affichant les données lues et calculant la longueur de la tournée canonique 2.*/
 }
