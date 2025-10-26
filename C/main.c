@@ -14,6 +14,7 @@ int main(int argc, char* argv[]){
         exit(1);
     }
 
+    printf("*********************Debut de l'affichage de la partie 0*********************\n");
 
     /*appel de la fonction pour la lecture du fichier*/
     instance_t *instance =lire_tsplib(nom_fichier);
@@ -33,30 +34,25 @@ int main(int argc, char* argv[]){
     /*calcul longueur tournee canonique*/
     /*1. avec la matrice*/
     int longueur1 = longueur_tour_cano_matrice(*instance,demi_matrice);
+
     /*2. avec la fonction longueur_tournee*/
     /*creation de la tournee*/
-    // tournee_t tour_cano;
-    // tour_cano.parcours = instance->noeuds;
+    tournee_t tour_cano;
+    tour_cano.parcours = instance->noeuds;
     /*calcul de la longueur*/
-    // float longueur2 = longueur_tournee(*instance,tour_cano, fonction_distance);
+    float longueur2 = longueur_tournee(*instance,tour_cano, fonction_distance);
 
-    /*affichage des donnees lues et le calcul de la longeur tournée canonique*/
-    printf("Instance ; Méthode ; Temps CPU (sec); longueur ; Tour\n");
-    /*la methode sera ecrite a partir de la partie 1*/
-    printf("%s ; rw ; 0.00 ; %d ; ",instance->nom,longueur1); 
+    /*affichage du calcul de la longeur tournée canonique*/
+    printf("Longueur pour la tournee canonique (version matrice) : %d\n", longueur1);
+    printf("Longueur pour la tournee canonique (version fonction) : %f\n",longueur2);
+
     /*affichage Tour*/
-    printf("[");
+    printf("Tournee canonique : [");
     for(int i=0;i< instance->dimension -1;i++){ //on s'arrete a l'avant dernier noeud
         printf("%d, ",instance->noeuds[i].num);
     }
     printf("%d ]\n", instance->noeuds[instance->dimension-1].num); //affichage du dernier noeud sans la virgule
 
-
-    /*liberation de la memoire allouee a la matrice*/
-    liberer_matrice(demi_matrice, instance->dimension);
-
-    /*liberation de la memoire allouee a l'instance*/
-    liberer_instance(&instance);
 
     /*(partie0) faire un main C, admettant en paramètre de la ligne de commande, la balise -f suivie d’un nom de
 fichier et -c, affichant les données lues et calculant la longueur de la tournée canonique 2.*/
@@ -64,6 +60,18 @@ fichier et -c, affichant les données lues et calculant la longueur de la tourn�
 
 /**********************************DEBUT PARTIE 1**********************************/
 
+    printf("\n\n*********************Debut de l'affichage de la partie 1*********************\n");
+
+    printf("Instance ; Méthode ; Temps CPU (sec); longueur ; Tour\n");
+    /*la methode sera ecrite a partir de la partie 1*/
+    printf("%s ; rw ; 0.00 ; %d ; \n",instance->nom,longueur1); 
+    tournee_t meilleure_tournee = force_brute(instance,demi_matrice);
+
+    /*liberation de la memoire allouee a la matrice*/
+    liberer_matrice(demi_matrice, instance->dimension);
+
+    /*liberation de la memoire allouee a l'instance*/
+    liberer_instance(&instance);
 
     /*(partie1) Implémenter un main C pour lire un fichier TSPLIB, sélectionner la fonction de distance adéquate
 (GEO, ATT, EUCL_2D, coordonnées ou matrice), lancer la fonction précédente, et afficher le résultat
