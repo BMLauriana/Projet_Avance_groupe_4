@@ -139,16 +139,11 @@ tournee_t force_brute(instance_t *inst, int **matrice) {
     for (int i = 0; i < n; i++){
         meilleure_tournee.parcours[i] = inst->noeuds[meilleur_ordre[i]];
     }
-    //affichage du résultat final
-    printf("\n=== Force brute ===\n");
-    printf("Instance : %s\n", inst->nom);
-    printf("Nombre de villes : %d\n", n);
-    printf("Longueur optimale : %.0f\n", meilleure_tournee.longueur);
-    printf("Tournée optimale : ");
 
-    for (int i = 0; i < n; i++){
+
+    /*for (int i = 0; i < n; i++){
         printf("%d ", meilleure_tournee.parcours[i].num);
-    }
+    }*/
     free(ordre);
     free(meilleur_ordre);
 
@@ -229,17 +224,12 @@ tournee_t force_brute2(instance_t *inst, distance_f f_distance) {
         meilleure_tournee.parcours[i] = inst->noeuds[meilleur_ordre[i]];
     }
 
-    //affichage du résultat final
-    printf("\n=== Force brute ===\n");
-    printf("Instance : %s\n", inst->nom);
-    printf("Nombre de villes : %d\n", n);
-    printf("Longueur optimale : %.0f\n", meilleure_tournee.longueur);
-    printf("Tournée optimale : ");
-    for (int i = 0; i < n; i++){
+    
+    /*for (int i = 0; i < n; i++){
         printf("%d ", meilleure_tournee.parcours[i].num);
     }
     printf("\n");
-
+*/
     free(ordre);
     free(meilleur_ordre);
 
