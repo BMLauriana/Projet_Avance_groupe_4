@@ -48,6 +48,6 @@ tournee_t * plus_proche_voisin(instance_t * inst, int** matrice){
     // on libere la memoire
     free(visite);
     distance_f fonction_distance = choix_distance(inst);
-    tournee->longueur = longueur_tournee(inst,tournee, fonction_distance);
+    tournee->longueur = longueur_tournee(*inst,*tournee, fonction_distance);
     return tournee;
 }

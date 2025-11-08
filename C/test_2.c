@@ -2,10 +2,12 @@
 #include "lecture_donnees.h"
 #include <assert.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 int main(void){
     instance_t * instance = malloc(sizeof (instance_t));
-    instance->type_distance = "EUC_2D";
+    strcpy(instance->type_distance ,"EUC_2D");
     instance->dimension = 3;
     instance->noeuds =malloc((instance->dimension)*sizeof(noeud_t));
     instance->noeuds[0].num = 1;
@@ -31,8 +33,10 @@ int main(void){
     assert(tour1->parcours[1].num==2);
     assert(tour1->parcours[2].num==3);
 
+    printf("TEST 2 OK\n");
+
     liberer_tournee(&tour1);
-    liberer_matrice(demi_matrice);
+    liberer_matrice(demi_matrice, instance->dimension);
     free(instance->noeuds);
     free(instance);
     

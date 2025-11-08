@@ -4,10 +4,10 @@ LDFLAGS=-std=c11 -Wpedantic -Wall -Wextra
 LDLIBS=-lm
 
 #EXECUTABLES
-EXEC=main0 main1 test_0
+EXEC=main0 main1 test_0 test_2 
 
 #MODULES COMMUNS
-COMMON_OBJS=lecture_donnees.o lire_fichier.o 
+COMMON_OBJS=lecture_donnees.o lire_fichier.o heuristiques.o
 
 ECHO = @
 ifeq ($(VERBOSE),1)
@@ -31,6 +31,9 @@ all: $(EXEC)
 #$^ la liste de toutes les dependances)
 test_0: test_0.c $(COMMON_OBJS)
 	$(CC) $(CFLAGS)	$^ -o $@ $(LDLIBS)
+
+test_2: test_2.c $(COMMON_OBJS)
+	$(CC) $(CFLAGS)	$^ -o $@ $(LDLIBS)
 	
 main0: main0.c $(COMMON_OBJS)
 	$(CC) $(CFLAGS)	$^ -o $@ $(LDLIBS)
@@ -44,6 +47,9 @@ lire_fichier.o: lire_fichier.c lecture_donnees.h
 
 #REGLE SPECIFIQUE POUR force_brute
 force_brute.o: force_brute.c force_brute.h lecture_donnees.h ctrl_c.h
+	$(CC) $(LDFLAGS) -c $< -o $@
+
+heuristiques.o: plus_proche_voisin.c marche_aleatoire.c deux_opt.c lecture_donnees.h
 	$(CC) $(LDFLAGS) -c $< -o $@
 
 #REGLE POUR TOUS LES .o
