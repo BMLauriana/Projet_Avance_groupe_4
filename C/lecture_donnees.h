@@ -32,6 +32,7 @@ typedef struct instance_s{
     int dimension; //nombre de ville (points)
     noeud_t *noeuds; // tableau contenant les coordonnées de chaque villes
 }instance_t;
+
 /***********************
     lecture de fichier
 ************************/
