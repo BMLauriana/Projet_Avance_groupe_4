@@ -4,7 +4,7 @@ LDFLAGS=-std=c11 -Wpedantic -Wall -Wextra
 LDLIBS=-lm
 
 #EXECUTABLES
-EXEC=main0 main1
+EXEC=main0 main1 test_0
 
 #MODULES COMMUNS
 COMMON_OBJS=lecture_donnees.o lire_fichier.o 
@@ -29,6 +29,9 @@ all: $(EXEC)
 #EXECUTABLES
 #($@ donne le nom de la cible et 
 #$^ la liste de toutes les dependances)
+test_0: test_0.c $(COMMON_OBJS)
+	$(CC) $(CFLAGS)	$^ -o $@ $(LDLIBS)
+	
 main0: main0.c $(COMMON_OBJS)
 	$(CC) $(CFLAGS)	$^ -o $@ $(LDLIBS)
 
