@@ -60,5 +60,9 @@ int recuperer_distance(int **matrice , int i , int j);
 int longueur_tour_cano_matrice(instance_t inst, int ** matrice);
 void liberer_matrice(int **matrice, int n);
 
+/************************************
+ liberer la memoire pour une tournee 
+************************************/ 
+void liberer_tournee(tournee_t **tournee);
 
 #endif

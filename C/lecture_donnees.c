@@ -165,3 +165,16 @@ void liberer_instance(instance_t **inst)
     free(*inst);
     *inst = NULL;
 }
+
+#include <stdlib.h>
+
+void liberer_tournee(tournee_t **tournee) {
+    if (tournee != NULL && *tournee != NULL) {
+        free((*tournee)->parcours);
+        (*tournee)->parcours = NULL;
+        free(*tournee);
+        *tournee = NULL;  // on met le pointeur à NULL pour eviter l’usage apres liberation
+    }
+}
+
+
