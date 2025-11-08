@@ -54,15 +54,6 @@ int next_permutation(int *tab, int n) {
  * Retourne la meilleure tournée trouvée
  ***************************************************/
 
-//calcule la longueur d’une tournée (via indices)
-int calculer_longueur_tournee(int *ordre, int n, int **matrice) {
-    int longueur = 0;
-    for (int i = 0; i < n - 1; i++)
-        longueur += recuperer_distance(matrice, ordre[i], ordre[i + 1]);
-    longueur += recuperer_distance(matrice, ordre[n - 1], ordre[0]);
-    return longueur;
-}
-
 static void print_perm_nodes(instance_t *inst, int *perm, int n) {
     for (int i = 0; i < n; ++i) {
         int idx = perm[i];

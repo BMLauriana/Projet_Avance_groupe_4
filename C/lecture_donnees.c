@@ -139,6 +139,15 @@ int longueur_tour_cano_matrice(instance_t inst, int **matrice){
 
 }
 
+//calcule la longueur d’une tournée (via indices)
+int calculer_longueur_tournee(int *indice, int n, int **matrice) {
+    int longueur = 0;
+    for (int i = 0; i < n - 1; i++)
+        longueur += recuperer_distance(matrice, indice[i], indice[i + 1]);
+    longueur += recuperer_distance(matrice, indice[n - 1], indice[0]);
+    return longueur;
+}
+
 void liberer_matrice(int **matrice, int n){
     for(int i= 0; i < n; i++){
         free(matrice[i]);
