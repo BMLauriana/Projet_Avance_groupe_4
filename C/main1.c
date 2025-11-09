@@ -46,10 +46,10 @@ int main(int argc, char* argv[]){
     /*(partie0) faire un main C, admettant en paramètre de la ligne de commande, la balise -f suivie d’un nom de
 fichier et -c, affichant les données lues et calculant la longueur de la tournée canonique 2.*/
 
-    printf("Instance ; Méthode ; Temps CPU (sec); longueur ; Tour\n");
+    printf("Instance ; Méthode ; Temps CPU (sec) ; longueur ; Tour\n");
     
     //printf("%s ; rw ; 0.00 ; %f ; \n",instance->nom,longueur2); 
-    printf("%s ; %s ;", instance->nom, argv[4]+1);
+    printf("%s ; %s ; ", instance->nom, argv[4]+1);
     clock_t debut_time = clock();   // démarrage du chronométrage
     tournee_t meilleure_tournee = force_brute(instance,demi_matrice);
     clock_t fin_time = clock();
@@ -60,10 +60,11 @@ fichier et -c, affichant les données lues et calculant la longueur de la tourn�
     clock_t fin_time = clock();
     
     double temps_ecoule = ((double)(fin_time - debut_time))/CLOCKS_PER_SEC;*/
-    printf("%f ; [",temps_ecoule);
+    float longueur = longueur_tournee(*instance, meilleure_tournee,fonction_distance);
+    printf("%f ; %f ; [",temps_ecoule,longueur);
     //modifier meilleure_tournee /meilleure_tournee2 en fonction
     for (int i = 0; i < instance->dimension-1; i++){
-        printf("%d, ", meilleure_tournee.parcours[i].num);
+        printf("%d,", meilleure_tournee.parcours[i].num);
     }
     printf("%d]\n",meilleure_tournee.parcours[instance->dimension-1].num);
     /*liberation de la memoire allouee a la matrice*/
