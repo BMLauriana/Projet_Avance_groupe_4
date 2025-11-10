@@ -123,7 +123,7 @@ int main(int argc, char* argv[]){
         clock_t fin_time = clock();
         
         double temps_ecoule = ((double)(fin_time - debut_time))/CLOCKS_PER_SEC;*/
-        float longueur = longueur_tournee(*instance, meilleure_tournee,fonction_distance);
+        float longueur = meilleure_tournee->longueur;
         printf("%f ; %f ; [",temps_ecoule,longueur);
         //modifier meilleure_tournee /meilleure_tournee2 en fonction
         for (int i = 0; i < instance->dimension-1; i++){
@@ -161,7 +161,33 @@ int main(int argc, char* argv[]){
         /*liberation de la memoire allouee a l'instance*/
         liberer_instance(&instance);
     }
+    if(strcmp(methode,"-rw")==0){
+        instance_t *instance =lire_tsplib(nom_fichier);
+        if( instance ==NULL){
+            fprintf(stderr,"Il y a eu une erreur pendant la lecture du fichier. Ce type de fichier peut ne pas etre gere.\n");
+            exit(2);
+        }
+        int** demi_matrice = creer_matrice((*instance), fonction_distance);
+        printf("Instance ; Méthode ; Temps CPU (sec) ; longueur ; Tour\n");
+        printf("%s ; %s ; ", instance->nom, argv[4]+1);
+        clock_t debut_time = clock();   // démarrage du chronométrage
+        tournee_t * meilleure_tournee = marche_aleatoire(instance,demi_matrice);
+        clock_t fin_time = clock();
+        double temps_ecoule = ((double)(fin_time - debut_time))/CLOCKS_PER_SEC;
+        float longueur = meilleure_tournee->longueur;
+        printf("%f ; %f ; [",temps_ecoule,longueur);
+        for (int i = 0; i < instance->dimension-1; i++){
+            printf("%d,", meilleure_tournee.parcours[i].num);
+        }
+        printf("%d]\n",meilleure_tournee.parcours[instance->dimension-1].num);
+        /*liberation de la memoire allouee a la matrice*/
+        liberer_matrice(demi_matrice, instance->dimension);
+
+        /*liberation de la memoire allouee a l'instance*/
+        liberer_instance(&instance);
+    }
     return 0;
 
 }
+
 
