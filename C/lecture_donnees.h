@@ -51,6 +51,7 @@ float longueur_tournee(instance_t instance,tournee_t tour, int(*f_distance)(noeu
 typedef int (*distance_f)(noeud_t, noeud_t);
 distance_f choix_distance(const instance_t *inst);
 
+void permuter(int *a, int *b);
 
 /*******************************
 matrice inférieure de distance 

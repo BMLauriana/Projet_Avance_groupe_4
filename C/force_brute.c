@@ -18,12 +18,6 @@
  on echange ensuite a[i] et a [j]
  inverser ensuite la sous liste */
 
-void permuter(int *a, int *b){
-    int temp = *a;
-    *a = *b;
-    *b = temp;
-}
-
 //a c'est un tableau d'entier et n c'est la taille du tableau
 int next_permutation(int *tab, int n) {
     int i = n - 2;

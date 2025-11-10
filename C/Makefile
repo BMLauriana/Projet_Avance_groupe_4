@@ -7,7 +7,7 @@ LDLIBS=-lm
 EXEC=main test_0 test_2 
 
 #MODULES COMMUNS
-COMMON_OBJS=lecture_donnees.o lire_fichier.o heuristiques.o
+COMMON_OBJS=lecture_donnees.o lire_fichier.o plus_proche_voisin.o marche_aleatoire.o deux_opt.o
 
 #PERMET DE DECIDER SI LES COMMANDES SONT AFFICHEES
 #VERVOSE=1 les affiches 
@@ -35,7 +35,7 @@ test_0: test_0.c $(COMMON_OBJS)
 test_2: test_2.c $(COMMON_OBJS)
 	$(CC) $(CFLAGS)	$^ -o $@ $(LDLIBS)
 
-main: main.c $(COMMON_OBJS) force_brute.o ctrl_c.o
+main: main.c $(COMMON_OBJS) force_brute.o ctrl_c.o 
 	$(CC) $(CFLAGS)	$^ -o $@ $(LDLIBS)
 
 #REGLE SPECIFIQUE POUR lire_fichier.c
@@ -46,8 +46,17 @@ lire_fichier.o: lire_fichier.c lecture_donnees.h
 force_brute.o: force_brute.c force_brute.h lecture_donnees.h ctrl_c.h
 	$(ECHO)$(CC) $(LDFLAGS) -c $< -o $@
 
-heuristiques.o: plus_proche_voisin.c marche_aleatoire.c deux_opt.c lecture_donnees.h
+
+# règles spécifiques
+plus_proche_voisin.o: plus_proche_voisin.c lecture_donnees.h heuristiques.h
 	$(ECHO)$(CC) $(LDFLAGS) -c $< -o $@
+
+marche_aleatoire.o: marche_aleatoire.c lecture_donnees.h heuristiques.h
+	$(ECHO)$(CC) $(LDFLAGS) -c $< -o $@
+
+deux_opt.o: deux_opt.c lecture_donnees.h heuristiques.h
+	$(ECHO)$(CC) $(LDFLAGS) -c $< -o $@
+
 
 #REGLE POUR TOUS LES .o
 #($< la premiere dependance par exemple

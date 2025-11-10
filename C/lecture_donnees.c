@@ -139,6 +139,12 @@ int longueur_tour_cano_matrice(instance_t inst, int **matrice){
 
 }
 
+void permuter(int *a, int *b){
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
 //calcule la longueur d’une tournée (via indices)
 int calculer_longueur_tournee(int *indice, int n, int **matrice) {
     int longueur = 0;

@@ -4,11 +4,6 @@
 #include "lecture_donnees.h"
 #include "heuristiques.h"
 
-void permuter(int *a, int *b){
-    int temp = *a;
-    *a = *b;
-    *b = temp;
-}
 
 tournee_t marche_aleatoire_matrice(instance_t *inst, int **matrice) {
     int n = inst->dimension;
