@@ -136,6 +136,9 @@ int main(int argc, char* argv[]){
         /*liberation de la memoire allouee a l'instance*/
         liberer_instance(&instance);
     }
-
+    if(strcmp(methode,"nn")==0){
+        instance_t *instance =lire_tsplib(nom_fichier);
+    }
     return 0;
+
 }
