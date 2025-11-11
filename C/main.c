@@ -157,11 +157,13 @@ int main(int argc, char* argv[]){
         }
         printf("%d]\n",meilleure_tournee->parcours[instance->dimension-1].num);
 
-        tournee_t * tournee2 = deux_opt(meilleure_tournee, demi_matrice, instance->dimension);
+        tournee_t * tournee2 = deux_opt(meilleure_tournee, demi_matrice, instance);
+        float longueur2 = tournee2->longueur;
+        printf(" %f ; [",longueur2);
         for (int i = 0; i < instance->dimension-1; i++){
-            printf("%d,", meilleure_tournee->parcours[i].num);
+            printf("%d,", tournee2->parcours[i].num);
         }
-        printf("%d]\n",meilleure_tournee->parcours[instance->dimension-1].num);
+        printf("%d]\n",tournee2->parcours[instance->dimension-1].num);
 
 
         /*liberation de la memoire allouee a la matrice*/

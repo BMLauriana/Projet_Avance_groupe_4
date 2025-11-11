@@ -14,7 +14,10 @@ void inverser_segment(noeud_t *parcours, int i, int j) {
 
 
 
-tournee_t * deux_opt(tournee_t * tournee, int ** matrice, int n){
+tournee_t * deux_opt(tournee_t * tournee, int ** matrice, instance_t* inst){
+    int n = inst->dimension;
+    distance_f f_distance = choix_distance(inst);
+
     tournee_t * res = malloc(sizeof(tournee_t));
     res->parcours =malloc(n*sizeof(noeud_t));
 
@@ -29,13 +32,11 @@ tournee_t * deux_opt(tournee_t * tournee, int ** matrice, int n){
         res->parcours[i] = tournee->parcours[i];
     }
 
-    float nouvelle_longueur;
-
     for(int i=0; i<n-2;i++){
-        for(int j=0; i<n-1;j++){
+        for(int j=0; j<n-1;j++){
             inverser_segment(res->parcours, i, j);
 
-            int nouvelle_longueur = calculer_longueur_tournee(res, matrice, n);
+            float nouvelle_longueur = longueur_tournee(*inst,*res, f_distance);
 
             if (nouvelle_longueur < res->longueur) {
                 res->longueur = nouvelle_longueur;
