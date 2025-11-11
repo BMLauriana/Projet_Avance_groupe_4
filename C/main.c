@@ -65,7 +65,7 @@ int main(int argc, char* argv[]){
             printf("%d, ",instance->noeuds[i].num);
         }
         printf("%d ]\n", instance->noeuds[instance->dimension-1].num); //affichage du dernier noeud sans la virgule
-
+        fflush(stdout);
         /*affichage du calcul de la longeur tournée canonique*/
         printf("Longueur pour la tournee canonique (version matrice) : %d\n", longueur1);
         printf("Longueur pour la tournee canonique (version fonction) : %f\n",longueur2);
@@ -117,7 +117,7 @@ int main(int argc, char* argv[]){
             printf("%d,", meilleure_tournee2->parcours[i].num);
         }
         printf("%d]\n",meilleure_tournee2->parcours[instance->dimension-1].num);
-
+        fflush(stdout);
         liberer_tournee(&meilleure_tournee2);
     }
     if(strcmp(methode,"-rw")==0||strcmp(methode,"-2optrw")==0){
@@ -142,7 +142,7 @@ int main(int argc, char* argv[]){
             printf("%d,", meilleure_tournee.parcours[i].num);
         }
         printf("%d]\n",meilleure_tournee.parcours[instance->dimension-1].num);
-
+        fflush(stdout);
     }
 
     /*liberation de la memoire allouee a la matrice*/
