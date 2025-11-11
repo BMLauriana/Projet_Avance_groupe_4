@@ -136,7 +136,7 @@ int main(int argc, char* argv[]){
         /*liberation de la memoire allouee a l'instance*/
         liberer_instance(&instance);
     }
-    if(strcmp(methode,"-nn")==0){
+    if(strcmp(methode,"-nn")==0||strcmp(methode,"-2optnn")==0){
         instance_t *instance =lire_tsplib(nom_fichier);
         if( instance ==NULL){
             fprintf(stderr,"Il y a eu une erreur pendant la lecture du fichier. Ce type de fichier peut ne pas etre gere.\n");
@@ -156,13 +156,21 @@ int main(int argc, char* argv[]){
             printf("%d,", meilleure_tournee->parcours[i].num);
         }
         printf("%d]\n",meilleure_tournee->parcours[instance->dimension-1].num);
+
+        tournee_t * tournee2 = deux_opt(meilleure_tournee, demi_matrice, instance->dimension);
+        for (int i = 0; i < instance->dimension-1; i++){
+            printf("%d,", meilleure_tournee->parcours[i].num);
+        }
+        printf("%d]\n",meilleure_tournee->parcours[instance->dimension-1].num);
+
+
         /*liberation de la memoire allouee a la matrice*/
         liberer_matrice(demi_matrice, instance->dimension);
 
         /*liberation de la memoire allouee a l'instance*/
         liberer_instance(&instance);
     }
-    if(strcmp(methode,"-rw")==0){
+    if(strcmp(methode,"-rw")==0||strcmp(methode,"-2optrw")==0){
         instance_t *instance =lire_tsplib(nom_fichier);
         if( instance ==NULL){
             fprintf(stderr,"Il y a eu une erreur pendant la lecture du fichier. Ce type de fichier peut ne pas etre gere.\n");
