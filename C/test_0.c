@@ -42,4 +42,6 @@ int main(int argc,  char* argv[]){
     liberer_matrice(demi_matrice, instance->dimension);
     liberer_instance(&instance);
 
+    return 0;
+
 }
