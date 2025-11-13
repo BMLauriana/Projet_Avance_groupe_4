@@ -61,7 +61,7 @@ int recuperer_distance(int **matrice , int i , int j);
 /*calcule la longueur de la tournee canonique a l'aide de la matrice*/
 int longueur_tour_cano_matrice(instance_t inst, int ** matrice);
 //calcule la longueur d’une tournée (via indices)
-int calculer_longueur_tournee(int *indice, int n, int **matrice);
+int calculer_longueur_matrice(tournee_t *tournee, int n, int **matrice);
 void liberer_matrice(int **matrice, int n);
 
 /************************************
