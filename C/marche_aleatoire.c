@@ -4,7 +4,6 @@
 #include "lecture_donnees.h"
 #include "heuristiques.h"
 
-
 tournee_t * marche_aleatoire_matrice(instance_t *inst, int **matrice) {
     int n = inst->dimension;
     

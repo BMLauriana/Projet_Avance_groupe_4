@@ -77,10 +77,10 @@ tournee_t *force_brute(instance_t *inst, int **matrice) {
     int meilleure_longueur = calculer_longueur_matrice(&tour_temp, n, matrice);
     memcpy(meilleur_ordre, ordre, n * sizeof(int));
     while (next_permutation(ordre, n)) {
-        int longueur = calculer_longueur_matrice(&tour_temp, n, matrice);
         for (int i = 0; i < n; i++){
-                tour_temp.parcours[i] = inst->noeuds[ordre[i]];
+            tour_temp.parcours[i] = inst->noeuds[ordre[i]];
         }
+        int longueur = calculer_longueur_matrice(&tour_temp, n, matrice);
         if (longueur < meilleure_longueur) {
             meilleure_longueur = longueur;
             memcpy(meilleur_ordre, ordre, n * sizeof(int));
@@ -135,7 +135,8 @@ tournee_t *force_brute(instance_t *inst, int **matrice) {
         meilleure_tournee->parcours[i] = inst->noeuds[meilleur_ordre[i]];
     }
 
-    liberer_tournee(&tour_temp);
+    free(tour_temp.parcours);
+
     free(ordre);
     free(meilleur_ordre);
 
@@ -206,10 +207,8 @@ tournee_t *force_brute2(instance_t *inst, distance_f f_distance) {
                 printf("Reprise des calculs...\n");
             }
     }
-        //on libère la mémoire temporaire
-        free(tour_temp.parcours);  
+        
     }
-
     //construction de la structure finale tournee_t (celle qu'on retourne)
     tournee_t *meilleure_tournee = malloc(sizeof(tournee_t));
     meilleure_tournee->longueur = meilleure_longueur;
@@ -219,7 +218,8 @@ tournee_t *force_brute2(instance_t *inst, distance_f f_distance) {
         meilleure_tournee->parcours[i] = inst->noeuds[meilleur_ordre[i]];
     }
 
-    liberer_tournee(&tour_temp);
+    //on libère la mémoire temporaire
+    free(tour_temp.parcours);  
     free(ordre);
     free(meilleur_ordre);
 
