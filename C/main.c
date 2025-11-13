@@ -122,26 +122,26 @@ int main(int argc, char* argv[]){
     }
     if(strcmp(methode,"-rw")==0||strcmp(methode,"-2optrw")==0){
         clock_t debut_time = clock();   // démarrage du chronométrage
-        meilleure_tournee = marche_aleatoire_matrice(instance,demi_matrice);
+        tournee_t *meilleure_tournee = marche_aleatoire_matrice(instance, demi_matrice);
         clock_t fin_time = clock();
         double temps_ecoule = ((double)(fin_time - debut_time))/CLOCKS_PER_SEC;
-        float longueur = meilleure_tournee.longueur;
+        float longueur = meilleure_tournee->longueur;
         
 
         if(strcmp(methode,"-2optrw")==0){
             clock_t debut_time2 = clock();
-            meilleure_tournee = *deux_opt(&meilleure_tournee, demi_matrice, instance);
+            meilleure_tournee = deux_opt(meilleure_tournee, demi_matrice, instance);
             clock_t fin_time2 = clock();
             double temps_ecoule2 = ((double)(fin_time2 - debut_time2))/CLOCKS_PER_SEC;
             temps_ecoule = temps_ecoule + temps_ecoule2;
-            longueur = meilleure_tournee.longueur;
+            longueur = meilleure_tournee->longueur;
         } 
 
         printf("%f ; %f ; [",temps_ecoule,longueur);
         for (int i = 0; i < instance->dimension-1; i++){
-            printf("%d,", meilleure_tournee.parcours[i].num);
+            printf("%d,", meilleure_tournee->parcours[i].num);
         }
-        printf("%d]\n",meilleure_tournee.parcours[instance->dimension-1].num);
+        printf("%d]\n",meilleure_tournee->parcours[instance->dimension-1].num);
         fflush(stdout);
     }
 
