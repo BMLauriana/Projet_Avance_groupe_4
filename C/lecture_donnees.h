@@ -58,9 +58,7 @@ matrice inférieure de distance
 *******************************/ 
 int **creer_matrice(instance_t inst, int(*f_distance)(noeud_t, noeud_t));
 int recuperer_distance(int **matrice , int i , int j);
-/*calcule la longueur de la tournee canonique a l'aide de la matrice
-int longueur_tour_cano_matrice(instance_t inst, int ** matrice);*/
-//calcule la longueur d’une tournée (via indices)
+//calcule la longueur d’une tournée (via une matrice)
 int calculer_longueur_matrice(tournee_t *tournee, int n, int **matrice);
 void liberer_matrice(int **matrice, int n);
 

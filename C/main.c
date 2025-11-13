@@ -47,18 +47,23 @@ int main(int argc, char* argv[]){
     if(strcmp(methode,"tournee_canonique")==0){
 
         /*calcul longueur tournee canonique*/
-        /*1. avec la matrice
-        int longueur1 = longueur_tour_cano_matrice(*instance,demi_matrice);*/
+        
+
+        //int longueur1 = longueur_tour_cano_matrice(*instance,demi_matrice);
 
         /*2. avec la fonction longueur_tournee*/
         /*creation de la tournee*/
         tournee_t tour_cano;
         tour_cano.parcours = instance->noeuds;
+        tour_cano.longueur = instance->dimension;
+        /*1. avec la matrice*/
+         int longueur1 = calculer_longueur_matrice(&tour_cano,tour_cano.longueur,demi_matrice);
         /*calcul de la longueur*/
         float longueur2 = longueur_tournee(*instance,tour_cano, fonction_distance);
+       
 
         printf("Instance ; Méthode ; Temps CPU (sec); longueur ; Tour\n");
-        printf("%s ; .. ; 0.00 ; %f ; ",instance->nom,longueur2); 
+        printf("%s ; .. ; 0.00 ; %d ; ",instance->nom,longueur1); 
         /*affichage Tour canonique*/
         printf("[ ");
         for(int i=0;i< instance->dimension -1;i++){ //on s'arrete a l'avant dernier noeud
@@ -67,7 +72,7 @@ int main(int argc, char* argv[]){
         printf("%d ]\n", instance->noeuds[instance->dimension-1].num); //affichage du dernier noeud sans la virgule
         fflush(stdout);
         /*affichage du calcul de la longeur tournée canonique*/
-        //printf("Longueur pour la tournee canonique (version matrice) : %d\n", longueur1);
+        printf("Longueur pour la tournee canonique (version matrice) : %d\n", longueur1);
         printf("Longueur pour la tournee canonique (version fonction) : %f\n",longueur2);
 
         /*liberation de la memoire allouee a la matrice*/
@@ -95,6 +100,7 @@ int main(int argc, char* argv[]){
             printf("%d,", meilleure_tournee->parcours[i].num);
         }
         printf("%d]\n",meilleure_tournee->parcours[instance->dimension-1].num);
+        //libération de la tournée 
         liberer_tournee(&meilleure_tournee);
     }
     if(strcmp(methode,"-nn")==0||strcmp(methode,"-2optnn")==0){

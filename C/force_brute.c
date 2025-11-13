@@ -136,7 +136,6 @@ tournee_t *force_brute(instance_t *inst, int **matrice) {
     }
 
     free(tour_temp.parcours);
-
     free(ordre);
     free(meilleur_ordre);
 

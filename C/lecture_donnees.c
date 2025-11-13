@@ -148,8 +148,8 @@ void permuter(int *a, int *b){
 int calculer_longueur_matrice(tournee_t *tournee, int n, int **matrice) {
     int longueur = 0;
     for (int i = 0; i < n - 1; i++)
-        longueur += recuperer_distance(matrice, tournee->parcours[i].num - 1, tournee->parcours[i + 1].num - 1);
-    longueur += recuperer_distance(matrice, tournee->parcours[n - 1].num - 1, tournee->parcours[0].num - 1);
+        longueur += recuperer_distance(matrice, tournee->parcours[i].num - 1, tournee->parcours[i+1].num - 1);
+    longueur += recuperer_distance(matrice, tournee->parcours[n-1].num - 1, tournee->parcours[0].num - 1);
     return longueur;
 }
 
