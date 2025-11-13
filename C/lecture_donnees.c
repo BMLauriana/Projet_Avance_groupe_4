@@ -146,11 +146,11 @@ void permuter(int *a, int *b){
 }
 
 //calcule la longueur d’une tournée (via indices)
-int calculer_longueur_matrice(tournee_t *tournee, int n, int **matrice) {
+int calculer_longueur_tournee(int *indice, int n, int **matrice) {
     int longueur = 0;
     for (int i = 0; i < n - 1; i++)
-        longueur += recuperer_distance(matrice, tournee->parcours[i].num - 1, tournee->parcours[i + 1].num - 1);
-    longueur += recuperer_distance(matrice, tournee->parcours[n - 1].num - 1, tournee->parcours[0].num - 1);
+        longueur += recuperer_distance(matrice, indice[i], indice[i + 1]);
+    longueur += recuperer_distance(matrice, indice[n - 1], indice[0]);
     return longueur;
 }
 

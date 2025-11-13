@@ -55,22 +55,32 @@ static void print_perm_nodes(instance_t *inst, int *perm, int n) {
     }
 }
 
-tournee_t force_brute(instance_t *inst, int **matrice) {
+tournee_t *force_brute(instance_t *inst, int **matrice) {
     install_ctrl_c_handler();
     clock_t debut_time = clock();   // démarrage du chronométrage
+    
     int n = inst->dimension;
     int *ordre = malloc(n * sizeof(int));          
     int *meilleur_ordre = malloc(n * sizeof(int)); 
 
     //tournée canonique : 0 → 1 → 2 → … → n-1
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < n; i++){
         ordre[i] = i;
+    }
+    tournee_t tour_temp;
+    tour_temp.parcours = malloc(n * sizeof(noeud_t));
+    for (int i = 0; i < n; i++) {
+        tour_temp.parcours[i] = inst->noeuds[ordre[i]];
+    }
 
     //initialiser avec la tournée canonique, on essaie toutes les permutations possibles
-    int meilleure_longueur = calculer_longueur_tournee(ordre, n, matrice);
+    int meilleure_longueur = calculer_longueur_matrice(&tour_temp, n, matrice);
     memcpy(meilleur_ordre, ordre, n * sizeof(int));
     while (next_permutation(ordre, n)) {
-        int longueur = calculer_longueur_tournee(ordre, n, matrice);
+        int longueur = calculer_longueur_matrice(&tour_temp, n, matrice);
+        for (int i = 0; i < n; i++){
+                tour_temp.parcours[i] = inst->noeuds[ordre[i]];
+        }
         if (longueur < meilleure_longueur) {
             meilleure_longueur = longueur;
             memcpy(meilleur_ordre, ordre, n * sizeof(int));
@@ -116,19 +126,16 @@ tournee_t force_brute(instance_t *inst, int **matrice) {
     }
 }
 
-    //construction de la structure finale tournee_t
-    tournee_t meilleure_tournee;
-    meilleure_tournee.longueur = meilleure_longueur;
-    meilleure_tournee.parcours = malloc(n * sizeof(noeud_t));
+    //construction de la structure finale tournee_t en faisant une allocation
+    tournee_t *meilleure_tournee = malloc(sizeof(tournee_t));
+    meilleure_tournee->longueur = meilleure_longueur;
+    meilleure_tournee->parcours = malloc(n * sizeof(noeud_t));
 
     for (int i = 0; i < n; i++){
-        meilleure_tournee.parcours[i] = inst->noeuds[meilleur_ordre[i]];
+        meilleure_tournee->parcours[i] = inst->noeuds[meilleur_ordre[i]];
     }
 
-
-    /*for (int i = 0; i < n; i++){
-        printf("%d ", meilleure_tournee.parcours[i].num);
-    }*/
+    liberer_tournee(&tour_temp);
     free(ordre);
     free(meilleur_ordre);
 
@@ -137,8 +144,9 @@ tournee_t force_brute(instance_t *inst, int **matrice) {
 
 
 //calcule la longueur d’une tournée (via indices) en utilisant la fonction de distance
-tournee_t force_brute2(instance_t *inst, distance_f f_distance) {
+tournee_t *force_brute2(instance_t *inst, distance_f f_distance) {
     install_ctrl_c_handler();
+
     int n = inst->dimension;
     int *ordre = malloc(n * sizeof(int));          
     int *meilleur_ordre = malloc(n * sizeof(int)); 
@@ -154,6 +162,8 @@ tournee_t force_brute2(instance_t *inst, distance_f f_distance) {
     for (int i = 0; i < n; i++) {
         tour_temp.parcours[i] = inst->noeuds[ordre[i]];
     }
+
+
     float meilleure_longueur = longueur_tournee(*inst, tour_temp, f_distance);
     memcpy(meilleur_ordre, ordre, n * sizeof(int));
     free(tour_temp.parcours);  // Libérer la mémoire temporaire
@@ -201,20 +211,15 @@ tournee_t force_brute2(instance_t *inst, distance_f f_distance) {
     }
 
     //construction de la structure finale tournee_t (celle qu'on retourne)
-    tournee_t meilleure_tournee;
-    meilleure_tournee.longueur = meilleure_longueur;
-    meilleure_tournee.parcours = malloc(n * sizeof(noeud_t));
+    tournee_t *meilleure_tournee = malloc(sizeof(tournee_t));
+    meilleure_tournee->longueur = meilleure_longueur;
+    meilleure_tournee->parcours = malloc(n * sizeof(noeud_t));
 
     for (int i = 0; i < n; i++){
-        meilleure_tournee.parcours[i] = inst->noeuds[meilleur_ordre[i]];
+        meilleure_tournee->parcours[i] = inst->noeuds[meilleur_ordre[i]];
     }
 
-    
-    /*for (int i = 0; i < n; i++){
-        printf("%d ", meilleure_tournee.parcours[i].num);
-    }
-    printf("\n");
-*/
+    liberer_tournee(&tour_temp);
     free(ordre);
     free(meilleur_ordre);
 
