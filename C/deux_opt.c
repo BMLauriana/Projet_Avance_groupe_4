@@ -12,9 +12,7 @@ void inverser_segment(noeud_t *parcours, int i, int j) {
     }
 }
 
-
-
-tournee_t * deux_opt(tournee_t * tournee, int ** matrice, instance_t* inst){
+tournee_t * deux_opt(tournee_t * tournee, instance_t* inst){
     int n = inst->dimension;
     distance_f f_distance = choix_distance(inst);
 

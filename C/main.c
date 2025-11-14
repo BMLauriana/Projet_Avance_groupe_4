@@ -112,7 +112,7 @@ int main(int argc, char* argv[]){
 
         if(strcmp(methode,"-2optnn")==0){
             clock_t debut_time2 = clock();
-            meilleure_tournee2 = deux_opt(meilleure_tournee2, demi_matrice, instance);
+            meilleure_tournee2 = deux_opt(meilleure_tournee2, instance);
             clock_t fin_time2 = clock();
             double temps_ecoule2 = ((double)(fin_time2 - debut_time2))/CLOCKS_PER_SEC;
             temps_ecoule = temps_ecoule + temps_ecoule2;
@@ -137,7 +137,7 @@ int main(int argc, char* argv[]){
 
         if(strcmp(methode,"-2optrw")==0){
             clock_t debut_time2 = clock();
-            meilleure_tournee = deux_opt(meilleure_tournee, demi_matrice, instance);
+            meilleure_tournee = deux_opt(meilleure_tournee, instance);
             clock_t fin_time2 = clock();
             double temps_ecoule2 = ((double)(fin_time2 - debut_time2))/CLOCKS_PER_SEC;
             temps_ecoule = temps_ecoule + temps_ecoule2;
