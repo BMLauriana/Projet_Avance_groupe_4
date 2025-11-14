@@ -16,7 +16,7 @@ generations = 1000
 mutation_rate = 0.10
 tournament_size = int(0.5*population_size)
 
-file = "att48"
+file = "../jeu_de_donnees/att10"
 instance = load_tsp_file(file+".tsp")
 #instance = load_tsp_file("dja1436.tsp")
 
