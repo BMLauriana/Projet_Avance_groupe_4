@@ -3,6 +3,7 @@
 #include <math.h>
 #include "lecture_donnees.h"
 #include "heuristiques.h"
+#include "genetique.h"
 
 #define POPULATION_SIZE 30
 #define GENERATION  1000
