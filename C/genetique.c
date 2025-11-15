@@ -20,12 +20,20 @@ void free_population(tournee_t **pop, int size)
     free(pop);
 }
 int main(int argc, char * argv[]) {
+    char* nom_fichier;
+    if(argc == 5){
+        nom_fichier = argv[2]; //récuperation du nom de fichier apres le -f
+    }else{
+        fprintf(stderr,"Usage: %s desigation_fichier[...]\n",argv[0]); 
+        /*il manque un argument (-f ou la désignation du fichier)*/
+        exit(1);
+    }
     srand((unsigned)time(NULL));
     // mettre les gestions argv
-    instance_t *instance = lire_tsplib();
+    instance_t *instance = lire_tsplib(nom_fichier);
     distance_f f_distance = choix_distance(instance);
     //int ** matrice = creer_matrice(*instance, f_distance); Parceque l'instance est un valeur
-    int ** matrice = creer_matrice(argv[2],instance, f_distance);
+    int ** matrice = creer_matrice((*instance), f_distance);
     tournee_t **population = random_population(POPULATION_SIZE, instance, matrice);
     if (!population) {
         fprintf(stderr, "Erreur d'allocation population\n");
@@ -52,7 +60,7 @@ int main(int argc, char * argv[]) {
             offspring[j+1] = child_b;
         }
         for (int i = 0; i < POPULATION_SIZE; i++) {
-            swap_mutation(offspring[i], MUTATION_RATE);
+            swap_mutation(offspring[i], instance->dimension, MUTATION_RATE);
 
             offspring[i]->longueur =calculer_longueur_matrice(offspring[i],instance->dimension,matrice);
         }

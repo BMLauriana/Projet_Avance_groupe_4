@@ -120,3 +120,22 @@ int ind_max_tournee(tournee_t* t1,int ind1,tournee_t* t2, int ind2){
         return ind2;
     }else return ind1;
 }
+
+void swap_mutation(tournee_t *tournee, int dimension, float mutation_rate) {    
+    // Parcourir chaque position de la tournée
+    for (int i = 0; i < dimension; i++) {
+        // Générer un nombre aléatoire entre 0.0 et 1.0
+        float random_value = (float)rand() / (float)RAND_MAX;
+        
+        // Si le nombre aléatoire est inférieur au taux de mutation
+        if (random_value < mutation_rate) {
+            // Choisir une position aléatoire j
+            int j = rand() % dimension;
+            
+            // Échanger les villes aux positions i et j
+            noeud_t temp = tournee->parcours[i];
+            tournee->parcours[i] = tournee->parcours[j];
+            tournee->parcours[j] = temp;
+        }
+    }
+}
