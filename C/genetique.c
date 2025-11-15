@@ -18,6 +18,7 @@ int main(int argc, char * argv[]) {
     tournee_t population[] = random_population(POPULATION_SIZE,instance, matrice);
     tournee_t best_individual = population[0];
     for (int i=0; i<GENERATION; i++) {
+        //tournee_t *selected = malloc(population_size*(sizeof(tournee_t)));
         tournee_t selected[] = tournament_selection(population, TOURNAMENT_SIZE, f_distance);
         tournee_t offspring[];
         for (int j=0; j<POPULATION_SIZE; j+2) {
