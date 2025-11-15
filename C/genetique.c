@@ -14,6 +14,7 @@ int main(int argc, char * argv[]) {
     // mettre les gestions argv
     instance_t *instance = lire_tsplib();
     distance_f f_distance = choix_distance(instance);
+    //int ** matrice = creer_matrice(*instance, f_distance); Parceque l'instance est un valeur
     int ** matrice = creer_matrice(instance, f_distance);
     tournee_t population[] = random_population(POPULATION_SIZE,instance, matrice);
     tournee_t best_individual = population[0];
@@ -22,8 +23,8 @@ int main(int argc, char * argv[]) {
         tournee_t selected[] = tournament_selection(population, TOURNAMENT_SIZE, f_distance);
         tournee_t offspring[];
         for (int j=0; j<POPULATION_SIZE; j+2) {
-            tournee_t child_a = ordered_crossover(selected[j], selected[j+1]);
-            tournee_t child_a = ordered_crossover(selected[j+1], selected[j]);
+            tournee_t child_a = ordered_crossover(selected[j], selected[j+1],instance->dimension);
+            tournee_t child_a = ordered_crossover(selected[j+1], selected[j],instance->dimension);
             offspring[i] = child_a;
             offspring[i++] = child_b;
         }
@@ -31,6 +32,7 @@ int main(int argc, char * argv[]) {
             swap_mutation(child, MUTATION_RATE);
         }
         // fonction auxiliaire : comparaison
+        //qsort(offspring,POPULATION_SIZE,sizeof(tournee_t),compare_tournee);
         offspring = qsort(offspring, POPULATION_SIZE, sizeof(tournee_t), compare);
         population = offspring;
         tournee_t worste = offspring[POPULATION_SIZE-1];
