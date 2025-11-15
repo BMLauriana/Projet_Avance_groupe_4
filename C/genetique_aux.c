@@ -116,7 +116,7 @@ tournee_t **random_population(int population_size,instance_t *inst,int **matrice
 
 
 int ind_max_tournee(tournee_t* t1,int ind1,tournee_t* t2, int ind2){
-    if(t1->longueur<t2->longeur){
+    if(t1->longueur<t2->longueur){
         return ind2;
     }else return ind1;
 }
