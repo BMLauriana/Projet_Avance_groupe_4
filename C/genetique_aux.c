@@ -26,4 +26,19 @@ tournee_t *tournament_selection(tournee_t *population , int population_size, int
 
 }
 
+tournee_t[] random_population(const int population_size, const instance_t * inst,const int** mat){
+    tournee_t population[population_size];
+    for(int i=0;i<population_size;i++){
+        population[i] = * marche_aleatoire_matrice(inst,mat);
+    }
+    return population;
+}
 
+
+ind_max_tournee(tournee_t t1,int ind1,tournee_t t2, int ind2){
+    if(t1.longueur<t2.longeur){
+        return ind2;
+    }else{
+        return ind1;
+    }
+}

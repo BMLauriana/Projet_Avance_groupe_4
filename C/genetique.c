@@ -38,7 +38,7 @@ int main(int argc, char * argv[]) {
         population[indice] = marche_aleatoire_matrice(instance, matrice);
         tournee_t best_generation = offspring[0];
         // implémenter max tournée
-        indice = ind_max_tournee(population[POPULATION_SIZE-2],population[indice]);
+        indice = ind_max_tournee(population[POPULATION_SIZE-2],POPULATION_SIZE-2,population[indice],indice);
         tournee_t worste_generation = population[indice];
         if (best_generation.longueur < best_individual.longueur) {
             best_individual = best_generation;
