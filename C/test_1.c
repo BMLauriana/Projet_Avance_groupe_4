@@ -32,41 +32,37 @@ int main(int argc, char* argv[]){
     /*creation de la demi matrice des distances*/
     int** demi_matrice = creer_matrice((*instance), fonction_distance);
 
-
-    /*2. avec la fonction longueur_tournee*/
-    /*creation de la tournee*/
-    //tournee_t tour_cano;
-    //tour_cano.parcours = instance->noeuds;
-    /*calcul de la longueur*/
-    //float longueur2 = longueur_tournee(*instance,tour_cano, fonction_distance);
-
-    /*affichage du calcul de la longeur tournée canonique*/
-    // printf("Longueur pour la tournee canonique (version matrice) : %f\n", longueur2);
-
-    /*(partie0) faire un main C, admettant en paramètre de la ligne de commande, la balise -f suivie d’un nom de
-fichier et -c, affichant les données lues et calculant la longueur de la tournée canonique 2.*/
-
     printf("Instance ; Méthode ; Temps CPU (sec) ; longueur ; Tour\n");
     
     //printf("%s ; rw ; 0.00 ; %f ; \n",instance->nom,longueur2); 
     printf("%s ; %s ; ", instance->nom, argv[4]+1);
     clock_t debut_time = clock();   // démarrage du chronométrage
-    tournee_t meilleure_tournee = force_brute(instance,demi_matrice);
+    tournee_t * meilleure_tournee = force_brute(instance,demi_matrice);
     clock_t fin_time = clock();
+    float longueur = longueur_tournee(*instance, *meilleure_tournee,fonction_distance);
     
-    double temps_ecoule = ((double)(fin_time - debut_time))/CLOCKS_PER_SEC;/*
-    clock_t debut_time = clock();
-    tournee_t meilleure_tournee2 = force_brute2(instance, fonction_distance);
-    clock_t fin_time = clock();
+    double temps_ecoule = ((double)(fin_time - debut_time))/CLOCKS_PER_SEC;
+
+    clock_t debut_time2 = clock();
+    tournee_t * meilleure_tournee2 = force_brute2(instance, fonction_distance);
+    clock_t fin_time2 = clock();
     
-    double temps_ecoule = ((double)(fin_time - debut_time))/CLOCKS_PER_SEC;*/
-    float longueur = longueur_tournee(*instance, meilleure_tournee,fonction_distance);
+    double temps_ecoule2 = ((double)(fin_time2 - debut_time2))/CLOCKS_PER_SEC;
+    float longueur2 = longueur_tournee(*instance, *meilleure_tournee2,fonction_distance);
+
     printf("%f ; %f ; [",temps_ecoule,longueur);
-    //modifier meilleure_tournee /meilleure_tournee2 en fonction
     for (int i = 0; i < instance->dimension-1; i++){
-        printf("%d,", meilleure_tournee.parcours[i].num);
+        printf("%d,", meilleure_tournee->parcours[i].num);
     }
-    printf("%d]\n",meilleure_tournee.parcours[instance->dimension-1].num);
+    printf("%d]\n",meilleure_tournee->parcours[instance->dimension-1].num);
+
+    printf("Instance ; Méthode2 ; Temps CPU (sec) 2 ; longueur ; Tour\n");
+    printf("%s ; %s ; ", instance->nom, argv[4]+1);
+    printf("%f ; %f ; [",temps_ecoule2,longueur2);
+    for (int i = 0; i < instance->dimension-1; i++){
+        printf("%d,", meilleure_tournee2->parcours[i].num);
+    }
+    printf("%d]\n",meilleure_tournee2->parcours[instance->dimension-1].num);    
     /*liberation de la memoire allouee a la matrice*/
     liberer_matrice(demi_matrice, instance->dimension);
 

@@ -4,10 +4,10 @@ LDFLAGS=-std=c11 -Wpedantic -Wall -Wextra
 LDLIBS=-lm
 
 #EXECUTABLES
-EXEC=main test_0 test_2 
+EXEC=main test_0 test_2 test_1
 
 #MODULES COMMUNS
-COMMON_OBJS=lecture_donnees.o lire_fichier.o plus_proche_voisin.o marche_aleatoire.o deux_opt.o
+COMMON_OBJS=lecture_donnees.o lire_fichier.o
 
 #PERMET DE DECIDER SI LES COMMANDES SONT AFFICHEES
 #VERVOSE=1 les affiches 
@@ -32,10 +32,13 @@ all: $(EXEC)
 test_0: test_0.c $(COMMON_OBJS)
 	$(CC) $(CFLAGS)	$^ -o $@ $(LDLIBS)
 
-test_2: test_2.c $(COMMON_OBJS)
+test_1: test_1.c $(COMMON_OBJS) force_brute.o ctrl_c.o 
+	$(CC) $(CFLAGS) $^ -o $@ $(LDLIBS)
+
+test_2: test_2.c $(COMMON_OBJS) plus_proche_voisin.o marche_aleatoire.o
 	$(CC) $(CFLAGS)	$^ -o $@ $(LDLIBS)
 
-main: main.c $(COMMON_OBJS) force_brute.o ctrl_c.o 
+main: main.c $(COMMON_OBJS) force_brute.o ctrl_c.o plus_proche_voisin.o marche_aleatoire.o deux_opt.o
 	$(CC) $(CFLAGS)	$^ -o $@ $(LDLIBS)
 
 #REGLE SPECIFIQUE POUR lire_fichier.c
