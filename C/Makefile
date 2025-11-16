@@ -10,7 +10,7 @@ EXEC=main test_0 test_2 test_1 test_3
 COMMON_OBJS=lecture_donnees.o lire_fichier.o
 
 #PERMET DE DECIDER SI LES COMMANDES SONT AFFICHEES
-#VERVOSE=1 les affiches 
+#VERBOSE=1 les affiches 
 ECHO = @
 ifeq ($(VERBOSE),1)
 	ECHO=
