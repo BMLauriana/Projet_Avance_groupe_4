@@ -58,7 +58,7 @@ int main(int argc, char* argv[]){
             exit(1);            
         }
         printf("Instance ; Méthode ; Temps CPU (sec); longueur ; Tour\n");
-        printf("%s ; ga ; 0.00 ; ",instance->nom);
+        printf("%s ; ga ; ",instance->nom);
         genetique(nb_individus,nb_generations,taux_de_mutation,instance);
         liberer_instance(&instance);
         return 0;

@@ -4,7 +4,7 @@ LDFLAGS=-std=c11 -Wpedantic -Wall -Wextra
 LDLIBS=-lm
 
 #EXECUTABLES
-EXEC=main test_0 test_2 test_1
+EXEC=main test_0 test_2 test_1 test_3
 
 #MODULES COMMUNS
 COMMON_OBJS=lecture_donnees.o lire_fichier.o
@@ -36,6 +36,9 @@ test_1: test_1.c $(COMMON_OBJS) force_brute.o ctrl_c.o
 	$(CC) $(CFLAGS) $^ -o $@ $(LDLIBS)
 
 test_2: test_2.c $(COMMON_OBJS) plus_proche_voisin.o marche_aleatoire.o
+	$(CC) $(CFLAGS)	$^ -o $@ $(LDLIBS)
+
+test_3: test_3.c $(COMMON_OBJS) genetique.o genetique_aux.o marche_aleatoire.o
 	$(CC) $(CFLAGS)	$^ -o $@ $(LDLIBS)
 
 main: main.c $(COMMON_OBJS) force_brute.o ctrl_c.o plus_proche_voisin.o marche_aleatoire.o deux_opt.o genetique.o genetique_aux.o

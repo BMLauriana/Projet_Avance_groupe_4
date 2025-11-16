@@ -21,6 +21,7 @@ void free_population(tournee_t **pop, int size)
 }
 
 void genetique(int population_size, int generation, int mutation_rate, instance_t* instance) {
+    clock_t debut_time = clock();   // démarrage du chronométrage
     int tournament_size = (int)(0.5*population_size);
     srand((unsigned)time(NULL));
     distance_f f_distance = choix_distance(instance);
@@ -80,8 +81,11 @@ void genetique(int population_size, int generation, int mutation_rate, instance_
             best_individual = best_generation;
         }
         population[ind_worst] = best_individual;
-    } 
-    printf(" %f ; ", best_individual->longueur);
+    }
+    clock_t fin_time = clock();
+    double temps_ecoule = ((double)(fin_time - debut_time))/CLOCKS_PER_SEC;
+
+    printf("%f ; %f ; ",temps_ecoule, best_individual->longueur);
     printf("[");
     for (int i = 0; i < instance->dimension; i++) {
         printf("%d", best_individual->parcours[i].num);
