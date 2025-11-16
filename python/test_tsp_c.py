@@ -32,7 +32,7 @@ def extract_data(path,code,filename,method,distance_fct,coord,graphique):
         algo = lst[ind+2]
         #tps = eval(lst[ind+3]) # float
         #length = int(eval(lst[ind+4])) # int
-        # debut lova
+
         tps = float(lst[ind+3]) 
         length = int(float(lst[ind+4])) 
         # extraire manuellement le tour
@@ -53,7 +53,7 @@ def extract_data(path,code,filename,method,distance_fct,coord,graphique):
         # nettoyer et convertir en liste
         tour_str_clean = tour_str.strip('[]').replace(' ',' ')
         tour = [int(x) for x in tour_str_clean.split(',')]
-        # fin lova
+
         #tour = eval(lst[ind+5]) # liste
         l = fitness(tour,distance_fct,coord)
         v = valid(tour)
@@ -91,7 +91,7 @@ def tests_instances_list(instances_file,methods):
     with open(instances_file, 'r') as file:
         #for instance in file:
         #   test_instance(instance.strip(),methods)
-        # debut lova
+
         for line in file:
             line = line.strip()
             # ignore les lignes vides
