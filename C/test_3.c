@@ -64,6 +64,17 @@ int main(void){
         assert(compteur[i] == 1);
     }
 
+    int population_size = 3;
+    int tournament_size = 2;
+    tournee_t **selected = tournament_selection(tabTour, population_size, tournament_size);
+    assert(selected != NULL);
+    for(int i=0;i<population_size;i++){
+        assert(selected[i] != NULL);
+        int found = 0;
+    for(int j=0;j<population_size;j++) if(selected[i] == tabTour[j]) found = 1;
+        assert(found);
+    }
+
     printf("TESTS 3 OK\n");
     liberer_matrice(demi_matrice,instance->dimension);
     void free_population(tournee_t **pop, int size);
@@ -74,4 +85,5 @@ int main(void){
     free(compteur);
     free(tournee_test->parcours);
     free(tournee_test);
+    free(selected);
 }
