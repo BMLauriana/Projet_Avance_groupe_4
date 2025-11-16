@@ -81,6 +81,7 @@ void genetique(int population_size, int generation, int mutation_rate, instance_
         }
         population[ind_worst] = best_individual;
     } 
+    printf(" %f ; ", best_individual->longueur);
     printf("[");
     for (int i = 0; i < instance->dimension; i++) {
         printf("%d", best_individual->parcours[i].num);
@@ -89,7 +90,6 @@ void genetique(int population_size, int generation, int mutation_rate, instance_
         }
     }
     printf("]\n");
-    printf("longueur = %f\n", best_individual->longueur);
     liberer_matrice(matrice,instance->dimension);
     free_population(population, population_size);
 }
