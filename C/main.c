@@ -5,6 +5,7 @@
 #include "force_brute.h"
 #include "ctrl_c.h"
 #include "heuristiques.h"
+#include "genetique.h"
 #include <time.h>
 #include <getopt.h>
 #include <string.h>
@@ -12,9 +13,11 @@
 int main(int argc, char* argv[]){
     char* nom_fichier;
     char* methode;
+
+
     int opt;
 
-    while ((opt = getopt(argc, argv, "f:cm:")) != -1) {
+    while ((opt = getopt(argc, argv, "f:m:c")) != -1) {
         switch (opt) {
         case 'f':
             nom_fichier = optarg;
@@ -38,11 +41,35 @@ int main(int argc, char* argv[]){
     if( instance ==NULL){
         fprintf(stderr,"Il y a eu une erreur pendant la lecture du fichier. Ce type de fichier peut ne pas etre gere.\n");
         exit(2);
+    }    
+
+    if(strcmp(methode,"-ga")==0){
+        int nb_individus;
+        int nb_generations;
+        int taux_de_mutation;
+        if(argc-optind ==3){
+            nb_individus = atoi(argv[optind]);
+            nb_generations = atoi(argv[optind+1]);
+            taux_de_mutation = atoi(argv[optind+2]);
+        }else{
+            fprintf(stderr,"Usage: %s desigation_fichier[...]\n",argv[0]); 
+            /*il manque un argument*/
+            liberer_instance(&instance);
+            exit(1);            
+        }
+        printf("Instance ; Méthode ; Temps CPU (sec); longueur ; Tour\n");
+        printf("%s ; ga ; 0.00 ; ",instance->nom);
+        genetique(nb_individus,nb_generations,taux_de_mutation,instance);
+        liberer_instance(&instance);
+        return 0;
     }
+
     /*choix de la fonction de distance*/
     distance_f fonction_distance = choix_distance(instance);
     /*creation de la demi matrice des distances*/
     int** demi_matrice = creer_matrice((*instance), fonction_distance);
+
+
 
     if(strcmp(methode,"tournee_canonique")==0){
 
