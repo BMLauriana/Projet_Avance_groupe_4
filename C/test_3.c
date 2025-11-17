@@ -75,7 +75,54 @@ int main(void){
         assert(found);
     }
 
+    tournee_t *parent_a = malloc(sizeof(tournee_t));
+    tournee_t *parent_b = malloc(sizeof(tournee_t));
+
+    parent_a->parcours = malloc(instance->dimension * sizeof(noeud_t));
+    parent_b->parcours = malloc(instance->dimension * sizeof(noeud_t));
+    //parent_a: [1,2,3]
+    for (int i = 0; i < instance->dimension; i++) {
+        parent_a->parcours[i] = instance->noeuds[i];
+    }
+    //parent_b:[2,3,1]
+    parent_b->parcours[0] = instance->noeuds[1];
+    parent_b->parcours[1] = instance->noeuds[2];
+    parent_b->parcours[2] = instance->noeuds[0];
+    parent_a->longueur = 0.0f;
+    parent_b->longueur = 0.0f;
+
+    tournee_t *child = ordered_crossover(parent_a, parent_b, instance->dimension);
+    assert(child != NULL);
+
+    for (int i = 0; i <= instance->dimension; i++) {
+        compteur[i] = 0;
+    }
+
+    for (int i = 0; i < instance->dimension; i++) {
+        int num = child->parcours[i].num;
+        assert(num >= 1 && num <= instance->dimension);
+        compteur[num]++;
+    }
+    for (int i = 1; i <= instance->dimension; i++) {
+        assert(compteur[i] == 1);
+    }
+
+    tournee_t *t1 = malloc(sizeof(tournee_t));
+    tournee_t *t2 = malloc(sizeof(tournee_t));
+    tournee_t *t3 = malloc(sizeof(tournee_t));
+
+    t1->parcours = NULL; t1->longueur = 5.0f;
+    t2->parcours = NULL; t2->longueur = 10.0f;
+    t3->parcours = NULL; t3->longueur = 7.0f;
+
+    tournee_t *arr[3] = {t2, t1, t3};
+    qsort(arr, 3, sizeof(tournee_t *), compare_tournee);
+    assert(arr[0]->longueur == 5.0f);
+    assert(arr[1]->longueur == 7.0f);
+    assert(arr[2]->longueur == 10.0f);
+
     printf("TESTS 3 OK\n");
+
     liberer_matrice(demi_matrice,instance->dimension);
     void free_population(tournee_t **pop, int size);
 
@@ -85,5 +132,20 @@ int main(void){
     free(compteur);
     free(tournee_test->parcours);
     free(tournee_test);
+
     free(selected);
+
+    free(parent_a->parcours);
+    free(parent_b->parcours);
+    free(parent_a);
+    free(parent_b);
+
+    free(child->parcours);
+    free(child);
+    
+    free(t1);
+    free(t2);
+    free(t3);
+
+    return 0;
 }
