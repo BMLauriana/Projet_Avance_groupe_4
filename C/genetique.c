@@ -10,7 +10,15 @@
 //#define MUTATION_RATE 0.10f
 //#define TOURNAMENT_SIZE  ((int)(0.5*POPULATION_SIZE))
 
-
+void free_population(tournee_t **pop, int size){
+    for (int i = 0; i < size; i++) {
+        if (pop[i]) {
+            free(pop[i]->parcours);
+            free(pop[i]);
+        }
+    }
+    free(pop);
+}
 
 void genetique(int population_size, int generation, int mutation_rate, instance_t* instance) {
     clock_t debut_time = clock();   // démarrage du chronométrage
@@ -20,15 +28,13 @@ void genetique(int population_size, int generation, int mutation_rate, instance_
     //int ** matrice = creer_matrice(*instance, f_distance); Parceque l'instance est un valeur
     int ** matrice = creer_matrice((*instance), f_distance);
     tournee_t **population = random_population(population_size, instance, matrice);
-    tournee_t *child_a;
-    tournee_t *child_b;
     if (!population) {
         fprintf(stderr, "Erreur d'allocation population\n");
         exit(EXIT_FAILURE);
     }
     tournee_t *best_individual = population[0];
     for (int gen=0; gen<generation; gen++) {
-        //tournee_t selected = malloc(population_size(sizeof(tournee_t)));
+        //tournee_t *selected = malloc(population_size*(sizeof(tournee_t)));
         tournee_t **selected = tournament_selection(population,population_size, tournament_size);
         if (!selected) {
             fprintf(stderr, "Erreur d'allocation selected\n");
@@ -40,13 +46,11 @@ void genetique(int population_size, int generation, int mutation_rate, instance_
             exit(EXIT_FAILURE);
         }
         for (int j = 0; j < population_size; j += 2) {
-            child_a = ordered_crossover(population[j],population[j+1],instance->dimension);
-            child_b = ordered_crossover(population[j+1],population[j],instance->dimension);
+            tournee_t *child_a = ordered_crossover(population[j],population[j+1],instance->dimension);
+            tournee_t *child_b = ordered_crossover(population[j+1],population[j],instance->dimension);
 
             offspring[j]   = child_a;
             offspring[j+1] = child_b;
-
-
         }
         for (int i = 0; i < population_size; i++) {
             swap_mutation(offspring[i], instance->dimension, mutation_rate);
@@ -55,11 +59,10 @@ void genetique(int population_size, int generation, int mutation_rate, instance_
         }
         // fonction auxiliaire : comparaison
         qsort(offspring,population_size,sizeof(tournee_t *),compare_tournee);
-         free(selected);
-        free_population(population, population_size);
+        free(selected);
+        free(population);
         population = offspring;
         int ind_worst = population_size - 1;
-        liberer_tournee(&population[ind_worst]);
         tournee_t *rnd = marche_aleatoire_matrice(instance, matrice);
         if (!rnd) {
             fprintf(stderr, "Erreur dans marche_aleatoire_matrice\n");
@@ -68,20 +71,16 @@ void genetique(int population_size, int generation, int mutation_rate, instance_
         population[ind_worst] = rnd;
         population[ind_worst]->longueur =calculer_longueur_matrice(population[ind_worst],instance->dimension,matrice);
         tournee_t *best_generation = population[0];
-        
         ind_worst = 0;
         for (int i = 1; i < population_size; i++) {
             if (population[i]->longueur > population[ind_worst]->longueur) {
                 ind_worst = i;
             }
         }
-        if(best_generation->longueur < best_individual->longueur){
+        if (best_generation->longueur < best_individual->longueur) {
             best_individual = best_generation;
         }
-        
         population[ind_worst] = best_individual;
-       
-
     }
     clock_t fin_time = clock();
     double temps_ecoule = ((double)(fin_time - debut_time))/CLOCKS_PER_SEC;
@@ -95,9 +94,7 @@ void genetique(int population_size, int generation, int mutation_rate, instance_
         }
     }
     printf("]\n");
-    free_population(population, population_size);
     liberer_matrice(matrice,instance->dimension);
-    
-    
+    free_population(population, population_size);
 }
 

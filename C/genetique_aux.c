@@ -3,16 +3,6 @@
 #include <math.h>
 #include "genetique.h"
 
-void free_population(tournee_t **pop, int size){
-    for (int i = 0; i < size; i++) {
-        if (pop[i]) {
-            free(pop[i]->parcours);
-            free(pop[i]);
-        }
-    }
-    free(pop);
-}
-
 tournee_t **tournament_selection(tournee_t **population,int population_size,int tournament_size){
     tournee_t **selected = malloc(population_size * sizeof(tournee_t *));
     if (!selected) {
@@ -47,7 +37,6 @@ tournee_t *ordered_crossover(tournee_t *parent_a,tournee_t *parent_b,int dimensi
     child->parcours = malloc(dimension * sizeof(noeud_t));
     if (!child->parcours) {
         fprintf(stderr, "Erreur d'allocation child->parcours\n");
-        free(child);
         exit(EXIT_FAILURE);
     }
 
