@@ -143,11 +143,12 @@ int main(int argc, char* argv[]){
             clock_t fin_time2 = clock();
             double temps_ecoule2 = ((double)(fin_time2 - debut_time2))/CLOCKS_PER_SEC;
             temps_ecoule = temps_ecoule + temps_ecoule2;
-            longueur = meilleure_tournee->longueur;
+            
             if(meilleure_tournee2){
                 liberer_tournee(&meilleure_tournee);
                 meilleure_tournee = meilleure_tournee2;
             }
+            longueur = meilleure_tournee->longueur;
             
         }
 
@@ -173,11 +174,12 @@ int main(int argc, char* argv[]){
             clock_t fin_time2 = clock();
             double temps_ecoule2 = ((double)(fin_time2 - debut_time2))/CLOCKS_PER_SEC;
             temps_ecoule = temps_ecoule + temps_ecoule2;
-            longueur = meilleure_tournee->longueur;
+            
             if(meilleure_tournee2){
                 liberer_tournee(&meilleure_tournee);
                 meilleure_tournee = meilleure_tournee2;
             }
+            longueur = meilleure_tournee->longueur;
         } 
 
         printf("%f ; %f ; [",temps_ecoule,longueur);
