@@ -124,7 +124,7 @@ int main(void){
     printf("TESTS 3 OK\n");
 
     liberer_matrice(demi_matrice,instance->dimension);
-    void free_population(tournee_t **pop, int size);
+    free_population(tabTour, instance->dimension);
 
     free(instance->noeuds);
     free(instance);

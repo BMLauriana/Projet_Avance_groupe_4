@@ -10,7 +10,7 @@
 //#define MUTATION_RATE 0.10f
 //#define TOURNAMENT_SIZE  ((int)(0.5*POPULATION_SIZE))
 
-/*void free_population(tournee_t **pop, int size)
+void free_population(tournee_t **pop, int size){
     for (int i = 0; i < size; i++) {
         if (pop[i]) {
             free(pop[i]->parcours);
@@ -18,7 +18,7 @@
         }
     }
     free(pop);
-}*/
+}
 
 void genetique(int population_size, int generation, int mutation_rate, instance_t* instance) {
     clock_t debut_time = clock();   // démarrage du chronométrage
