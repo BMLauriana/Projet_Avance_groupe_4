@@ -184,13 +184,13 @@ void tournee_rw_ou_2opt(){
 void tournee_ga(int nb_individus,int nb_generations,int taux_de_mutation,instance_t *instance){
     printf("Instance ; Méthode ; Temps CPU (sec); longueur ; Tour\n");
     printf("%s ; ga ; ",instance->nom);
-    genetique(nb_individus,nb_generations,taux_de_mutation,instance,"-ga");
+    genetique(nb_individus,nb_generations,taux_de_mutation,instance,"ga");
 }
 
 void tournee_gadpx(int nb_individus,int nb_generations,int taux_de_mutation,instance_t *instance){
     printf("Instance ; Méthode ; Temps CPU (sec); longueur ; Tour\n");
     printf("%s ; gadpx ; ",instance->nom);
-    genetique(nb_individus,nb_generations,taux_de_mutation,instance,"-gadpx"); 
+    genetique(nb_individus,nb_generations,taux_de_mutation,instance,"gadpx"); 
 }
 
 int main(int argc, char* argv[]){
@@ -228,7 +228,7 @@ int main(int argc, char* argv[]){
         if(argc-optind ==3){
             nb_individus = atoi(argv[optind]);
             nb_generations = atoi(argv[optind+1]);
-            taux_de_mutation = atoi(argv[optind+2]);
+            taux_de_mutation = atof(argv[optind+2]);
         }else{
             fprintf(stderr,"Usage: %s desigation_fichier[...]\n",argv[0]); 
             /*il manque un argument*/
@@ -243,7 +243,7 @@ int main(int argc, char* argv[]){
         if(argc-optind ==3){
             nb_individus = atoi(argv[optind]);
             nb_generations = atoi(argv[optind+1]);
-            taux_de_mutation = atoi(argv[optind+2]);
+            taux_de_mutation = atof(argv[optind+2]);
         }else{
             fprintf(stderr,"Usage: %s desigation_fichier[...]\n",argv[0]); 
             /*il manque un argument*/
@@ -309,6 +309,16 @@ int main(int argc, char* argv[]){
         tournee_rw_ou_2opt();
     }
     if(strcmp(methode,"-all")==0){
+        if(argc-optind ==3){
+            nb_individus = atoi(argv[optind]);
+            nb_generations = atoi(argv[optind+1]);
+            taux_de_mutation = atof(argv[optind+2]);
+        }else{
+            fprintf(stderr,"Usage: %s desigation_fichier[...]\n",argv[0]); 
+            /*il manque un argument*/
+            liberer_instance(&instance);
+            exit(1);            
+        }
         tournee_canonique();
         printf("Instance ; Méthode ; Temps CPU (sec) ; longueur ; Tour\n");
         printf("%s ; nn ; ", instance->nom);
