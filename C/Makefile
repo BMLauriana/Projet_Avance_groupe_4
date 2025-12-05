@@ -63,11 +63,14 @@ marche_aleatoire.o: marche_aleatoire.c lecture_donnees.h heuristiques.h
 deux_opt.o: deux_opt.c lecture_donnees.h heuristiques.h
 	$(ECHO)$(CC) $(LDFLAGS) -c $< -o $@
 
-genetique.o: genetique.c genetique.h lecture_donnees.h heuristiques.h
-	$(ECHO)$(CC) $(LDFLAGS) -c genetique.c -o genetique.o
+croisement-dpx.o: croisement-dpx.c
+	$(CC) $(LDFLAGS) -c $< -o $@
+
+genetique.o: genetique.c croisement-dpx.o genetique.h lecture_donnees.h heuristiques.h
+	$(ECHO)$(CC) $(LDFLAGS) -c $< -o genetique.o
 
 genetique_aux.o: genetique_aux.c genetique.h lecture_donnees.h heuristiques.h
-	$(ECHO)$(CC) $(LDFLAGS) -c genetique_aux.c -o genetique_aux.o
+	$(ECHO)$(CC) $(LDFLAGS) -c $< -o genetique_aux.o
 
 
 #REGLE POUR TOUS LES .o
