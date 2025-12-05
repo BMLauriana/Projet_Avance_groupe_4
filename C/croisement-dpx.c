@@ -6,30 +6,19 @@ static int aretes_communes(int position, tournee_t *p1,tournee_t *p2,int dimensi
 {
     // pour chaque arête de parent1, vérifier si elle existe dans parent2
     int suivant_a = (position+1)%dimension;
-    int num_a_parentA = parent_a->parcours[position].num;
-    int num_b_parentA = parent_a->parcours[suivant_a].num;
+    int num_a_parentA = p1->parcours[position].num;
+    int num_b_parentA = p1->parcours[suivant_a].num;
     // vérifier si l'arête existe dans parent2 (dans un sens ou dans l'autre)        
     for (int j=0; j<dimension; j++) {
         int suivant_b = (j+1)%dimension;
-        int num_a_parentB = parent_b->parcours[j].num;
-        int num_b_parentB = parent_b->parcours[suivant_b].num;
+        int num_a_parentB = p2->parcours[j].num;
+        int num_b_parentB = p2->parcours[suivant_b].num;
         // si il existe, la marquer
         if ((num_a_parentB == num_a_parentA && num_b_parentB == num_b_parentA) || (num_a_parentB == num_b_parentA && num_b_parentB == num_a_parentA)) {
             1;  // arête commune donc on ne détruit pas
         }
     }
     return 0;
-    // int a = p1->parcours[position].num;
-    // int b = p1->parcours[(position + 1) % dimension].num;
-
-    // for (int j = 0; j < dimension; j++) {
-    //     int c = p2->parcours[j].num;
-    //     int d = p2->parcours[(j + 1) % dimension].num;
-    //     if ((c == a && d == b) || (c == b && d == a)) {
-    //         return 1; 
-    //     }
-    // }
-    // return 0; 
 }
 
 tournee_t* dpx_crossover(tournee_t* parent1, tournee_t* parent2, int dimension, int** matrice, instance_t* inst) {
