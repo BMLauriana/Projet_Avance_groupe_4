@@ -184,15 +184,13 @@ void tournee_rw_ou_2opt(){
 void tournee_ga(int nb_individus,int nb_generations,int taux_de_mutation,instance_t *instance){
     printf("Instance ; Méthode ; Temps CPU (sec); longueur ; Tour\n");
     printf("%s ; ga ; ",instance->nom);
-    genetique(nb_individus,nb_generations,taux_de_mutation,instance, methode);
-    
+    genetique(nb_individus,nb_generations,taux_de_mutation,instance,"-ga");
 }
 
 void tournee_gadpx(int nb_individus,int nb_generations,int taux_de_mutation,instance_t *instance){
     printf("Instance ; Méthode ; Temps CPU (sec); longueur ; Tour\n");
-    printf("%s ; ga ; ",instance->nom);
-    genetique(nb_individus,nb_generations,taux_de_mutation,instance,methode);
-    
+    printf("%s ; gadpx ; ",instance->nom);
+    genetique(nb_individus,nb_generations,taux_de_mutation,instance,"-gadpx"); 
 }
 
 int main(int argc, char* argv[]){
@@ -320,6 +318,7 @@ int main(int argc, char* argv[]){
         tournee_rw_ou_2opt();
         printf("\n");
         tournee_ga(nb_individus,nb_generations,taux_de_mutation,instance);
+        tournee_gadpx(nb_individus,nb_generations,taux_de_mutation,instance);
     }
     
 
