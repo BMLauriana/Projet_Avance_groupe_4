@@ -99,6 +99,7 @@ void tournee_nn_ou_2opt(){
 }
 
 void tournee_rw_ou_2opt(){
+    srand((unsigned)time(NULL));
     clock_t debut_time = clock();   // démarrage du chronométrage
     tournee_t *meilleure_tournee = marche_aleatoire_matrice(instance, demi_matrice);
     clock_t fin_time = clock();

@@ -19,9 +19,8 @@ static int aretes_communes(int position, tournee_t *p1, tournee_t *p2, int dimen
     return 0;
 }
 
-tournee_t* dpx_crossover(tournee_t* parent1, tournee_t* parent2, int dimension, int** matrice, instance_t* inst)
+tournee_t* dpx_crossover(tournee_t* parent1, tournee_t* parent2, int dimension, instance_t* inst)
 {
-    (void)matrice; // non utilisé pour l'instant
 
     if (dimension <= 1) {
         // cas trivial : on clone juste parent1

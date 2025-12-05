@@ -34,7 +34,6 @@ tournee_t * marche_aleatoire_matrice(instance_t *inst, int **matrice) {
 
     //mékange aléatoire complet : Fisher-Yates standard
     //=> la première ville devient aussi aléatoire
-    srand((unsigned)time(NULL));
     for (int i = n - 1; i > 0; i--) {
         int k = rand() % (i + 1);   // k est entre 0 et i
         permuter(&tour_cano[i], &tour_cano[k]);

@@ -20,7 +20,7 @@ void free_population(tournee_t **pop, int size){
     free(pop);
 }
 
-void genetique(int population_size, int generation, int mutation_rate, instance_t* instance) {
+void genetique(int population_size, int generation, float mutation_rate, instance_t* instance) {
     clock_t debut_time = clock();   // démarrage du chronométrage
     int tournament_size = (int)(0.5*population_size);
     srand((unsigned)time(NULL));
@@ -46,10 +46,10 @@ void genetique(int population_size, int generation, int mutation_rate, instance_
             exit(EXIT_FAILURE);
         }
         for (int j = 0; j < population_size; j += 2) {
-            tournee_t *child_a = dpx_crossover(selected[j],selected[j+1],instance->dimension,matrice,instance);
-            tournee_t *child_b = dpx_crossover(selected[j+1],selected[j],instance->dimension,matrice,instance);
-            //tournee_t *child_a = ordered_crossover(selected[j],selected[j+1],instance->dimension);
-            //tournee_t *child_b = ordered_crossover(selected[j+1],selected[j],instance->dimension);
+            //tournee_t *child_a = dpx_crossover(selected[j],selected[j+1],instance->dimension,instance);
+            //tournee_t *child_b = dpx_crossover(selected[j+1],selected[j],instance->dimension,instance);
+            tournee_t *child_a = ordered_crossover(selected[j],selected[j+1],instance->dimension);
+            tournee_t *child_b = ordered_crossover(selected[j+1],selected[j],instance->dimension);
 
 
             offspring[j]   = child_a;
