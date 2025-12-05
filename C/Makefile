@@ -38,11 +38,11 @@ test_1: test_1.c $(COMMON_OBJS) force_brute.o ctrl_c.o
 test_2: test_2.c $(COMMON_OBJS) plus_proche_voisin.o marche_aleatoire.o
 	$(CC) $(CFLAGS)	$^ -o $@ $(LDLIBS)
 
-test_3: test_3.c $(COMMON_OBJS) genetique.o genetique_aux.o marche_aleatoire.o
+test_3: test_3.c $(COMMON_OBJS) genetique.o genetique_aux.o marche_aleatoire.o croisement-dpx.o deux_opt.o
 	$(CC) $(CFLAGS)	$^ -o $@ $(LDLIBS)
 
-main: main.c $(COMMON_OBJS) force_brute.o ctrl_c.o plus_proche_voisin.o marche_aleatoire.o deux_opt.o genetique.o genetique_aux.o
-	$(CC) $(CFLAGS) $^ -o $@ $(LDLIBS)
+main: main.c $(COMMON_OBJS) force_brute.o ctrl_c.o plus_proche_voisin.o marche_aleatoire.o deux_opt.o genetique.o genetique_aux.o croisement-dpx.o
+	$(CC) $(CFLAGS) $^ -o $@ $(LDLIBS) 
 
 #REGLE SPECIFIQUE POUR lire_fichier.c
 lire_fichier.o: lire_fichier.c lecture_donnees.h
