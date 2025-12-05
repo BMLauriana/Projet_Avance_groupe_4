@@ -41,7 +41,7 @@ int next_permutation(int *tab, int n) {
     }
     return 1;
 }
-*--------------------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------*/
 double brute(int nb_nodes,int nb_ressources,int *best_perm,unsigned long long *count_best,void *(*cout)(void *perm, int nb_nodes)){
     (void)nb_ressources; // pas utilisé pour le TSP pour l'instant
 
