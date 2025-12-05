@@ -184,7 +184,14 @@ void tournee_rw_ou_2opt(){
 void tournee_ga(int nb_individus,int nb_generations,int taux_de_mutation,instance_t *instance){
     printf("Instance ; Méthode ; Temps CPU (sec); longueur ; Tour\n");
     printf("%s ; ga ; ",instance->nom);
-    genetique(nb_individus,nb_generations,taux_de_mutation,instance);
+    genetique(nb_individus,nb_generations,taux_de_mutation,instance, methode);
+    
+}
+
+void tournee_gadpx(int nb_individus,int nb_generations,int taux_de_mutation,instance_t *instance){
+    printf("Instance ; Méthode ; Temps CPU (sec); longueur ; Tour\n");
+    printf("%s ; ga ; ",instance->nom);
+    genetique(nb_individus,nb_generations,taux_de_mutation,instance,methode);
     
 }
 
@@ -219,7 +226,7 @@ int main(int argc, char* argv[]){
         exit(2);
     }    
 
-    if(strcmp(methode,"-ga")==0||strcmp(methode,"-gadpx")==0){
+    if(strcmp(methode,"-ga")==0){
         if(argc-optind ==3){
             nb_individus = atoi(argv[optind]);
             nb_generations = atoi(argv[optind+1]);
@@ -231,6 +238,21 @@ int main(int argc, char* argv[]){
             exit(1);            
         }
         tournee_ga(nb_individus,nb_generations,taux_de_mutation,instance);
+        return 0;
+    }
+
+    if(strcmp(methode,"-gadpx")==0){
+        if(argc-optind ==3){
+            nb_individus = atoi(argv[optind]);
+            nb_generations = atoi(argv[optind+1]);
+            taux_de_mutation = atoi(argv[optind+2]);
+        }else{
+            fprintf(stderr,"Usage: %s desigation_fichier[...]\n",argv[0]); 
+            /*il manque un argument*/
+            liberer_instance(&instance);
+            exit(1);            
+        }
+        tournee_gadpx(nb_individus,nb_generations,taux_de_mutation,instance);
         return 0;
     }
 
