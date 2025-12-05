@@ -41,6 +41,41 @@ int next_permutation(int *tab, int n) {
     }
     return 1;
 }
+*--------------------------------------------------------------------------------------------------------*/
+double brute(int nb_nodes,int nb_ressources,int *best_perm,unsigned long long *count_best,void *(*cout)(void *perm, int nb_nodes)){
+    (void)nb_ressources; // pas utilisé pour le TSP pour l'instant
+
+    int *perm = malloc(nb_nodes * sizeof(int));
+    if (!perm) {
+        fprintf(stderr, "Erreur malloc dans brute\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // permutation canonique : 0, 1, 2, ..., n-1
+    for (int i = 0; i < nb_nodes; ++i) {
+        perm[i] = i;
+    }
+
+    // évaluer la permutation initiale
+    unsigned long long *p_cost =
+        (unsigned long long *)cout((void *)perm, nb_nodes);
+    *count_best = *p_cost;
+    memcpy(best_perm, perm, nb_nodes * sizeof(int));
+
+    // tester toutes les permutations suivantes
+    while (next_permutation(perm, nb_nodes)) {
+        p_cost = (unsigned long long *)cout((void *)perm, nb_nodes);
+        unsigned long long c = *p_cost;
+
+        if (c < *count_best) {
+            *count_best = c;
+            memcpy(best_perm, perm, nb_nodes * sizeof(int));
+        }
+    }
+
+    free(perm);
+    return (double)(*count_best);
+}
 
 
 /***************************************************

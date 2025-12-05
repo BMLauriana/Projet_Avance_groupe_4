@@ -10,6 +10,39 @@
 #include <getopt.h>
 #include <string.h>
 
+/*-----------------------------------------------------------------------------*/
+/* ==== POUR TESTER brute() AVEC TA DEMI-MATRICE ==== */
+static instance_t *g_inst_brute = NULL;
+static int       **g_mat_brute  = NULL;
+
+/* fonction coût compatible avec brute() pour le TSP (version demi-matrice) */
+static void *cout_tsp_generic(void *perm_void, int nb_nodes)
+{
+    int *perm = (int *)perm_void;
+
+    tournee_t tour_temp;
+    tour_temp.parcours = malloc(nb_nodes * sizeof(noeud_t));
+    if (!tour_temp.parcours) {
+        fprintf(stderr, "Erreur malloc dans cout_tsp_generic\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // on construit la tournée à partir des indices perm[i]
+    for (int i = 0; i < nb_nodes; i++) {
+        int idx = perm[i];                 // 0..n-1
+        tour_temp.parcours[i] = g_inst_brute->noeuds[idx];
+        // .num est déjà 1..n et calculer_longueur_matrice utilise num-1
+    }
+
+    static unsigned long long cout;  // statique car on retourne son adresse
+    cout = (unsigned long long)calculer_longueur_matrice(
+        &tour_temp, nb_nodes, g_mat_brute
+    );
+
+    free(tour_temp.parcours);
+    return &cout;
+}
+/*--------------------------------------------------------------------------------*/
 instance_t * instance;
 int ** demi_matrice;
 distance_f fonction_distance;
@@ -200,6 +233,37 @@ int main(int argc, char* argv[]){
     if(strcmp(methode,"-bf")==0){
         tournee_bf();
     }
+     /* ======= TEST de la version générique brute() ======= */
+    if(strcmp(methode,"-bfgen")==0){
+
+        int n = instance->dimension;
+
+        g_inst_brute = instance;
+        g_mat_brute  = demi_matrice;
+
+        int *best_perm = malloc(n * sizeof(int));
+        if (!best_perm) {
+            fprintf(stderr, "Erreur malloc best_perm\n");
+            exit(EXIT_FAILURE);
+        }
+        unsigned long long best_cost = 0;
+
+        clock_t debut_time = clock();
+        brute(n, 0, best_perm, &best_cost, cout_tsp_generic);
+        clock_t fin_time = clock();
+
+        double temps_ecoule = ((double)(fin_time - debut_time))/CLOCKS_PER_SEC;
+
+        printf("%f ; %f ; [", temps_ecoule, (double)best_cost);
+        for (int i = 0; i < n - 1; i++) {
+            int idx = best_perm[i];
+            printf("%d,", instance->noeuds[idx].num);
+        }
+        printf("%d]\n", instance->noeuds[best_perm[n-1]].num);
+
+        free(best_perm);
+    }
+
     if(strcmp(methode,"-nn")==0||strcmp(methode,"-2optnn")==0){
         tournee_nn_ou_2opt();
     }
