@@ -46,8 +46,8 @@ void genetique(int population_size, int generation, int mutation_rate, instance_
             exit(EXIT_FAILURE);
         }
         for (int j = 0; j < population_size; j += 2) {
-            tournee_t *child_a = ordered_crossover(population[j],population[j+1],instance->dimension);
-            tournee_t *child_b = ordered_crossover(population[j+1],population[j],instance->dimension);
+            tournee_t *child_a = ordered_crossover(selected[j],selected[j+1],instance->dimension);
+            tournee_t *child_b = ordered_crossover(selected[j+1],selected[j],instance->dimension);
 
             offspring[j]   = child_a;
             offspring[j+1] = child_b;
