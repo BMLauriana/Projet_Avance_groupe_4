@@ -1,40 +1,34 @@
-# Projet_Avance_groupe_4
+# Projet Avancé – Groupe 4
 
-GROUPE 4
-Zahra TAVAKOL,
-Lauriana BE MANANTSOA,
-Mbolomihaja REMANO LOVA et 
-Tiana Mélanie RABARISON
+## 👥 Membres du groupe
+- Zahra **TAVAKOL**
+- Lauriana **BE MANANTSOA**
+- Mbolomihaja **REMANO LOVA**
+- Tiana Mélanie **RABARISON**
 
-Compilation
+---
 
-! Avant de compiler, se placer dans le répertoire : ../Probleme-du-voyageur
+## 🛠️ Compilation
 
-Compiler le programme principal make all
+Avant de compiler, se placer dans le répertoire : ../C
 
-Compiler une partie spécifique make main0 | make main1 | make main2 | make main3 | make main
-
-main0–main3 : parties 0 à 3
-
-main : programme principal (nécessite la compilation de toutes les parties)
+- Compiler le programme avec make
+- Compiler le programme principal make all
 
 Nettoyer les fichiers compilés make clean
 
-Exécution
-
-! Après la compilation se placer dans le répertoire ../Probleme-du-voyageur/exec
+🚀 Exécution
 
 Utilisation :
 
-./main -f fichier.tsp (-c | -m METHOD)
+./main -f ../jeu_de_donnees/"fichier.tsp" (-c | -m METHOD)
 
-Méthodes disponibles
+🧠 Méthodes disponibles
 
-Algorithmes classiques :
+🔹 Algorithmes classiques
 
-bf | nn | rw | 2optrw | 2optnn
+-bf | -nn | -rw | -2optrw | -2optnn | -ga | -gadpx
 
+🔹 Algorithmes génériques
 
-Algorithmes génétiques :
-
-ga | gadxp [default | <population_size generations mutation_rate>]
+-bfgen 
