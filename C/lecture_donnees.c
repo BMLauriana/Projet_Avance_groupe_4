@@ -41,7 +41,6 @@ int distance_geographique(noeud_t point1, noeud_t point2) {
     return (int)distance;
 }
 
-// distance ATT
 int distance_euclidienne_att(noeud_t point1, noeud_t point2) {
     int dij =0;
     float xd = point1.x - point2.x;
@@ -164,7 +163,7 @@ void liberer_tournee(tournee_t **tournee) {
         free((*tournee)->parcours);
         (*tournee)->parcours = NULL;
         free(*tournee);
-        *tournee = NULL;  // on met le pointeur à NULL pour eviter l’usage apres liberation
+        *tournee = NULL;  
     }
 }
 

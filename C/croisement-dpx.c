@@ -21,7 +21,6 @@ static int aretes_communes(int position, tournee_t *p1, tournee_t *p2, int dimen
 
 tournee_t* dpx_crossover(tournee_t* parent1, tournee_t* parent2, int dimension, instance_t* inst)
 {
-
     if (dimension <= 1) {
         // cas trivial : on clone juste parent1
         tournee_t* fille_triv = malloc(sizeof(tournee_t));
@@ -32,21 +31,18 @@ tournee_t* dpx_crossover(tournee_t* parent1, tournee_t* parent2, int dimension, 
         return deux_opt(fille_triv, inst);
     }
 
-    // 1. Copier parent1 dans la fille
     tournee_t* fille = malloc(sizeof(tournee_t));
     fille->parcours = malloc(dimension * sizeof(noeud_t));
     for (int i = 0; i < dimension; i++) {
         fille->parcours[i] = parent1->parcours[i];
     }
-
-    // 2–3. Identifier les fragments d’arêtes communes
+    // Identifier les fragments d’arêtes communes
     int *frag_id = malloc(dimension * sizeof(int));
     int nb_frag = 0;
 
     frag_id[0] = 0;
     nb_frag = 1;
 
-    // on traite les arêtes [i -> i+1] pour i=0..dimension-2
     for (int i = 0; i < dimension - 1; i++) {
         if (aretes_communes(i, parent1, parent2, dimension)) {
             frag_id[i + 1] = nb_frag - 1; // même fragment
@@ -56,7 +52,7 @@ tournee_t* dpx_crossover(tournee_t* parent1, tournee_t* parent2, int dimension, 
         }
     }
 
-    // 3bis. Calculer start/len de chaque fragment (dans parent1)
+    // Calculer frag_start et frag_len de chaque fragment (dans parent1)
     int *frag_start = malloc(nb_frag * sizeof(int));
     int *frag_len   = malloc(nb_frag * sizeof(int));
 
@@ -81,14 +77,13 @@ tournee_t* dpx_crossover(tournee_t* parent1, tournee_t* parent2, int dimension, 
     // dernier fragment
     frag_len[curr_frag] = dimension - frag_start[curr_frag];
 
-    // 4. Reconnecter les fragments en suivant l’ordre des villes de parent2
+    // Reconnecter les fragments en suivant l’ordre des villes de parent2
 
     // mapping ville -> position dans parent1
-    // ATTENTION : suppose que num est dans [0..dimension] ou [1..dimension].
-    // Adapte la taille si besoin.
+    // num est dans [0..dimension] ou [1..dimension]
     int max_label = dimension + 1;
     int *pos_in_p1 = malloc(max_label * sizeof(int));
-    for (int i = 0; i < max_label; i++) pos_in_p1[i] = -1;
+    for (int i = 0; i < max_label; i++) {pos_in_p1[i] = -1;}
 
     for (int i = 0; i < dimension; i++) {
         int v = parent1->parcours[i].num;
@@ -113,7 +108,7 @@ tournee_t* dpx_crossover(tournee_t* parent1, tournee_t* parent2, int dimension, 
         }
     }
 
-    // Au cas où un fragment n’a pas été rencontré (rare), on l’ajoute à la fin
+    // Au cas où un fragment n’a pas été rencontré, on l’ajoute à la fin
     for (int f = 0; f < nb_frag; f++) {
         if (!frag_deja_vu[f]) {
             ordre_frag[nb_ordre++] = f;
@@ -134,7 +129,6 @@ tournee_t* dpx_crossover(tournee_t* parent1, tournee_t* parent2, int dimension, 
         }
     }
 
-    // sécurité : au cas où
     if (idx != dimension) {
         // si ça se passe mal, on retombe sur parent1 tel quel
         for (int i = 0; i < dimension; i++) {
@@ -145,10 +139,9 @@ tournee_t* dpx_crossover(tournee_t* parent1, tournee_t* parent2, int dimension, 
     free(fille->parcours);
     fille->parcours = nouveau_parcours;
 
-    // 5. Améliorer par 2-opt
+    // Améliorer par 2-opt
     tournee_t* fille_optimisee = deux_opt(fille, inst);
 
-    // Libérations
     free(fille->parcours);
     free(fille);
     free(frag_id);

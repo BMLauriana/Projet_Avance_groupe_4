@@ -41,12 +41,12 @@ int main(void){
 
     tournee_t *tournee_test = malloc(sizeof(tournee_t));
     tournee_test->parcours = malloc(instance->dimension * sizeof(noeud_t));
-    // Initialiser la tournée avec les noeuds de l'instance
+    
     for (int i = 0; i < instance->dimension; i++) {
         tournee_test->parcours[i] = instance->noeuds[i];
     }
     tournee_test->longueur = 0;
-    // Allouer et initialiser le compteur à zéro
+    
     int *compteur = malloc((instance->dimension + 1) * sizeof(int));
     for (int i = 0; i <= instance->dimension; i++) {
         compteur[i] = 0;

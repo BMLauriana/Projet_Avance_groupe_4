@@ -10,12 +10,12 @@
 #include <getopt.h>
 #include <string.h>
 
-/*-----------------------------------------------------------------------------*/
-/* ==== POUR TESTER brute() AVEC TA DEMI-MATRICE ==== */
+/*----------------------------------
+    TEST brute() AVEC DEMI-MATRICE
+---------------------------------------*/
 static instance_t *g_inst_brute = NULL;
 static int       **g_mat_brute  = NULL;
 
-/* fonction coût compatible avec brute() pour le TSP (version demi-matrice) */
 static void *cout_tsp_generic(void *perm_void, int nb_nodes)
 {
     int *perm = (int *)perm_void;
@@ -29,9 +29,8 @@ static void *cout_tsp_generic(void *perm_void, int nb_nodes)
 
     // on construit la tournée à partir des indices perm[i]
     for (int i = 0; i < nb_nodes; i++) {
-        int idx = perm[i];                 // 0..n-1
+        int idx = perm[i];                
         tour_temp.parcours[i] = g_inst_brute->noeuds[idx];
-        // .num est déjà 1..n et calculer_longueur_matrice utilise num-1
     }
 
     static unsigned long long cout;  // statique car on retourne son adresse
@@ -53,21 +52,11 @@ int nb_generations;
 int taux_de_mutation;
 
 void tournee_canonique(){
-    /*calcul longueur tournee canonique*/
-    
-
-    //int longueur1 = longueur_tour_cano_matrice(*instance,demi_matrice);
-
-    /*2. avec la fonction longueur_tournee*/
-    /*creation de la tournee*/
     tournee_t tour_cano;
     tour_cano.parcours = instance->noeuds;
     tour_cano.longueur = instance->dimension;
-    /*1. avec la matrice*/
-        int longueur1 = calculer_longueur_matrice(&tour_cano,tour_cano.longueur,demi_matrice);
-    /*calcul de la longueur*/
+    int longueur1 = calculer_longueur_matrice(&tour_cano,tour_cano.longueur,demi_matrice);
     float longueur2 = longueur_tournee(*instance,tour_cano, fonction_distance);
-    
 
     printf("Instance ; Méthode ; Temps CPU (sec); longueur ; Tour\n");
     printf("%s ; .. ; 0.00 ; %d ; ",instance->nom,longueur1); 
@@ -78,14 +67,13 @@ void tournee_canonique(){
     }
     printf("%d ]\n", instance->noeuds[instance->dimension-1].num); //affichage du dernier noeud sans la virgule
     fflush(stdout);
-    /*affichage du calcul de la longeur tournée canonique*/
     printf("Longueur pour la tournee canonique (version matrice) : %d\n", longueur1);
     printf("Longueur pour la tournee canonique (version fonction) : %f\n",longueur2);
 
 }
 
 void tournee_bf(){
-    clock_t debut_time = clock();   // démarrage du chronométrage
+    clock_t debut_time = clock();   
     meilleure_tournee = force_brute(instance,demi_matrice);
     clock_t fin_time = clock();
     
@@ -96,12 +84,11 @@ void tournee_bf(){
         printf("%d,", meilleure_tournee->parcours[i].num);
     }
     printf("%d]\n",meilleure_tournee->parcours[instance->dimension-1].num);
-    //libération de la tournée 
     liberer_tournee(&meilleure_tournee);
 }
 
 void tournee_nn_ou_2opt(){
-    clock_t debut_time = clock();   // démarrage du chronométrage
+    clock_t debut_time = clock();  
     meilleure_tournee = plus_proche_voisin(instance,demi_matrice);
     clock_t fin_time = clock();
     double temps_ecoule = ((double)(fin_time - debut_time))/CLOCKS_PER_SEC;
@@ -142,7 +129,7 @@ void tournee_nn_ou_2opt(){
 }
 
 void tournee_rw_ou_2opt(){
-    clock_t debut_time = clock();   // démarrage du chronométrage
+    clock_t debut_time = clock();   
     tournee_t *meilleure_tournee = marche_aleatoire_matrice(instance, demi_matrice);
     clock_t fin_time = clock();
     double temps_ecoule = ((double)(fin_time - debut_time))/CLOCKS_PER_SEC;
@@ -216,7 +203,6 @@ int main(int argc, char* argv[]){
         }
     }    
     
-    /*appel de la fonction pour la lecture du fichier*/
     instance =lire_tsplib(nom_fichier);
 
     if( instance ==NULL){
@@ -231,7 +217,6 @@ int main(int argc, char* argv[]){
             taux_de_mutation = atof(argv[optind+2]);
         }else{
             fprintf(stderr,"Usage: %s desigation_fichier[...]\n",argv[0]); 
-            /*il manque un argument*/
             liberer_instance(&instance);
             exit(1);            
         }
@@ -246,7 +231,6 @@ int main(int argc, char* argv[]){
             taux_de_mutation = atof(argv[optind+2]);
         }else{
             fprintf(stderr,"Usage: %s desigation_fichier[...]\n",argv[0]); 
-            /*il manque un argument*/
             liberer_instance(&instance);
             exit(1);            
         }
@@ -254,9 +238,7 @@ int main(int argc, char* argv[]){
         return 0;
     }
 
-    /*choix de la fonction de distance*/
     fonction_distance = choix_distance(instance);
-    /*creation de la demi matrice des distances*/
     demi_matrice = creer_matrice((*instance), fonction_distance);
 
     if(strcmp(methode,"tournee_canonique")==0){
@@ -315,7 +297,6 @@ int main(int argc, char* argv[]){
             taux_de_mutation = atof(argv[optind+2]);
         }else{
             fprintf(stderr,"Usage: %s desigation_fichier[...]\n",argv[0]); 
-            /*il manque un argument*/
             liberer_instance(&instance);
             exit(1);            
         }
@@ -331,11 +312,7 @@ int main(int argc, char* argv[]){
         tournee_gadpx(nb_individus,nb_generations,taux_de_mutation,instance);
     }
     
-
-    /*liberation de la memoire allouee a la matrice*/
     liberer_matrice(demi_matrice, instance->dimension);
-
-    /*liberation de la memoire allouee a l'instance*/
     liberer_instance(&instance);
 
     return 0;

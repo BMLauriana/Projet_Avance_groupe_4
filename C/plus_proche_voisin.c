@@ -15,7 +15,6 @@ tournee_t * plus_proche_voisin(instance_t * inst, int** matrice){
         exit(EXIT_FAILURE);
     } 
 
-
     for(int i=0; i<n; i++){
         visite[i] = false;
     }
@@ -45,7 +44,6 @@ tournee_t * plus_proche_voisin(instance_t * inst, int** matrice){
 
     }
 
-    // on libere la memoire
     free(visite);
     distance_f fonction_distance = choix_distance(inst);
     tournee->longueur = longueur_tournee(*inst,*tournee, fonction_distance);

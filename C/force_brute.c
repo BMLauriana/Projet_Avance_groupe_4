@@ -18,7 +18,6 @@
  on echange ensuite a[i] et a [j]
  inverser ensuite la sous liste */
 
-//a c'est un tableau d'entier et n c'est la taille du tableau
 int next_permutation(int *tab, int n) {
     int i = n - 2;
     while (i >= 0 && tab[i] >= tab[i + 1]){
@@ -41,9 +40,11 @@ int next_permutation(int *tab, int n) {
     }
     return 1;
 }
-/*--------------------------------------------------------------------------------------------------------*/
+/*------------------------------------------------
+    GENERIQUE FORCE BRUTE
+--------------------------------------------------------*/
 double brute(int nb_nodes,int nb_ressources,int *best_perm,unsigned long long *count_best,void *(*cout)(void *perm, int nb_nodes)){
-    (void)nb_ressources; // pas utilisé pour le TSP pour l'instant
+    (void)nb_ressources;
 
     int *perm = malloc(nb_nodes * sizeof(int));
     if (!perm) {
@@ -51,14 +52,12 @@ double brute(int nb_nodes,int nb_ressources,int *best_perm,unsigned long long *c
         exit(EXIT_FAILURE);
     }
 
-    // permutation canonique : 0, 1, 2, ..., n-1
     for (int i = 0; i < nb_nodes; ++i) {
         perm[i] = i;
     }
 
     // évaluer la permutation initiale
-    unsigned long long *p_cost =
-        (unsigned long long *)cout((void *)perm, nb_nodes);
+    unsigned long long *p_cost = (unsigned long long *)cout((void *)perm, nb_nodes);
     *count_best = *p_cost;
     memcpy(best_perm, perm, nb_nodes * sizeof(int));
 
@@ -92,13 +91,12 @@ static void print_perm_nodes(instance_t *inst, int *perm, int n) {
 
 tournee_t *force_brute(instance_t *inst, int **matrice) {
     install_ctrl_c_handler();
-    clock_t debut_time = clock();   // démarrage du chronométrage
+    clock_t debut_time = clock();  
     
     int n = inst->dimension;
     int *ordre = malloc(n * sizeof(int));          
     int *meilleur_ordre = malloc(n * sizeof(int)); 
 
-    //tournée canonique : 0 → 1 → 2 → … → n-1
     for (int i = 0; i < n; i++){
         ordre[i] = i;
     }
@@ -108,7 +106,6 @@ tournee_t *force_brute(instance_t *inst, int **matrice) {
         tour_temp.parcours[i] = inst->noeuds[ordre[i]];
     }
 
-    //initialiser avec la tournée canonique, on essaie toutes les permutations possibles
     int meilleure_longueur = calculer_longueur_matrice(&tour_temp, n, matrice);
     memcpy(meilleur_ordre, ordre, n * sizeof(int));
     while (next_permutation(ordre, n)) {
@@ -121,7 +118,7 @@ tournee_t *force_brute(instance_t *inst, int **matrice) {
             memcpy(meilleur_ordre, ordre, n * sizeof(int));
         }
        
-       if (interrompre) {
+        if (interrompre) {
             interrompre = 0;
             clock_t fin_time = clock();
             double temps_ecoule = ((double)(fin_time - debut_time))/CLOCKS_PER_SEC;
@@ -161,7 +158,6 @@ tournee_t *force_brute(instance_t *inst, int **matrice) {
     }
 }
 
-    //construction de la structure finale tournee_t en faisant une allocation
     tournee_t *meilleure_tournee = malloc(sizeof(tournee_t));
     meilleure_tournee->longueur = meilleure_longueur;
     meilleure_tournee->parcours = malloc(n * sizeof(noeud_t));
@@ -186,25 +182,20 @@ tournee_t *force_brute2(instance_t *inst, distance_f f_distance) {
     int *ordre = malloc(n * sizeof(int));          
     int *meilleur_ordre = malloc(n * sizeof(int)); 
 
-    //tournée canonique : 0 → 1 → 2 → … → n-1
     for (int i = 0; i < n; i++)
         ordre[i] = i;
 
-    //initialiser avec la tournée canonique
-    // Créer une tournee_t temporaire pour la tournée canonique
     tournee_t tour_temp;
     tour_temp.parcours = malloc(n * sizeof(noeud_t));
     for (int i = 0; i < n; i++) {
         tour_temp.parcours[i] = inst->noeuds[ordre[i]];
     }
 
-
     float meilleure_longueur = longueur_tournee(*inst, tour_temp, f_distance);
     memcpy(meilleur_ordre, ordre, n * sizeof(int));
-    free(tour_temp.parcours);  // Libérer la mémoire temporaire
+    free(tour_temp.parcours);  
 
     while (next_permutation(ordre, n)) {
-        //créer une tournee_t temporaire pour la permutation courante
         tour_temp.parcours = malloc(n * sizeof(noeud_t));
         for (int i = 0; i < n; i++) {
             tour_temp.parcours[i] = inst->noeuds[ordre[i]];
@@ -240,10 +231,9 @@ tournee_t *force_brute2(instance_t *inst, distance_f f_distance) {
             } else {
                 printf("Reprise des calculs...\n");
             }
+        }    
     }
-        
-    }
-    //construction de la structure finale tournee_t (celle qu'on retourne)
+
     tournee_t *meilleure_tournee = malloc(sizeof(tournee_t));
     meilleure_tournee->longueur = meilleure_longueur;
     meilleure_tournee->parcours = malloc(n * sizeof(noeud_t));
@@ -252,7 +242,6 @@ tournee_t *force_brute2(instance_t *inst, distance_f f_distance) {
         meilleure_tournee->parcours[i] = inst->noeuds[meilleur_ordre[i]];
     }
 
-    //on libère la mémoire temporaire
     free(tour_temp.parcours);  
     free(ordre);
     free(meilleur_ordre);

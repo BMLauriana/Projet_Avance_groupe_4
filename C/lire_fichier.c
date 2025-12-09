@@ -103,9 +103,5 @@ instance_t *lire_tsplib(const char *chemin)
         free(inst);
         return NULL;
     }
-    /*
-    printf("Lecture réussie : %s (%s, %d villes)\n",
-           inst->nom, inst->type_distance, inst->dimension);
-    */
     return inst;
 }

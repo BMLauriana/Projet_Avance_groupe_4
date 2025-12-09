@@ -6,10 +6,6 @@
 #include "lecture_donnees.h"
 #include "heuristiques.h"
 #include "genetique.h"
-//#define POPULATION_SIZE 30
-//#define GENERATION  1000
-//#define MUTATION_RATE 0.10f
-//#define TOURNAMENT_SIZE  ((int)(0.5*POPULATION_SIZE))
 
 void free_population(tournee_t **pop, int size){
     for (int i = 0; i < size; i++) {
@@ -22,11 +18,10 @@ void free_population(tournee_t **pop, int size){
 }
 
 void genetique(int population_size, int generation, float mutation_rate, instance_t* instance, char *arg) {
-    clock_t debut_time = clock();   // démarrage du chronométrage
+    clock_t debut_time = clock();   
     int tournament_size = (int)(0.5*population_size);
     srand((unsigned)time(NULL));
     distance_f f_distance = choix_distance(instance);
-    //int ** matrice = creer_matrice(*instance, f_distance); Parceque l'instance est un valeur
     int ** matrice = creer_matrice((*instance), f_distance);
     tournee_t **population = random_population(population_size, instance, matrice);
     if (!population) {
@@ -35,7 +30,6 @@ void genetique(int population_size, int generation, float mutation_rate, instanc
     }
     tournee_t *best_individual = population[0];
     for (int gen=0; gen<generation; gen++) {
-        //tournee_t *selected = malloc(population_size*(sizeof(tournee_t)));
         tournee_t **selected = tournament_selection(population,population_size, tournament_size);
         if (!selected) {
             fprintf(stderr, "Erreur d'allocation selected\n");
@@ -47,13 +41,13 @@ void genetique(int population_size, int generation, float mutation_rate, instanc
             exit(EXIT_FAILURE);
         }
         for (int j = 0; j < population_size; j += 2) {
-            if(strcmp(arg,"gadpx")==0){
+            if(strcmp(arg,"-gadpx")==0){
                 tournee_t *child_a = dpx_crossover(selected[j],selected[j+1],instance->dimension,instance);
                 tournee_t *child_b = dpx_crossover(selected[j+1],selected[j],instance->dimension,instance);
                 offspring[j]   = child_a;
                 offspring[j+1] = child_b;
             }
-            else{
+            else {
                  tournee_t *child_a = ordered_crossover(selected[j],selected[j+1],instance->dimension);
                 tournee_t *child_b = ordered_crossover(selected[j+1],selected[j],instance->dimension);
                 offspring[j]   = child_a;
@@ -66,7 +60,6 @@ void genetique(int population_size, int generation, float mutation_rate, instanc
 
             offspring[i]->longueur =calculer_longueur_matrice(offspring[i],instance->dimension,matrice);
         }
-        // fonction auxiliaire : comparaison
         qsort(offspring,population_size,sizeof(tournee_t *),compare_tournee);
         free(selected);
         free(population);
