@@ -94,15 +94,6 @@ void tournee_nn_ou_2opt(){
     double temps_ecoule = ((double)(fin_time - debut_time))/CLOCKS_PER_SEC;
     float longueur = meilleure_tournee->longueur;
 
-    if(strcmp(methode,"-all")==0){
-        printf("%f ; %f ; [",temps_ecoule,longueur);
-        for (int i = 0; i < instance->dimension-1; i++){
-            printf("%d,", meilleure_tournee->parcours[i].num);
-        }
-        printf("%d]\n",meilleure_tournee->parcours[instance->dimension-1].num);
-        fflush(stdout);        
-    }
-
     if(strcmp(methode,"-2optnn")==0||strcmp(methode,"-all")==0){
         clock_t debut_time2 = clock();
         tournee_t * meilleure_tournee2 = deux_opt(meilleure_tournee, instance);
@@ -117,9 +108,7 @@ void tournee_nn_ou_2opt(){
         longueur = meilleure_tournee->longueur;
         
     }
-        printf("Instance ; Méthode ; Temps CPU (sec) ; longueur ; Tour\n");
-        printf("%s ; 2optnn ; ", instance->nom);
-        printf("%f ; %f ; [",temps_ecoule,longueur);
+        printf("%f ; %f ; [", temps_ecoule, longueur);
     for (int i = 0; i < instance->dimension-1; i++){
         printf("%d,", meilleure_tournee->parcours[i].num);
     }
@@ -133,16 +122,7 @@ void tournee_rw_ou_2opt(){
     tournee_t *meilleure_tournee = marche_aleatoire_matrice(instance, demi_matrice);
     clock_t fin_time = clock();
     double temps_ecoule = ((double)(fin_time - debut_time))/CLOCKS_PER_SEC;
-    float longueur = meilleure_tournee->longueur;
-
-    if(strcmp(methode,"-all")==0){
-        printf("%f ; %f ; [",temps_ecoule,longueur);
-        for (int i = 0; i < instance->dimension-1; i++){
-            printf("%d,", meilleure_tournee->parcours[i].num);
-        }
-        printf("%d]\n",meilleure_tournee->parcours[instance->dimension-1].num);
-        fflush(stdout);        
-    }    
+    float longueur = meilleure_tournee->longueur;   
 
     if(strcmp(methode,"-2optrw")==0||strcmp(methode,"-all")==0){
         clock_t debut_time2 = clock();
@@ -157,9 +137,7 @@ void tournee_rw_ou_2opt(){
         }
         longueur = meilleure_tournee->longueur;
     } 
-    printf("Instance ; Méthode ; Temps CPU (sec) ; longueur ; Tour\n");
-    printf("%s ; 2optrw ; ", instance->nom);
-    printf("%f ; %f ; [",temps_ecoule,longueur);
+    printf("%f ; %f ; [", temps_ecoule, longueur);
     for (int i = 0; i < instance->dimension-1; i++){
         printf("%d,", meilleure_tournee->parcours[i].num);
     }
@@ -246,7 +224,7 @@ int main(int argc, char* argv[]){
         return 0;
     }
 
-    printf("Instance ; Méthode ; Temps CPU (sec) ; longueur ; Tour\n");
+    printf("Instance ; Méthode ; Temps CPU (sec); longueur ; Tour\n");
     printf("%s ; %s ; ", instance->nom, argv[4]+1);
     
 
@@ -301,10 +279,10 @@ int main(int argc, char* argv[]){
             exit(1);            
         }
         tournee_canonique();
-        printf("Instance ; Méthode ; Temps CPU (sec) ; longueur ; Tour\n");
+        printf("Instance ; Méthode ; Temps CPU (sec); longueur ; Tour\n");
         printf("%s ; nn ; ", instance->nom);
         tournee_nn_ou_2opt();
-        printf("Instance ; Méthode ; Temps CPU (sec) ; longueur ; Tour\n");
+        printf("Instance ; Méthode ; Temps CPU (sec); longueur ; Tour\n");
         printf("%s ; rw ; ", instance->nom);
         tournee_rw_ou_2opt();
         printf("\n");

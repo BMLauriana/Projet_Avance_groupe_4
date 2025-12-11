@@ -115,10 +115,10 @@ def tests_instances_list(instances_file,methods):
 # Liste de paramètres.
 # opt = tsplib95.load_solution(filename+'.opt.tour') pour charger un fichier solution dans python
 #filename = "burma14.tsp"
-filename = "../jeu_de_donnees/att15.tsp" #
+filename = "../jeu_de_donnees/att48.tsp" #
 path = "../C/" # adaptez à votre cas
 code = "main" # nom du programe C partie 1
-methods = ["-gadpx 30 1000 0.10f"]#["ga 30 1000 0.10"]#["-c"],"nn","rw","2optnn","2optrw","ga 10000 0.10 100"]#"bf","gadpx"
+methods = ["-nn","-rw","-2optnn","-2optrw","-ga 10000 0.10 100","-gadpx 30 1000 0.10f"]
 
 test_instance(filename,methods) # pour un seul appel
 #tests_instances_list("../jeu_de_donnees/instances.txt",methods) # marche si le C marche

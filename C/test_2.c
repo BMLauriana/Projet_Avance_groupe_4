@@ -35,7 +35,7 @@ int main(void){
 
     tournee_t * tour2 = marche_aleatoire_matrice(instance, demi_matrice);
     //assert pour savoir si il y a des doublouns ou pas 
-    int vus[4]={0}; // ndices 1..3 utilisés
+    int vus[4]={0}; // 
     for (int i = 0; i < instance->dimension; i++) {
         int num = tour2->parcours[i].num;
         assert(num >= 1 && num <= 3);   // numéro valide
