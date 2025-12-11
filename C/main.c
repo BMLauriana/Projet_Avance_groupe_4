@@ -58,7 +58,6 @@ void tournee_canonique(){
     int longueur1 = calculer_longueur_matrice(&tour_cano,tour_cano.longueur,demi_matrice);
     float longueur2 = longueur_tournee(*instance,tour_cano, fonction_distance);
 
-    printf("Instance ; Méthode ; Temps CPU (sec); longueur ; Tour\n");
     printf("%s ; .. ; 0.00 ; %d ; ",instance->nom,longueur1); 
     /*affichage Tour canonique*/
     printf("[ ");
@@ -120,6 +119,7 @@ void tournee_nn_ou_2opt() {
 
     /* --- Affichage 2optnn si -2optnn ou -all --- */
     if (strcmp(methode, "-2optnn") == 0 || strcmp(methode, "-all") == 0) {
+        printf("Instance ; Méthode ; Temps CPU (sec); longueur ; Tour\n");
         printf("%s ; 2optnn ; %f ; %f ; [", instance->nom, t1 + t2, L2);
         for (int i = 0; i < instance->dimension - 1; i++)
             printf("%d,", nn->parcours[i].num);
@@ -163,6 +163,7 @@ void tournee_rw_ou_2opt() {
 
     /* --- Affichage 2optrw si -2optrw ou -all --- */
     if (strcmp(methode, "-2optrw") == 0 || strcmp(methode, "-all") == 0) {
+        printf("Instance ; Méthode ; Temps CPU (sec); longueur ; Tour\n");
         printf("%s ; 2optrw ; %f ; %f ; [", instance->nom, t1 + t2, L2);
         for (int i = 0; i < instance->dimension - 1; i++)
             printf("%d,", rw->parcours[i].num);
