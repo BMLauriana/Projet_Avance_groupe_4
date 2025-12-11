@@ -87,63 +87,90 @@ void tournee_bf(){
     liberer_tournee(&meilleure_tournee);
 }
 
-void tournee_nn_ou_2opt(){
-    clock_t debut_time = clock();  
-    meilleure_tournee = plus_proche_voisin(instance,demi_matrice);
-    clock_t fin_time = clock();
-    double temps_ecoule = ((double)(fin_time - debut_time))/CLOCKS_PER_SEC;
-    float longueur = meilleure_tournee->longueur;
+void tournee_nn_ou_2opt() {
+    clock_t d1 = clock();
+    tournee_t *nn = plus_proche_voisin(instance, demi_matrice);
+    double t1 = ((double)(clock() - d1)) / CLOCKS_PER_SEC;
+    float L1 = nn->longueur;
 
-    if(strcmp(methode,"-2optnn")==0||strcmp(methode,"-all")==0){
-        clock_t debut_time2 = clock();
-        tournee_t * meilleure_tournee2 = deux_opt(meilleure_tournee, instance);
-        clock_t fin_time2 = clock();
-        double temps_ecoule2 = ((double)(fin_time2 - debut_time2))/CLOCKS_PER_SEC;
-        temps_ecoule = temps_ecoule + temps_ecoule2;
-        
-        if(meilleure_tournee2){
-            liberer_tournee(&meilleure_tournee);
-            meilleure_tournee = meilleure_tournee2;
-        }
-        longueur = meilleure_tournee->longueur;
-        
+    /* --- Affichage nn si -nn ou -all --- */
+    if (strcmp(methode, "-nn") == 0 || strcmp(methode, "-all") == 0) {
+        printf("%s ; nn ; %f ; %f ; [", instance->nom, t1, L1);
+        for (int i = 0; i < instance->dimension - 1; i++)
+            printf("%d,", nn->parcours[i].num);
+        printf("%d]\n", nn->parcours[instance->dimension - 1].num);
+        fflush(stdout);
     }
-        printf("%f ; %f ; [", temps_ecoule, longueur);
-    for (int i = 0; i < instance->dimension-1; i++){
-        printf("%d,", meilleure_tournee->parcours[i].num);
+
+    /* Si seulement -nn, on s'arrête ici */
+    if (strcmp(methode, "-nn") == 0) {
+        liberer_tournee(&nn);
+        return;
     }
-    printf("%d]\n",meilleure_tournee->parcours[instance->dimension-1].num);
-    fflush(stdout);
-    liberer_tournee(&meilleure_tournee);
+
+    clock_t d2 = clock();
+    tournee_t *opt = deux_opt(nn, instance);
+    double t2 = ((double)(clock() - d2)) / CLOCKS_PER_SEC;
+
+    if (opt) {
+        liberer_tournee(&nn);
+        nn = opt;
+    }
+    float L2 = nn->longueur;
+
+    /* --- Affichage 2optnn si -2optnn ou -all --- */
+    if (strcmp(methode, "-2optnn") == 0 || strcmp(methode, "-all") == 0) {
+        printf("%s ; 2optnn ; %f ; %f ; [", instance->nom, t1 + t2, L2);
+        for (int i = 0; i < instance->dimension - 1; i++)
+            printf("%d,", nn->parcours[i].num);
+        printf("%d]\n", nn->parcours[instance->dimension - 1].num);
+        fflush(stdout);
+    }
+
+    liberer_tournee(&nn);
 }
 
-void tournee_rw_ou_2opt(){
-    clock_t debut_time = clock();   
-    tournee_t *meilleure_tournee = marche_aleatoire_matrice(instance, demi_matrice);
-    clock_t fin_time = clock();
-    double temps_ecoule = ((double)(fin_time - debut_time))/CLOCKS_PER_SEC;
-    float longueur = meilleure_tournee->longueur;   
+void tournee_rw_ou_2opt() {
+    clock_t d1 = clock();
+    tournee_t *rw = marche_aleatoire_matrice(instance, demi_matrice);
+    double t1 = ((double)(clock() - d1)) / CLOCKS_PER_SEC;
+    float L1 = rw->longueur;
 
-    if(strcmp(methode,"-2optrw")==0||strcmp(methode,"-all")==0){
-        clock_t debut_time2 = clock();
-        tournee_t *meilleure_tournee2 = deux_opt(meilleure_tournee, instance);
-        clock_t fin_time2 = clock();
-        double temps_ecoule2 = ((double)(fin_time2 - debut_time2))/CLOCKS_PER_SEC;
-        temps_ecoule = temps_ecoule + temps_ecoule2;
-        
-        if(meilleure_tournee2){
-            liberer_tournee(&meilleure_tournee);
-            meilleure_tournee = meilleure_tournee2;
-        }
-        longueur = meilleure_tournee->longueur;
-    } 
-    printf("%f ; %f ; [", temps_ecoule, longueur);
-    for (int i = 0; i < instance->dimension-1; i++){
-        printf("%d,", meilleure_tournee->parcours[i].num);
+    /* --- Affichage rw si -rw ou -all --- */
+    if (strcmp(methode, "-rw") == 0 || strcmp(methode, "-all") == 0) {
+        printf("%s ; rw ; %f ; %f ; [", instance->nom, t1, L1);
+        for (int i = 0; i < instance->dimension - 1; i++)
+            printf("%d,", rw->parcours[i].num);
+        printf("%d]\n", rw->parcours[instance->dimension - 1].num);
+        fflush(stdout);
     }
-    printf("%d]\n",meilleure_tournee->parcours[instance->dimension-1].num);
-    fflush(stdout);
-    liberer_tournee(&meilleure_tournee);
+
+    /* Si seulement -rw, on s’arrête */
+    if (strcmp(methode, "-rw") == 0) {
+        liberer_tournee(&rw);
+        return;
+    }
+
+    clock_t d2 = clock();
+    tournee_t *opt = deux_opt(rw, instance);
+    double t2 = ((double)(clock() - d2)) / CLOCKS_PER_SEC;
+
+    if (opt) {
+        liberer_tournee(&rw);
+        rw = opt;
+    }
+    float L2 = rw->longueur;
+
+    /* --- Affichage 2optrw si -2optrw ou -all --- */
+    if (strcmp(methode, "-2optrw") == 0 || strcmp(methode, "-all") == 0) {
+        printf("%s ; 2optrw ; %f ; %f ; [", instance->nom, t1 + t2, L2);
+        for (int i = 0; i < instance->dimension - 1; i++)
+            printf("%d,", rw->parcours[i].num);
+        printf("%d]\n", rw->parcours[instance->dimension - 1].num);
+        fflush(stdout);
+    }
+
+    liberer_tournee(&rw);
 }
 
 void tournee_ga(int nb_individus,int nb_generations,int taux_de_mutation,instance_t *instance){
@@ -224,9 +251,7 @@ int main(int argc, char* argv[]){
         return 0;
     }
 
-    printf("Instance ; Méthode ; Temps CPU (sec); longueur ; Tour\n");
-    printf("%s ; %s ; ", instance->nom, argv[4]+1);
-    
+    printf("Instance ; Méthode ; Temps CPU (sec); longueur ; Tour\n");    
 
     if(strcmp(methode,"-bf")==0){
         tournee_bf();
@@ -280,10 +305,8 @@ int main(int argc, char* argv[]){
         }
         tournee_canonique();
         printf("Instance ; Méthode ; Temps CPU (sec); longueur ; Tour\n");
-        printf("%s ; nn ; ", instance->nom);
         tournee_nn_ou_2opt();
         printf("Instance ; Méthode ; Temps CPU (sec); longueur ; Tour\n");
-        printf("%s ; rw ; ", instance->nom);
         tournee_rw_ou_2opt();
         printf("\n");
         tournee_ga(nb_individus,nb_generations,taux_de_mutation,instance);
