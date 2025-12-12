@@ -41,14 +41,15 @@ void genetique(int population_size, int generation, float mutation_rate, instanc
             exit(EXIT_FAILURE);
         }
         for (int j = 0; j < population_size; j += 2) {
-            if(strcmp(arg,"-gadpx")==0){
-                tournee_t *child_a = dpx_crossover(selected[j],selected[j+1],instance->dimension,instance);
-                tournee_t *child_b = dpx_crossover(selected[j+1],selected[j],instance->dimension,instance);
+            if(strcmp(arg,"gadpx")==0){
+                tournee_t *child_a = dpx_crossover(selected[j], selected[j+1], instance->dimension, instance, matrice);
+                tournee_t *child_b = dpx_crossover(selected[j+1], selected[j], instance->dimension, instance, matrice);
+
                 offspring[j]   = child_a;
                 offspring[j+1] = child_b;
             }
             else {
-                 tournee_t *child_a = ordered_crossover(selected[j],selected[j+1],instance->dimension);
+                tournee_t *child_a = ordered_crossover(selected[j],selected[j+1],instance->dimension);
                 tournee_t *child_b = ordered_crossover(selected[j+1],selected[j],instance->dimension);
                 offspring[j]   = child_a;
                 offspring[j+1] = child_b;
